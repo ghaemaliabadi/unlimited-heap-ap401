@@ -31,6 +31,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -76,6 +79,15 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
+  fonts:
+    - family: kalameh
+      fonts:
+        - asset: assets/fonts/Kalameh_Regular.ttf
+          weight: 300
+        - asset: assets/fonts/Kalameh_Bold.ttf
+          weight: 600
+        - asset: assets/fonts/Kalameh_Black.ttf
+          weight: 900
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

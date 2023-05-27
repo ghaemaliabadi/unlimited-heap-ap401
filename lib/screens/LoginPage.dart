@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, required this.title});
+  const LoginPage({super.key});
 
-  final String title;
+  final String title = 'ورود';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        const SignUpPage(title: 'SignUpPage')),
+                        const SignUpPage()),
               ),
             },
             style: ButtonStyle(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key, required this.title});
+  const SignUpPage({super.key});
 
-  final String title;
+  final String title = 'ثبت‌نام';
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();

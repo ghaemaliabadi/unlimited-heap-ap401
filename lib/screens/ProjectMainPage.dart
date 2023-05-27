@@ -27,10 +27,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    var pageWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    // var pageWidth = MediaQuery
+    //     .of(context)
+    //     .size
+    //     .width;
     var pageHeight = MediaQuery
         .of(context)
         .size
@@ -67,13 +67,13 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             ],
           ), // Row For Back Icon
           SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
               },
               child: Container(
-                width: pageWidth,
+                // width: pageWidth,
                 height: pageHeight * 0.85,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -86,14 +86,16 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                       child: _menuBar(context),
                     ),
                     Expanded(
-                      // flex: 2,
+                      flex: 2,
                       child: PageView(
                         controller: _pageController,
                         physics: const ClampingScrollPhysics(),
                         onPageChanged: (int i) {
                           FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {
-                            activePageIndex = i;
+                            if (activePageIndex != i) {
+                              activePageIndex = i;
+                            }
                           });
                         },
                         children: <Widget>[
@@ -118,7 +120,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                           ConstrainedBox(
                             constraints: const BoxConstraints.expand(),
                             child: const Center(
-                              child: Text("تست 4"),
+                              child: Text("تست ۴"),
                             ),
                           ),
                         ],

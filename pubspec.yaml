@@ -30,6 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   dropdown_button2: ^2.1.3
+  tab_container: ^2.0.0
   flutter:
     sdk: flutter
   flutter_localizations:

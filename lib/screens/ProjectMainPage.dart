@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:tab_container/tab_container.dart';
 
 class ProjectMainPage extends StatefulWidget {
   const ProjectMainPage({super.key});
@@ -9,6 +10,7 @@ class ProjectMainPage extends StatefulWidget {
   @override
   State<ProjectMainPage> createState() => _ProjectMainPage();
 }
+
 final List<String> items = [
   'تهران',
   'مشهد',
@@ -33,6 +35,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     textEditingController.dispose();
     super.dispose();
   }
+
   final List<String> travelType = [
     'یک طرفه',
     'دو طرفه',
@@ -90,6 +93,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               height: pageHeight * 0.85,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
+                // color: Colors.yellowAccent,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -107,38 +111,56 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                       onPageChanged: (int i) {
                         FocusScope.of(context).requestFocus(FocusNode());
                         setState(() {
-                          if (activePageIndex != i) {
+                          // if (activePageIndex != i) {
                             activePageIndex = i;
-                          }
+                          // }
                         });
                       },
                       children: <Widget>[
                         ConstrainedBox(
                           constraints: const BoxConstraints.expand(),
-                          child: Form(
-                            key: _formKey,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 50),
-                              child: Column(
-                                // mainAxisAlignment: MainAxisAlignment.center,
+                          child: Container(
+                            height: pageHeight * 0.7,
+                            child:
+                              TabContainer(
+                                // color: Theme.of(context).colorScheme.secondary,
+                                tabs: const [
+                                  'Tab 1',
+                                  'Tab 2',
+                                ],
                                 children: [
-                                  const SizedBox(height: 40),
-                                  buildDropDown(context, title: 'مبدا'),
-                                  const SizedBox(height: 20),
-                                  buildDropDown(context, title: 'مقصد'),
-                                  const SizedBox(height: 20),
-                                  TextButton(
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        _formKey.currentState!.save();
-                                      }
-                                    },
-                                    child: const Text('Submit Button'),
+                                  Container(
+                                    child: Form(
+                                      key: _formKey,
+                                      child: Padding(
+                                        padding:
+                                        const EdgeInsets.symmetric(horizontal: 50),
+                                        child: Column(
+                                          // mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const SizedBox(height: 40),
+                                            buildDropDown(context, title: 'مبدا'),
+                                            const SizedBox(height: 20),
+                                            buildDropDown(context, title: 'مقصد'),
+                                            const SizedBox(height: 20),
+                                            TextButton(
+                                              onPressed: () {
+                                                if (_formKey.currentState!.validate()) {
+                                                  _formKey.currentState!.save();
+                                                }
+                                              },
+                                              child: const Text('Submit Button'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Text('Child 2'),
                                   ),
                                 ],
                               ),
-                            ),
                           ),
                         ),
                         ConstrainedBox(
@@ -183,8 +205,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        //Add more decoration as you want here
-        //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
       ),
       isExpanded: true,
       hint: Text(

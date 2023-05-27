@@ -41,12 +41,12 @@ ThemeData buildThemeData() {
         color: Colors.black,
       ),
       bodyText1: TextStyle(
-        fontSize: 14.0,
+        fontSize: 16.0,
         fontWeight: FontWeight.w300,
         color: Colors.black,
       ),
       bodyText2: TextStyle(
-        fontSize: 12.0,
+        fontSize: 14.0,
         fontWeight: FontWeight.w300,
         color: Colors.black,
       ),

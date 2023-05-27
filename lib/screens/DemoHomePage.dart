@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
+import 'ProjectMainPage.dart';
 import 'SignUpPage.dart';
 // import signup
 
@@ -34,6 +35,8 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 context, 'ثبت‌نام', const SignUpPage()),
             buildElevatedButtonWithRedirect(
                 context, 'ورود', const LoginPage()),
+            buildElevatedButtonWithRedirect(
+                context, 'صفحه اصلی پروژه', const ProjectMainPage()),
           ],
         ),
       ),

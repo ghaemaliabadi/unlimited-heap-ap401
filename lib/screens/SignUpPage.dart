@@ -15,7 +15,9 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.5,
-        title: Text(widget.title, style: Theme.of(context).textTheme.headline1),
+        // Theme.of(context).textTheme.headline2 is a TextStyle object that
+        // defined in lib/main.dart with white color
+        title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
       ),
       // add two input for enter username and password
       body: Column(

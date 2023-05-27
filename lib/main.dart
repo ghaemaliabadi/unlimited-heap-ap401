@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:unlimited_heap_ap401/Screens/DemoHomePage.dart';
-import 'Screens/LoginPage.dart';
 import 'Theme/MainTheme.dart';
 void main() {
   runApp(const MyApp());
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       theme: buildThemeData(),
-      home: const DemoHomePage(title: 'Flutter Demo Home Page'),
+      home: const DemoHomePage(title: 'Unlimited Heap AP 401'),
     );
   }
 }

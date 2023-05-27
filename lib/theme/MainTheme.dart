@@ -16,9 +16,9 @@ ThemeData buildThemeData() {
         color: Colors.black,
       ),
       headline2: TextStyle(
-        fontSize: 22.0,
+        fontSize: 24.0,
         fontWeight: FontWeight.w600,
-        color: Colors.black,
+        color: Colors.white,
       ),
       headline3: TextStyle(
         fontSize: 20.0,

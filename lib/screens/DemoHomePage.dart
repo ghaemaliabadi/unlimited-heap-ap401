@@ -5,9 +5,7 @@ import 'SignUpPage.dart';
 
 class DemoHomePage extends StatefulWidget {
   const DemoHomePage({Key? key, required this.title}) : super(key: key);
-
   final String title;
-
   @override
   State<DemoHomePage> createState() => _DemoHomePageState();
 }
@@ -18,7 +16,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.5,
-        title: Text(widget.title, style: Theme.of(context).textTheme.headline1),
+        title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
       ),
       body: Container(
         alignment: Alignment.center,
@@ -56,8 +54,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 'ثبت‌نام',
                 style: Theme.of(context)
                     .textTheme
-                    .headline1
-                    ?.copyWith(color: Colors.white),
+                    .headline2,
               ),
             ),
             // add space between buttons
@@ -84,8 +81,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 // add style to text and manually set color to white
                 style: Theme.of(context)
                     .textTheme
-                    .headline1
-                    ?.copyWith(color: Colors.white),
+                    .headline2,
               ),
             ),
           ],

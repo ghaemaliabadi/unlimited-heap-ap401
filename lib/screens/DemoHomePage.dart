@@ -24,34 +24,19 @@ class _DemoHomePageState extends State<DemoHomePage> {
         alignment: Alignment.center,
         child: Column(
           children: [
-            const SizedBox(
-              height: 48,
-            ),
+            const SizedBox(height: 48),
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
                 child: Text("صفحات پروژه:",
-                    style: Theme.of(context).textTheme.headline1)),
-            // submit button
-            const SizedBox(height: 16.0),
+                    // add style to text and manually set font size to 36
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1
+                        ?.copyWith(fontSize: 36))),
+            // add space between buttons
+            const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(title: 'ورود'),
-                ),
-              ),
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(1000.0),
-                  ),
-                ),
-              ),
-              child: const Text('ورود'),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
+              // redirect to login page with navigator
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -60,13 +45,48 @@ class _DemoHomePageState extends State<DemoHomePage> {
               ),
               style: ButtonStyle(
                 minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
+                // add circular border to button
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(1000.0),
                   ),
                 ),
               ),
-              child: const Text('ثبت‌نام'),
+              child: Text(
+                'ثبت‌نام',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline1
+                    ?.copyWith(color: Colors.white),
+              ),
+            ),
+            // add space between buttons
+            const SizedBox(height: 16),
+            ElevatedButton(
+              // redirect to login page with navigator
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(title: 'ورود'),
+                ),
+              ),
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
+                // add circular border to button
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(1000.0),
+                  ),
+                ),
+              ),
+              child: Text(
+                'ورود',
+                // add style to text and manually set color to white
+                style: Theme.of(context)
+                    .textTheme
+                    .headline1
+                    ?.copyWith(color: Colors.white),
+              ),
             ),
           ],
         ),

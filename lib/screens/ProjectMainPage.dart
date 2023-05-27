@@ -94,14 +94,20 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                         children: <Widget>[
                           ConstrainedBox(
                             constraints: const BoxConstraints.expand(),
-                            child: Center(
+                            child: const Center(
                               child: Text("تست"),
                             ),
                           ),
                           ConstrainedBox(
                             constraints: const BoxConstraints.expand(),
-                            child: Center(
+                            child: const Center(
                               child: Text("تست ۲"),
+                            ),
+                          ),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints.expand(),
+                            child: const Center(
+                              child: Text("تست ۳"),
                             ),
                           ),
                         ],
@@ -116,10 +122,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       ),
     );
   }
+
   Widget _menuBar(BuildContext context) {
     return Container(
       width: 300.0,
-      height: 50.0,
+      height: 60.0,
       decoration: const BoxDecoration(
         color: Color(0XFFE0E0E0),
         borderRadius: BorderRadius.all(Radius.circular(1000)),
@@ -130,7 +137,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           Expanded(
             child: InkWell(
               borderRadius: const BorderRadius.all(Radius.circular(1000)),
-              onTap: _onPlaceBidButtonPress,
+              onTap: _tapOnDomesticFlight,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(vertical: 15),
@@ -161,7 +168,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           Expanded(
             child: InkWell(
               borderRadius: const BorderRadius.all(Radius.circular(1000)),
-              onTap: _onBuyNowButtonPress,
+              onTap: _tapOnInternationalFlight,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(vertical: 15),
@@ -176,9 +183,42 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                   "پرواز خارجی",
                   style: (activePageIndex == 1)
                       ? const TextStyle(
-                          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)
                       : const TextStyle(
-                          color: Colors.black, fontSize: 20,  fontWeight: FontWeight.bold),
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              borderRadius: const BorderRadius.all(Radius.circular(1000)),
+              onTap: _tapOnTrain,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                decoration: (activePageIndex == 2)
+                    ? const BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.all(Radius.circular(1000)),
+                      )
+                    : null,
+                child: Text(
+                  "قطار",
+                  style: (activePageIndex == 2)
+                      ? const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)
+                      : const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -188,13 +228,18 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
-  void _onPlaceBidButtonPress() {
+  void _tapOnDomesticFlight() {
     _pageController.animateToPage(0,
-        duration: const Duration(milliseconds: 500), curve: Curves.decelerate);
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized);
   }
 
-  void _onBuyNowButtonPress() {
+  void _tapOnInternationalFlight() {
     _pageController.animateToPage(1,
-        duration: const Duration(milliseconds: 500), curve: Curves.decelerate);
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized);
+  }
+
+  void _tapOnTrain() {
+    _pageController.animateToPage(2,
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOutCubicEmphasized);
   }
 }

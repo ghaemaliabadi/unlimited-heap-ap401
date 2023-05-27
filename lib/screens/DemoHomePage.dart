@@ -23,7 +23,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
         alignment: Alignment.center,
         child: Column(
           children: [
-            const SizedBox(height: 48),
+            const SizedBox(height: 50),
                 Text("صفحات پروژه:",
                     // add style to text and manually set font size to 36
                     style: Theme.of(context)

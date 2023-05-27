@@ -18,49 +18,40 @@ class _DemoHomePageState extends State<DemoHomePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.5,
-        title:
-        Text(widget.title, style: Theme
-            .of(context)
-            .textTheme
-            .headline1),
+        title: Text(widget.title, style: Theme.of(context).textTheme.headline1),
       ),
-      // add two input for enter username and password
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 200.0),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-              child: Text("Test DemoHomePage",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline1)),
-          // submit button
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () =>
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(title: 'ورود'),
-                  ),
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            const SizedBox(height: 48,),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+                child: Text("صفحات پروژه:",
+                    style: Theme.of(context).textTheme.headline1)),
+            // submit button
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(title: 'ورود'),
                 ),
-            child: const Text('ورود'),
-          ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () =>
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SignUpPage(title: 'ثبت‌نام'),
-                  ),
+              ),
+              child: const Text('ورود'),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SignUpPage(title: 'ثبت‌نام'),
                 ),
-            child: const Text('ثبت‌نام'),
-          ),
-        ],
+              ),
+              child: const Text('ثبت‌نام'),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -24,7 +24,9 @@ class _DemoHomePageState extends State<DemoHomePage> {
         alignment: Alignment.center,
         child: Column(
           children: [
-            const SizedBox(height: 48,),
+            const SizedBox(
+              height: 48,
+            ),
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
                 child: Text("صفحات پروژه:",
@@ -38,6 +40,14 @@ class _DemoHomePageState extends State<DemoHomePage> {
                   builder: (context) => const LoginPage(title: 'ورود'),
                 ),
               ),
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(1000.0),
+                  ),
+                ),
+              ),
               child: const Text('ورود'),
             ),
             const SizedBox(height: 16.0),
@@ -46,6 +56,14 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const SignUpPage(title: 'ثبت‌نام'),
+                ),
+              ),
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(1000.0),
+                  ),
                 ),
               ),
               child: const Text('ثبت‌نام'),

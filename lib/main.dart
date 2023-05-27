@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'Pages/LoginPage.dart';
+import 'Screens/LoginPage.dart';
 import 'Theme/MainTheme.dart';
 void main() {
   runApp(const MyApp());

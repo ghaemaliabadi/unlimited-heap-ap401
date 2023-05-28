@@ -10,6 +10,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+
+  bool visiblePassword = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,35 +27,64 @@ class _SignUpPageState extends State<SignUpPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 200.0),
+          const SizedBox(height: 200.0),    // TODO: add a person picture
           Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
               child: Text(
                   "Test SignUpPage",
                   style: Theme.of(context).textTheme.headline1
               )
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
             child: TextField(
               decoration: InputDecoration(
                 alignLabelWithHint: true,
                 labelText: 'نام کاربری',
-                // hintText: 'نام کاربری خود را وارد کنید',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.person),
+                // hintText: 'نام کاربری',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                ),
+                suffixIcon: const Icon(Icons.person),
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
             child: TextField(
-              obscureText: true,
+              obscureText: visiblePassword,
               decoration: InputDecoration(
+                alignLabelWithHint: true,
                 labelText: 'رمز عبور',
                 // hintText: 'رمز عبور',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(visiblePassword
+                      ? Icons.visibility
+                      : Icons.visibility_off
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      visiblePassword = !visiblePassword;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+            child: TextField(
+              decoration: InputDecoration(
+                alignLabelWithHint: true,
+                labelText: 'ایمیل',
+                // hintText: 'ایمیل',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                suffixIcon: const Icon(Icons.email),
               ),
             ),
           ),
@@ -68,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
-            child: Text(
+            child: Text(    // TODO: relocate the button
                 'ثبت‌نام',
                 style: Theme.of(context).textTheme.headline1
             ),

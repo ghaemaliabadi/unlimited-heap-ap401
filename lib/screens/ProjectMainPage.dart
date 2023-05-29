@@ -23,6 +23,7 @@ final List<String> items = [
 ];
 String? selectedValue;
 final _formKey = GlobalKey<FormState>();
+final _formKey2 = GlobalKey<FormState>();
 final TextEditingController textEditingController = TextEditingController();
 
 class _ProjectMainPage extends State<ProjectMainPage> {
@@ -112,55 +113,40 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                         FocusScope.of(context).requestFocus(FocusNode());
                         setState(() {
                           // if (activePageIndex != i) {
-                            activePageIndex = i;
+                          activePageIndex = i;
                           // }
                         });
                       },
                       children: <Widget>[
                         ConstrainedBox(
                           constraints: const BoxConstraints.expand(),
-                          child: Container(
-                            height: pageHeight * 0.7,
-                            child:
-                              TabContainer(
-                                // color: Theme.of(context).colorScheme.secondary,
-                                tabs: const [
-                                  'Tab 1',
-                                  'Tab 2',
-                                ],
-                                children: [
-                                  Container(
-                                    child: Form(
-                                      key: _formKey,
-                                      child: Padding(
-                                        padding:
-                                        const EdgeInsets.symmetric(horizontal: 50),
-                                        child: Column(
-                                          // mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(height: 40),
-                                            buildDropDown(context, title: 'مبدا'),
-                                            const SizedBox(height: 20),
-                                            buildDropDown(context, title: 'مقصد'),
-                                            const SizedBox(height: 20),
-                                            TextButton(
-                                              onPressed: () {
-                                                if (_formKey.currentState!.validate()) {
-                                                  _formKey.currentState!.save();
-                                                }
-                                              },
-                                              child: const Text('Submit Button'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Text('Child 2'),
-                                  ),
-                                ],
-                              ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TabContainer(
+                              selectedTextStyle: Theme.of(context)
+                                  .textTheme
+                                  .headline3!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
+                              unselectedTextStyle: Theme.of(context)
+                                  .textTheme
+                                  .headline3!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface),
+                              color: Colors.grey[300],
+                              tabs: const [
+                                'یک طرفه',
+                                'دو طرفه',
+                              ],
+                              children: [
+                                buildFormContainer(context, _formKey),
+                                buildFormContainer(context, _formKey2),
+                              ],
+                            ),
                           ),
                         ),
                         ConstrainedBox(
@@ -189,6 +175,45 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             ),
             // ),
           )
+        ],
+      ),
+    );
+  }
+
+  Container buildFormContainer(BuildContext context, formKey) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Divider(
+            height: 1,
+            thickness: 5,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          Form(
+            key: formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  buildDropDown(context, title: 'مبدا'),
+                  const SizedBox(height: 20),
+                  buildDropDown(context, title: 'مقصد'),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState!.save();
+                      }
+                    },
+                    child: const Text('Submit Button'),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

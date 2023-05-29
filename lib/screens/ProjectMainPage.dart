@@ -358,11 +358,13 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
 
 void jumpWithAnimationCustom(pageController, int jumpTo) {
+  // check if page is after or before the current page -> animate to it or just jump
   if (pageController.page! - jumpTo == 1 ||
       pageController.page! - jumpTo == -1) {
     pageController.animateToPage(jumpTo,
-        duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
+        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   } else {
-    pageController.jumpToPage(0);
+    // jump to page without animation
+    pageController.jumpToPage(jumpTo);
   }
 }

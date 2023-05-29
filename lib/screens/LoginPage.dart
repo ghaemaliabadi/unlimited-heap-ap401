@@ -101,7 +101,17 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0,)
+            const SizedBox(height: 20.0,),
+            Expanded(
+              flex: 1,
+              child: GestureDetector(
+                onTap: () {},
+                child: Text(
+                  'فراموشی رمز عبور',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
+            ),
           ],
         ),
       ),

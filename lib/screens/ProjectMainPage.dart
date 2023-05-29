@@ -21,8 +21,10 @@ final List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
-GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
+// GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
+// GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
+// list of global keys for each form
+List<GlobalKey<FormState>> _formKey = [];
 String? selectedValue;
 String? selectedValueFrom;
 String? selectedValueTo;
@@ -41,15 +43,19 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _tabController.dispose();
     textEditingControllerFrom.dispose();
     textEditingControllerTo.dispose();
+    for (var element in _formKey) {
+      element.currentState?.dispose();
+    }
     super.dispose();
   }
 
   @override
   void initState() {
-    super.initState();
     _pageController = PageController();
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
+    _formKey = List<GlobalKey<FormState>>.generate(2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
+    super.initState();
   }
 
   @override
@@ -146,8 +152,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                               ],
                               controller: _tabController,
                               children: [
-                                buildFormContainer(context, _formKey),
-                                buildFormContainer(context, _formKey2),
+                                buildFormContainer(context, _formKey[0]),
+                                buildFormContainer(context, _formKey[1]),
                               ],
                             ),
                           ),

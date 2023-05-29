@@ -28,8 +28,10 @@ final TextEditingController textEditingController = TextEditingController();
 
 class _ProjectMainPage extends State<ProjectMainPage> {
   late PageController _pageController = PageController();
-  late TabContainerController _tabController = TabContainerController(length: 2);
+  late TabContainerController _tabController =
+      TabContainerController(length: 2);
   int activePageIndex = 0;
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -334,26 +336,33 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   void _tapOnDomesticFlight() {
-    _pageController.animateToPage(0,
-        duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
-    _tabController.jumpTo(1);
+    int jumpTo = 0;
+    jumpWithAnimationCustom(_pageController, jumpTo);
   }
 
   void _tapOnInternationalFlight() {
-    _pageController.animateToPage(1,
-        duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
-    _tabController.jumpTo(1);
+    int jumpTo = 1;
+    jumpWithAnimationCustom(_pageController, jumpTo);
   }
 
   void _tapOnTrain() {
-    _pageController.animateToPage(2,
-        duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
-    _tabController.jumpTo(1);
+    int jumpTo = 2;
+    jumpWithAnimationCustom(_pageController, jumpTo);
   }
 
   void _tapOnBus() {
-    _pageController.animateToPage(3,
+    int jumpTo = 3;
+    jumpWithAnimationCustom(_pageController, jumpTo);
+  }
+}
+
+
+void jumpWithAnimationCustom(pageController, int jumpTo) {
+  if (pageController.page! - jumpTo == 1 ||
+      pageController.page! - jumpTo == -1) {
+    pageController.animateToPage(jumpTo,
         duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
-    _tabController.jumpTo(1);
+  } else {
+    pageController.jumpToPage(0);
   }
 }

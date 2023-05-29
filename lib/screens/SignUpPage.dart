@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -16,96 +17,109 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 1.5,
-        // Theme.of(context).textTheme.headline2 is a TextStyle object that
-        // defined in lib/main.dart with white color
         title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
       ),
-      // add two input for enter username and password
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 200.0),    // TODO: add a person picture
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
-              child: Text(
-                  "Test SignUpPage",
-                  style: Theme.of(context).textTheme.headline1
-              )
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                labelText: 'نام کاربری',
-                // hintText: 'نام کاربری',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                ),
-                suffixIcon: const Icon(Icons.person),
+      body: InkResponse(
+        containedInkWell: false,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 100.0),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
+                  child: Text(
+                      'به علی‌بابا خوش آمدید.',
+                      style: Theme.of(context).textTheme.headline1
+                  )
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-            child: TextField(
-              obscureText: visiblePassword,
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                labelText: 'رمز عبور',
-                // hintText: 'رمز عبور',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(visiblePassword
-                      ? Icons.visibility
-                      : Icons.visibility_off
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    alignLabelWithHint: true,
+                    labelText: 'نام کاربری',
+                    // hintText: 'نام کاربری',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                    ),
+                    suffixIcon: const Icon(Icons.person),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      visiblePassword = !visiblePassword;
-                    });
-                  },
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                labelText: 'ایمیل',
-                // hintText: 'ایمیل',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                suffixIcon: const Icon(Icons.email),
-              ),
-            ),
-          ),
-          // submit button
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () => _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.'),
-            style: ButtonStyle(
-              minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(1000.0),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                child: TextField(
+                  obscureText: visiblePassword,
+                  decoration: InputDecoration(
+                    alignLabelWithHint: true,
+                    labelText: 'رمز عبور',
+                    // hintText: 'رمز عبور',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(visiblePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          visiblePassword = !visiblePassword;
+                        });
+                      },
+                    ),
+                  ),
                 ),
               ),
-            ),
-            child: Text(    // TODO: relocate the button
-                'ثبت‌نام',
-                style: Theme.of(context).textTheme.headline1
-            ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    alignLabelWithHint: true,
+                    labelText: 'ایمیل',
+                    // hintText: 'ایمیل',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    suffixIcon: const Icon(Icons.email),
+                  ),
+                ),
+              ),
+              // submit button
+              Expanded(
+                flex: 3,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  // heightFactor: 9,
+                  child: ElevatedButton(
+                    onPressed: () => _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.'),
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(1000.0),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                        'ثبت‌نام',
+                        style: Theme.of(context).textTheme.headline1
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(flex: 1,child: Container(),),
+            ],
           ),
-        ],
       ),
     );
   }

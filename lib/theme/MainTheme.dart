@@ -4,7 +4,7 @@ ThemeData buildThemeData() {
   return ThemeData(
     colorScheme: ColorScheme.fromSwatch().copyWith(
       primary: Colors.green[500],
-      secondary: Colors.green[300],
+      secondary: Colors.grey[300],
     ),
     // primarySwatch: Color.green,
     // accentColor: Colors.greenAccent,

@@ -304,9 +304,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                   value: item,
                   child: Text(
                     item,
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ))
             .toList(),
@@ -320,12 +318,26 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             }
           });
         },
-        buttonStyleData: const ButtonStyleData(
-          height: 40,
-          width: 200,
+        buttonStyleData: ButtonStyleData(
+          height: 50,
+          width: MediaQuery.of(context).size.width - 60,
+          padding: const EdgeInsets.only(left: 20, right: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+            border: Border.all(
+              color: Colors.black26,
+              width: 2,
+            ),
+      ),
         ),
-        dropdownStyleData: const DropdownStyleData(
+        dropdownStyleData: DropdownStyleData(
           maxHeight: 200,
+          scrollbarTheme: ScrollbarThemeData(
+            radius: const Radius.circular(40),
+            thickness: MaterialStateProperty.all(6),
+            thumbVisibility: MaterialStateProperty.all(true),
+          ),
         ),
         menuItemStyleData: const MenuItemStyleData(
           height: 40,

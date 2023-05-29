@@ -21,10 +21,13 @@ final List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-final _formKey = GlobalKey<FormState>();
-final _formKey2 = GlobalKey<FormState>();
+GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
 String? selectedValue;
-final TextEditingController textEditingController = TextEditingController();
+String? selectedValueFrom;
+String? selectedValueTo;
+final TextEditingController textEditingControllerFrom = TextEditingController();
+final TextEditingController textEditingControllerTo = TextEditingController();
 
 class _ProjectMainPage extends State<ProjectMainPage> {
   late PageController _pageController = PageController();
@@ -36,7 +39,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   void dispose() {
     _pageController.dispose();
     _tabController.dispose();
-    textEditingController.dispose();
+    textEditingControllerFrom.dispose();
+    textEditingControllerTo.dispose();
     super.dispose();
   }
 
@@ -112,9 +116,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                       onPageChanged: (int i) {
                         FocusScope.of(context).requestFocus(FocusNode());
                         setState(() {
-                          // if (activePageIndex != i) {
                           activePageIndex = i;
-                          // }
                         });
                       },
                       children: <Widget>[
@@ -199,9 +201,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 20),
-                  buildDropDown(context, title: 'مبدا'),
+                  // buildDropDown(context, title: 'مبدا'),
+                  buildDropDownMenuWithSearch(context, 'مبدا', textEditingControllerFrom, selectedValueFrom),
                   const SizedBox(height: 10),
-                  buildDropDown(context, title: 'مقصد'),
+                  // buildDropDown(context, title: 'مقصد'),
+                  buildDropDownMenuWithSearch(context, 'مقصد', textEditingControllerTo, selectedValueTo),
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
@@ -282,6 +286,85 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
+  buildDropDownMenuWithSearch(BuildContext context, String title, textEditingController, selectedValue) {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2<String>(
+        isExpanded: true,
+        hint: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        items: items
+            .map((item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ))
+            .toList(),
+        value: selectedValue,
+        onChanged: (value) {
+          setState(() {
+            selectedValue = value as String;
+          });
+        },
+        buttonStyleData: const ButtonStyleData(
+          height: 40,
+          width: 200,
+        ),
+        dropdownStyleData: const DropdownStyleData(
+          maxHeight: 200,
+        ),
+        menuItemStyleData: const MenuItemStyleData(
+          height: 40,
+        ),
+        dropdownSearchData: DropdownSearchData(
+          searchController: textEditingController,
+          searchInnerWidgetHeight: 50,
+          searchInnerWidget: Container(
+            height: 50,
+            padding: const EdgeInsets.only(
+              top: 8,
+              bottom: 4,
+              right: 8,
+              left: 8,
+            ),
+            child: TextFormField(
+              expands: true,
+              maxLines: null,
+              controller: textEditingController,
+              decoration: InputDecoration(
+                isDense: true,
+                // contentPadding: const EdgeInsets.symmetric(
+                //   horizontal: 10,
+                //   vertical: 8,
+                // ),
+                contentPadding: EdgeInsets.zero,
+                hintText: 'جستجوی $title',
+                hintStyle: const TextStyle(fontSize: 12),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+          ),
+          searchMatchFn: (item, searchValue) {
+            return (item.value.toString().contains(searchValue));
+          },
+        ),
+        //This to clear the search value when you close the menu
+        onMenuStateChange: (isOpen) {
+          if (!isOpen) {
+            textEditingController.clear();
+          }
+        },
+      ),
+    );
+  }
+
   Widget _menuBar(BuildContext context) {
     var pageWidth = MediaQuery.of(context).size.width;
     return Container(
@@ -355,7 +438,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     jumpWithAnimationCustom(_pageController, jumpTo);
   }
 }
-
 
 void jumpWithAnimationCustom(pageController, int jumpTo) {
   // check if page is after or before the current page -> animate to it or just jump

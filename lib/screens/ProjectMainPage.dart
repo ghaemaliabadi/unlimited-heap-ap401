@@ -21,31 +21,29 @@ final List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-String? selectedValue;
 final _formKey = GlobalKey<FormState>();
 final _formKey2 = GlobalKey<FormState>();
+String? selectedValue;
 final TextEditingController textEditingController = TextEditingController();
 
 class _ProjectMainPage extends State<ProjectMainPage> {
   late PageController _pageController = PageController();
+  late TabContainerController _tabController = TabContainerController(length: 2);
   int activePageIndex = 0;
-
   @override
   void dispose() {
     _pageController.dispose();
+    _tabController.dispose();
     textEditingController.dispose();
     super.dispose();
   }
-
-  final List<String> travelType = [
-    'یک طرفه',
-    'دو طرفه',
-  ];
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    _tabController = TabContainerController(length: 2);
+    _tabController.jumpTo(1);
   }
 
   @override
@@ -139,9 +137,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                           .onSurface),
                               color: Colors.grey[300],
                               tabs: const [
-                                'یک طرفه',
                                 'دو طرفه',
+                                'یک طرفه',
                               ],
+                              controller: _tabController,
                               children: [
                                 buildFormContainer(context, _formKey),
                                 buildFormContainer(context, _formKey2),
@@ -199,7 +198,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 children: [
                   const SizedBox(height: 20),
                   buildDropDown(context, title: 'مبدا'),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   buildDropDown(context, title: 'مقصد'),
                   const SizedBox(height: 20),
                   TextButton(
@@ -337,20 +336,24 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   void _tapOnDomesticFlight() {
     _pageController.animateToPage(0,
         duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
+    _tabController.jumpTo(1);
   }
 
   void _tapOnInternationalFlight() {
     _pageController.animateToPage(1,
         duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
+    _tabController.jumpTo(1);
   }
 
   void _tapOnTrain() {
     _pageController.animateToPage(2,
         duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
+    _tabController.jumpTo(1);
   }
 
   void _tapOnBus() {
     _pageController.animateToPage(3,
         duration: const Duration(milliseconds: 10), curve: Curves.decelerate);
+    _tabController.jumpTo(1);
   }
 }

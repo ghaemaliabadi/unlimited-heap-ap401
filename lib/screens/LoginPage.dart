@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,6 +11,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  bool visiblePassword = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,34 +32,50 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 200.0),Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+            const SizedBox(height: 100.0),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
                 child: Text(
-                    "Test LoginPage",
-                    style: Theme.of(context).textTheme.headline1
+                    'آدرس ایمیل و رمز عبور خود را وارد کنید.',
+                    style: Theme.of(context).textTheme.headline1,
                 )
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
               child: TextField(
                 decoration: InputDecoration(
                   alignLabelWithHint: true,
-                  labelText: 'نام کاربری',
-                  // hintText: 'نام کاربری خود را وارد کنید',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.person),
+                  labelText: 'ایمیل',
+                  // hintText: 'ایمیل',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  suffixIcon: const Icon(Icons.email),
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
               child: TextField(
-                obscureText: true,
+                obscureText: visiblePassword,
                 decoration: InputDecoration(
+                  alignLabelWithHint: true,
                   labelText: 'رمز عبور',
                   // hintText: 'رمز عبور',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(visiblePassword
+                        ? Icons.visibility
+                        : Icons.visibility_off
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        visiblePassword = !visiblePassword;
+                      });
+                    },
+                  ),
                 ),
               ),
             ),

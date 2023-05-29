@@ -135,7 +135,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onSurface),
-                              color: Colors.grey[300],
+                              color: Theme.of(context).colorScheme.secondary,
                               tabs: const [
                                 'دو طرفه',
                                 'یک طرفه',
@@ -186,7 +186,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         children: [
           Divider(
             height: 1,
-            thickness: 5,
+            thickness: 3,
             color: Theme.of(context).colorScheme.primary,
           ),
           Form(
@@ -285,9 +285,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     return Container(
       width: pageWidth * 0.85,
       height: 60.0,
-      decoration: const BoxDecoration(
-        color: Color(0XFFE0E0E0),
-        borderRadius: BorderRadius.all(Radius.circular(1000)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: const BorderRadius.all(Radius.circular(1000)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

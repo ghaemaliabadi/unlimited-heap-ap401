@@ -112,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     child: Text(
                         'ثبت‌نام',
-                        style: Theme.of(context).textTheme.headline1
+                        style: Theme.of(context).textTheme.headline2
                     ),
                   ),
                 ),

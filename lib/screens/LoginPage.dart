@@ -80,30 +80,28 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             // submit button
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () => {
-                _showSnackBar(context, 'ورود با موفقیت انجام شد.'),
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const SignUpPage()),
-                ),
-              },
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(1000.0),
+            Expanded(
+              flex: 3,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                  onPressed: () => _showSnackBar(context, 'ورود با موفقیت انجام شد.'),
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(1000.0),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                      'ورود',
+                      style: Theme.of(context).textTheme.headline2,
                   ),
                 ),
               ),
-              child: Text(
-                'ورود',
-                style: (Theme.of(context).textTheme.headline2),
-              ),
             ),
+            const SizedBox(height: 20.0,)
           ],
         ),
       ),

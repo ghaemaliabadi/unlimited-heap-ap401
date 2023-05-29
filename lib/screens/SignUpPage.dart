@@ -1,5 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'LoginPage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -117,7 +117,20 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              Expanded(flex: 1,child: Container(),),
+              const SizedBox(height: 20.0,),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const LoginPage()));
+                    },
+                  child: Text(
+                      'حساب کاربری دارید؟',
+                      style: Theme.of(context).textTheme.headline6,
+                  ),
+                ),
+              ),
             ],
           ),
       ),

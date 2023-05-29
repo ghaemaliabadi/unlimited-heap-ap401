@@ -21,8 +21,8 @@ final List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
+GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
+GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
 String? selectedValue;
 String? selectedValueFrom;
 String? selectedValueTo;
@@ -202,10 +202,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 children: [
                   const SizedBox(height: 20),
                   // buildDropDown(context, title: 'مبدا'),
-                  buildDropDownMenuWithSearch(context, 'مبدا', textEditingControllerFrom, selectedValueFrom),
+                  buildDropDownMenuWithSearch(context, 'مبدا', textEditingControllerFrom, 'from'),
                   const SizedBox(height: 10),
                   // buildDropDown(context, title: 'مقصد'),
-                  buildDropDownMenuWithSearch(context, 'مقصد', textEditingControllerTo, selectedValueTo),
+                  buildDropDownMenuWithSearch(context, 'مقصد', textEditingControllerTo, 'to'),
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
@@ -286,7 +286,12 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
-  buildDropDownMenuWithSearch(BuildContext context, String title, textEditingController, selectedValue) {
+  buildDropDownMenuWithSearch(BuildContext context, String title, textEditingController, type) {
+    if (type == 'from') {
+      selectedValue = selectedValueFrom;
+    } else { // type == 'to'
+      selectedValue = selectedValueTo;
+    }
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
@@ -308,7 +313,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         value: selectedValue,
         onChanged: (value) {
           setState(() {
-            selectedValue = value as String;
+            if (type == 'from') {
+              selectedValueFrom = value.toString();
+            } else { // type == 'to'
+              selectedValueTo = value.toString();
+            }
           });
         },
         buttonStyleData: const ButtonStyleData(
@@ -338,11 +347,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               controller: textEditingController,
               decoration: InputDecoration(
                 isDense: true,
-                // contentPadding: const EdgeInsets.symmetric(
-                //   horizontal: 10,
-                //   vertical: 8,
-                // ),
-                contentPadding: EdgeInsets.zero,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 hintText: 'جستجوی $title',
                 hintStyle: const TextStyle(fontSize: 12),
                 border: OutlineInputBorder(

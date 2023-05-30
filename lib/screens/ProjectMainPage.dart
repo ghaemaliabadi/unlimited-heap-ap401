@@ -62,10 +62,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    // var pageWidth = MediaQuery
-    //     .of(context)
-    //     .size
-    //     .width;
     var pageHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
@@ -194,6 +190,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   Container buildFormContainer(BuildContext context, formKey) {
+    var pageWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
       child: Column(
@@ -211,6 +208,17 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 20.0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: Row(children: [
+                      Text('از مبدا:',
+                          style: Theme.of(context).textTheme.headline3),
+                      SizedBox(width: pageWidth / 2 - 45),
+                      Text('به مقصد:',
+                          style: Theme.of(context).textTheme.headline3),
+                    ]),
+                  ),
+                  const SizedBox(height: 5.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -223,11 +231,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                         icon: const Icon(Icons.swap_horiz_rounded),
                         onPressed: () {
                           setState(() {
-                            // TODO: kar nemikone :|
-                            var temp = textEditingControllerFrom.text;
-                            textEditingControllerFrom.text =
-                                textEditingControllerTo.text;
-                            textEditingControllerTo.text = temp;
+                            var temp = selectedValueFrom;
+                            selectedValueFrom = selectedValueTo;
+                            selectedValueTo = temp;
                           });
                         },
                       ),
@@ -264,7 +270,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         isDense: true,
         contentPadding: EdgeInsets.zero,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
       isExpanded: true,
@@ -306,7 +312,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       ),
       dropdownStyleData: DropdownStyleData(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(10),
           ),
           maxHeight: 200,
           scrollbarTheme: ScrollbarThemeData(
@@ -357,21 +363,32 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           width: MediaQuery.of(context).size.width / 2 - 50,
           padding: const EdgeInsets.only(left: 10, right: 15),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            // decoration for button
+            borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.black26,
+              color: Colors.black38,
               width: 2,
             ),
           ),
         ),
         dropdownStyleData: DropdownStyleData(
           maxHeight: 200,
+          padding: null,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 8,
           scrollbarTheme: ScrollbarThemeData(
             radius: const Radius.circular(40),
             thickness: MaterialStateProperty.all(6),
             thumbVisibility: MaterialStateProperty.all(true),
           ),
+          // scrollbarTheme: ScrollbarThemeData(
+          //   radius: const Radius.circular(40),
+          //   thickness: MaterialStateProperty.all(6),
+          //   thumbVisibility: MaterialStateProperty.all(true),
+          // ),
         ),
         menuItemStyleData: const MenuItemStyleData(
           height: 40,

@@ -11,7 +11,7 @@ class ProjectMainPage extends StatefulWidget {
   State<ProjectMainPage> createState() => _ProjectMainPage();
 }
 
-final List<String> items = [
+List<String> items = [
   'تهران',
   'مشهد',
   'اصفهان',
@@ -145,7 +145,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                           .onSurface),
                               color: Theme.of(context).colorScheme.secondary,
                               tabs: const [
-                                'دو طرفه',
+                                'رفت و برگشت',
                                 'یک طرفه',
                               ],
                               controller: _tabController,
@@ -325,6 +325,16 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
   buildDropDownMenuWithSearch(
       BuildContext context, String title, textEditingController, type) {
+    List<String>  tempItems = [];
+    for (var item in items) {
+      // TODO: fix search and remove if statement below
+      // if (selectedValueFrom != null && item.contains(selectedValueFrom!)) {
+          tempItems.add(item);
+      // }
+      // if (selectedValueTo != null && item.contains(selectedValueTo!)) {
+      //     tempItems.add(item);
+      // }
+    }
     if (type == 'from') {
       selectedValue = selectedValueFrom;
     } else {
@@ -338,7 +348,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           title,
           style: Theme.of(context).textTheme.bodyText1,
         ),
-        items: items
+        items: tempItems
             .map((item) => DropdownMenuItem(
                   value: item,
                   child: Text(
@@ -350,6 +360,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         value: selectedValue,
         onChanged: (value) {
           setState(() {
+            print(items);
             if (type == 'from') {
               selectedValueFrom = value.toString();
             } else {

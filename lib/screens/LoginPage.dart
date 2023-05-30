@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,77 +11,129 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  bool visiblePassword = false;
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.5,
-        // Theme.of(context).textTheme.headline2 is a TextStyle object that
-        // defined in lib/main.dart with white color
         title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
       ),
-      // add two input for enter username and password
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 200.0),Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-              child: Text(
-                  "Test LoginPage",
-                  style: Theme.of(context).textTheme.headline1
-              )
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                labelText: 'نام کاربری',
-                // hintText: 'نام کاربری خود را وارد کنید',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.person),
+      body: InkResponse(
+        containedInkWell: false,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 100.0),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
+                  child: Text(
+                      'آدرس ایمیل و رمز عبور خود را وارد کنید.',
+                      style: Theme.of(context).textTheme.headline1,
+                  )
               ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-            child: TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'رمز عبور',
-                // hintText: 'رمز عبور',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.lock),
-              ),
-            ),
-          ),
-          // submit button
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () => {
-              _showSnackBar(context, 'ورود با موفقیت انجام شد.'),
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        const SignUpPage()),
-              ),
-            },
-            style: ButtonStyle(
-              minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(1000.0),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'لطفا ایمیل را وارد کنید.';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    alignLabelWithHint: true,
+                    labelText: 'ایمیل',
+                    // hintText: 'ایمیل',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    suffixIcon: const Icon(Icons.email),
+                  ),
                 ),
               ),
-            ),
-            child: Text(
-              'ورود',
-              style: (Theme.of(context).textTheme.headline2),
-            ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'لطفا رمز عبور را وارد کنید.';
+                    }
+                    return null;
+                  },
+                  obscureText: visiblePassword,
+                  decoration: InputDecoration(
+                    alignLabelWithHint: true,
+                    labelText: 'رمز عبور',
+                    // hintText: 'رمز عبور',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(visiblePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          visiblePassword = !visiblePassword;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              // submit button
+              Expanded(
+                flex: 3,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _showSnackBar(context, 'ورود با موفقیت انجام شد.');
+                      }
+                    },
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(1000.0),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                        'ورود',
+                        style: Theme.of(context).textTheme.headline2,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0,),
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    'فراموشی رمز عبور',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

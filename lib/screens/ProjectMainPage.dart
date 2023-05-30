@@ -206,18 +206,32 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           Form(
             key: formKey,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 20.0),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       buildDropDownMenuWithSearch(
                           context, 'مبدا', textEditingControllerFrom, 'from'),
                       // buildDropDown(context, title: 'مبدا'),
-                      const SizedBox(height: 10.0),
+                      // const SizedBox(height: 10.0),
+                      // button for swap from and to
+                      IconButton(
+                        icon: const Icon(Icons.swap_horiz_rounded),
+                        onPressed: () {
+                          setState(() {
+                            // TODO: kar nemikone :|
+                            var temp = textEditingControllerFrom.text;
+                            textEditingControllerFrom.text =
+                                textEditingControllerTo.text;
+                            textEditingControllerTo.text = temp;
+                          });
+                        },
+                      ),
+                      // TODO: from to icon
                       buildDropDownMenuWithSearch(
                           context, 'مقصد', textEditingControllerTo, 'to'),
                       // buildDropDown(context, title: 'مقصد'),

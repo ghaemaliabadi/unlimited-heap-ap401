@@ -46,6 +46,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     for (var element in _formKey) {
       element.currentState?.dispose();
     }
+    // _formKey.currentState?.dispose();
     super.dispose();
   }
 
@@ -54,7 +55,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _pageController = PageController();
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
-    _formKey = List<GlobalKey<FormState>>.generate(2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
+    _formKey = List<GlobalKey<FormState>>.generate(
+        2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
     super.initState();
   }
 
@@ -152,6 +154,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                               ],
                               controller: _tabController,
                               children: [
+                                // buildFormContainer(context, _formKey),
+                                // buildFormContainer(context, _formKey),
                                 buildFormContainer(context, _formKey[0]),
                                 buildFormContainer(context, _formKey[1]),
                               ],
@@ -206,13 +210,20 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 20),
-                  // buildDropDown(context, title: 'مبدا'),
-                  buildDropDownMenuWithSearch(context, 'مبدا', textEditingControllerFrom, 'from'),
-                  const SizedBox(height: 10),
-                  // buildDropDown(context, title: 'مقصد'),
-                  buildDropDownMenuWithSearch(context, 'مقصد', textEditingControllerTo, 'to'),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buildDropDownMenuWithSearch(
+                          context, 'مبدا', textEditingControllerFrom, 'from'),
+                      // buildDropDown(context, title: 'مبدا'),
+                      const SizedBox(height: 10.0),
+                      buildDropDownMenuWithSearch(
+                          context, 'مقصد', textEditingControllerTo, 'to'),
+                      // buildDropDown(context, title: 'مقصد'),
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
                   TextButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
@@ -292,10 +303,12 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
-  buildDropDownMenuWithSearch(BuildContext context, String title, textEditingController, type) {
+  buildDropDownMenuWithSearch(
+      BuildContext context, String title, textEditingController, type) {
     if (type == 'from') {
       selectedValue = selectedValueFrom;
-    } else { // type == 'to'
+    } else {
+      // type == 'to'
       selectedValue = selectedValueTo;
     }
     return DropdownButtonHideUnderline(
@@ -319,23 +332,24 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           setState(() {
             if (type == 'from') {
               selectedValueFrom = value.toString();
-            } else { // type == 'to'
+            } else {
+              // type == 'to'
               selectedValueTo = value.toString();
             }
           });
         },
         buttonStyleData: ButtonStyleData(
           height: 50,
-          width: MediaQuery.of(context).size.width - 60,
-          padding: const EdgeInsets.only(left: 20, right: 15),
+          width: MediaQuery.of(context).size.width / 2 - 50,
+          padding: const EdgeInsets.only(left: 10, right: 15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
+            color: Colors.white,
             border: Border.all(
               color: Colors.black26,
               width: 2,
             ),
-      ),
+          ),
         ),
         dropdownStyleData: DropdownStyleData(
           maxHeight: 200,

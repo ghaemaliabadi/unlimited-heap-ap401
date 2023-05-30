@@ -67,6 +67,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                   child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'لطفا نام کاربری را وارد کنید.';
+                      }
+                      return null;
+                    },
                     obscureText: visiblePassword,
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
@@ -92,6 +98,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                   child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'لطفا نام کاربری را وارد کنید.';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
                       labelText: 'ایمیل',

@@ -69,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'لطفا نام کاربری را وارد کنید.';
+                        return 'لطفا رمز عبور را وارد کنید.';
                       }
                       return null;
                     },
@@ -100,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'لطفا نام کاربری را وارد کنید.';
+                        return 'لطفا ایمیل را وارد کنید.';
                       }
                       return null;
                     },

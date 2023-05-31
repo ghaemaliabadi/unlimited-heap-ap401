@@ -30,8 +30,8 @@ String? selectedValue;
 String? lastSelectedValue;
 String? selectedValueFrom;
 String? selectedValueTo;
-String departureLabel = '';
-String returnLabel = '';
+String departureTypeLabel = '';
+String returnTypeLabel = '';
 Jalali selectedDateForDepartureType = Jalali.now();
 JalaliRange selectedDateForReturnType = JalaliRange(
     start: Jalali.now(),
@@ -65,8 +65,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _pageController = PageController();
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
-    departureLabel = 'تاریخ سفر';
-    returnLabel = 'تاریخ رفت و برگشت';
+    departureTypeLabel = 'تاریخ سفر';
+    returnTypeLabel = 'تاریخ رفت و برگشت';
     // _formKey = List<GlobalKey<FormState>>.generate(
     //     2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
     super.initState();
@@ -272,8 +272,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                             style: Theme.of(context).textTheme.displaySmall);
                       }
                     }(),
-                    // Text('تاریخ رفت و برگشت:',
-                    //     style: Theme.of(context).textTheme.displaySmall),
                   ]),
                 ),
                 const SizedBox(height: 5.0),
@@ -580,6 +578,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
   Container buildDatePicker(BuildContext context, String type) {
     return Container(
+      // TODO: make container clickable or change it to button (search for best widget)
+      // TODO: edit hints
       width: MediaQuery.of(context).size.width - 50,
       height: 50,
       padding: const EdgeInsets.only(left: 10, right: 15),
@@ -632,16 +632,16 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 if (type == 'تاریخ رفت و برگشت') {
                   var start = selectedDateForReturnType.start;
                   var end = selectedDateForReturnType.end;
-                  departureLabel = "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
-                  returnLabel = "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
-                  returnLabel = '$departureLabel تا $returnLabel';
+                  departureTypeLabel = "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
+                  returnTypeLabel = "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
+                  returnTypeLabel = '$departureTypeLabel تا $returnTypeLabel';
                 } else {
-                  departureLabel = "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}";
+                  departureTypeLabel = "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}";
                 }
               });
             },
             child: Text(
-              (type == 'تاریخ رفت و برگشت') ? returnLabel : departureLabel,
+              (type == 'تاریخ رفت و برگشت') ? returnTypeLabel : departureTypeLabel,
               style: const TextStyle(
                 color: Colors.black45,
                 fontSize: 12,

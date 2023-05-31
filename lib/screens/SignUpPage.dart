@@ -65,16 +65,18 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-                Padding(    // TODO: validate password and email
+                Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'لطفا رمز عبور را وارد کنید.';
-                      // } else if (!validateStructure(_passwordController.text, widget.emailRegex)) {
-                      //   setState(() {
-                      //     _passwordError = 'رمز عبور باید شامل اعداد و حروف انگلیسی باشد.';
-                      //   });
+                      } else if (value.length < 8) {
+                        return 'رمز عبور باید حداقل ۸ کاراکتر باشد.';
+                      } else if (!RegExp("(?=[A-Za-z0-9]+\$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,}).*\$").hasMatch(value)) {
+                        return 'رمز عبور باید شامل حروف کوچک و بزرگ انگلیسی و اعداد باشد.';
+                      } else if (!RegExp("(1|0)+").hasMatch(value) && !('a'.allMatches(value).length >= 2)) {
+                        return 'رمز عبور باید شامل حداقل دو حرف a یا یک عدد در مبنای دو باشد.';
                       }
                       return null;
                     },

@@ -5,6 +5,7 @@ class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   final String title = 'ثبت‌نام';
+  final String emailRegex = "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -23,7 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
         elevation: 1.5,
         title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
       ),
-      body: InkResponse(
+      body: InkResponse(    // TODO: fix the splash bug
         containedInkWell: false,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
@@ -64,12 +65,16 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-                Padding(
+                Padding(    // TODO: validate password and email
                   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'لطفا رمز عبور را وارد کنید.';
+                      // } else if (!validateStructure(_passwordController.text, widget.emailRegex)) {
+                      //   setState(() {
+                      //     _passwordError = 'رمز عبور باید شامل اعداد و حروف انگلیسی باشد.';
+                      //   });
                       }
                       return null;
                     },
@@ -99,8 +104,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                   child: TextFormField(
                     validator: (value) {
+                      RegExp regExp = RegExp(widget.emailRegex);
                       if (value == null || value.isEmpty) {
                         return 'لطفا ایمیل را وارد کنید.';
+                      } else if (!regExp.hasMatch(value)) {
+                        return 'ایمیل واردشده معتبر نیست.';
                       }
                       return null;
                     },

@@ -26,6 +26,7 @@ List<String> items = [
 // list of global keys for each form
 // List<GlobalKey<FormState>> _formKey = [];
 String? selectedValue;
+String? lastSelectedValue;
 String? selectedValueFrom;
 String? selectedValueTo;
 final TextEditingController textEditingControllerFrom = TextEditingController();
@@ -194,8 +195,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   // Container buildFormContainer(BuildContext context, formKey)
-  Container buildFormContainer(BuildContext context)
-  {
+  Container buildFormContainer(BuildContext context) {
     var pageWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -209,59 +209,58 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           // Form(
           //   key: formKey,
           //   child:
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 20.0),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Row(children: [
-                      Text('از مبدا:',
-                          style: Theme.of(context).textTheme.displaySmall),
-                      SizedBox(width: pageWidth / 2 - 45),
-                      Text('به مقصد:',
-                          style: Theme.of(context).textTheme.displaySmall),
-                    ]),
-                  ),
-                  const SizedBox(height: 5.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      buildDropDownMenuWithSearch(
-                          context, 'مبدا', textEditingControllerFrom, 'from'),
-                      // buildDropDown(context, title: 'مبدا'),
-                      // const SizedBox(height: 10.0),
-                      // button for swap from and to
-                      IconButton(
-                        icon: const Icon(Icons.swap_horiz_rounded),
-                        onPressed: () {
-                          setState(() {
-                            var temp = selectedValueFrom;
-                            selectedValueFrom = selectedValueTo;
-                            selectedValueTo = temp;
-                          });
-                        },
-                      ),
-                      // TODO: from to icon
-                      buildDropDownMenuWithSearch(
-                          context, 'مقصد', textEditingControllerTo, 'to'),
-                      // buildDropDown(context, title: 'مقصد'),
-                    ],
-                  ),
-                  const SizedBox(height: 20.0),
-                  TextButton(
-                    onPressed: () {
-                      // if (formKey.currentState!.validate()) {
-                      //   formKey.currentState!.save();
-                      // }
-                    },
-                    child: const Text('Submit Button'),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20.0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: Row(children: [
+                    Text('از مبدا:',
+                        style: Theme.of(context).textTheme.displaySmall),
+                    SizedBox(width: pageWidth / 2 - 45),
+                    Text('به مقصد:',
+                        style: Theme.of(context).textTheme.displaySmall),
+                  ]),
+                ),
+                const SizedBox(height: 5.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildDropDownMenuWithSearch(
+                        context, 'مبدا', textEditingControllerFrom, 'from'),
+                    // buildDropDown(context, title: 'مبدا'),
+                    // const SizedBox(height: 10.0),
+                    // button for swap from and to
+                    IconButton(
+                      icon: const Icon(Icons.swap_horiz_rounded),
+                      onPressed: () {
+                        setState(() {
+                          var temp = selectedValueFrom;
+                          selectedValueFrom = selectedValueTo;
+                          selectedValueTo = temp;
+                        });
+                      },
+                    ),
+                    buildDropDownMenuWithSearch(
+                        context, 'مقصد', textEditingControllerTo, 'to'),
+                    // buildDropDown(context, title: 'مقصد'),
+                  ],
+                ),
+                const SizedBox(height: 20.0),
+                TextButton(
+                  onPressed: () {
+                    // if (formKey.currentState!.validate()) {
+                    //   formKey.currentState!.save();
+                    // }
+                  },
+                  child: const Text('Submit Button'),
+                ),
+              ],
             ),
+          ),
           // ),
         ],
       ),
@@ -341,33 +340,56 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
-        hint: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyLarge,
+        hint: Row(
+          children: [
+            const Icon(
+              Icons.location_on_outlined,
+              color: Colors.black45,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              title,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
         ),
         items: items
             .map((item) => DropdownMenuItem(
                   value: item,
-                  child: Text(
-                    item,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        color: Colors.black45,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        item,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
                   ),
                 ))
             .toList(),
         value: selectedValue,
         onChanged: (value) {
           setState(() {
-            print(items);
             selectedValue = value.toString();
-            // remove selected value from items
+            // // remove selected value from items
             items.remove(selectedValue);
-            // add selected value to the end of items
+            // // add selected value to the end of items
             items.add(selectedValue!);
             if (type == 'from') {
-              selectedValueFrom = value.toString();
+              if (selectedValueTo == selectedValue) {
+                selectedValueTo = selectedValueFrom;
+              }
+              selectedValueFrom = selectedValue;
             } else {
               // type == 'to'
-              selectedValueTo = value.toString();
+              if (selectedValueFrom == selectedValue) {
+                selectedValueFrom = selectedValueTo;
+              }
+              selectedValueTo = selectedValue;
             }
           });
         },
@@ -397,11 +419,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             thickness: MaterialStateProperty.all(6),
             thumbVisibility: MaterialStateProperty.all(true),
           ),
-          // scrollbarTheme: ScrollbarThemeData(
-          //   radius: const Radius.circular(40),
-          //   thickness: MaterialStateProperty.all(6),
-          //   thumbVisibility: MaterialStateProperty.all(true),
-          // ),
         ),
         menuItemStyleData: const MenuItemStyleData(
           height: 40,

@@ -21,10 +21,10 @@ List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-// GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
-// GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
+GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
+GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
 // list of global keys for each form
-List<GlobalKey<FormState>> _formKey = [];
+// List<GlobalKey<FormState>> _formKey = [];
 String? selectedValue;
 String? selectedValueFrom;
 String? selectedValueTo;
@@ -41,12 +41,13 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   void dispose() {
     _pageController.dispose();
     _tabController.dispose();
-    textEditingControllerFrom.dispose();
-    textEditingControllerTo.dispose();
-    for (var element in _formKey) {
-      element.currentState?.dispose();
-    }
-    // _formKey.currentState?.dispose();
+    // textEditingControllerFrom.dispose();
+    // textEditingControllerTo.dispose();
+    // for (var element in _formKey) {
+    //   element.currentState?.dispose();
+    // }
+    _formKey.currentState?.dispose();
+    _formKey2.currentState?.dispose();
     super.dispose();
   }
 
@@ -55,8 +56,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _pageController = PageController();
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
-    _formKey = List<GlobalKey<FormState>>.generate(
-        2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
+    // _formKey = List<GlobalKey<FormState>>.generate(
+    //     2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
     super.initState();
   }
 
@@ -65,7 +66,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     var pageHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        // title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
+        // title: Text(widget.title, style: Theme.of(context).textTheme.displayMedium),
         // remove app bar background color
         backgroundColor: Colors.transparent,
         elevation: 0.1,
@@ -131,14 +132,14 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                             child: TabContainer(
                               selectedTextStyle: Theme.of(context)
                                   .textTheme
-                                  .headline3!
+                                  .displaySmall!
                                   .copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onSurface),
                               unselectedTextStyle: Theme.of(context)
                                   .textTheme
-                                  .headline3!
+                                  .displaySmall!
                                   .copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -150,10 +151,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                               ],
                               controller: _tabController,
                               children: [
-                                // buildFormContainer(context, _formKey),
-                                // buildFormContainer(context, _formKey),
-                                buildFormContainer(context, _formKey[0]),
-                                buildFormContainer(context, _formKey[1]),
+                                buildFormContainer(context, _formKey),
+                                buildFormContainer(context, _formKey2),
+                                // buildFormContainer(context, _formKey[0]),
+                                // buildFormContainer(context, _formKey[1]),
                               ],
                             ),
                           ),
@@ -212,10 +213,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                     padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                     child: Row(children: [
                       Text('از مبدا:',
-                          style: Theme.of(context).textTheme.headline3),
+                          style: Theme.of(context).textTheme.displaySmall),
                       SizedBox(width: pageWidth / 2 - 45),
                       Text('به مقصد:',
-                          style: Theme.of(context).textTheme.headline3),
+                          style: Theme.of(context).textTheme.displaySmall),
                     ]),
                   ),
                   const SizedBox(height: 5.0),
@@ -276,14 +277,14 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       isExpanded: true,
       hint: Text(
         title,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
       items: items
           .map((item) => DropdownMenuItem<String>(
                 value: item,
                 child: Text(
                   item,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ))
           .toList(),
@@ -325,16 +326,16 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
   buildDropDownMenuWithSearch(
       BuildContext context, String title, textEditingController, type) {
-    List<String>  tempItems = [];
-    for (var item in items) {
-      // TODO: fix search and remove if statement below
-      // if (selectedValueFrom != null && item.contains(selectedValueFrom!)) {
-          tempItems.add(item);
-      // }
-      // if (selectedValueTo != null && item.contains(selectedValueTo!)) {
-      //     tempItems.add(item);
-      // }
-    }
+    // List<String> tempItems = [];
+    // for (var item in items) {
+    //   // TODO: fix search and remove if statement below
+    //   // if (selectedValueFrom != null && item.contains(selectedValueFrom!)) {
+    //       tempItems.add(item);
+    //   // }
+    //   // if (selectedValueTo != null && item.contains(selectedValueTo!)) {
+    //   //     tempItems.add(item);
+    //   // }
+    // }
     if (type == 'from') {
       selectedValue = selectedValueFrom;
     } else {
@@ -346,14 +347,15 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         isExpanded: true,
         hint: Text(
           title,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
-        items: tempItems
+        // items: tempItems
+        items: items
             .map((item) => DropdownMenuItem(
                   value: item,
                   child: Text(
                     item,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ))
             .toList(),

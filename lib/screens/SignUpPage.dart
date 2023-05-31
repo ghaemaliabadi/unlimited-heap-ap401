@@ -22,7 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 1.5,
-        title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
+        title: Text(widget.title, style: Theme.of(context).textTheme.displayMedium),
       ),
       body: InkResponse(    // TODO: fix the splash bug
         containedInkWell: false,
@@ -42,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
                     child: Text(
                         'به علی‌بابا خوش آمدید.',
-                        style: Theme.of(context).textTheme.headline1
+                        style: Theme.of(context).textTheme.displayLarge
                     )
                 ),
                 Padding(
@@ -147,7 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       child: Text(
                           'ثبت‌نام',
-                          style: Theme.of(context).textTheme.headline2
+                          style: Theme.of(context).textTheme.displayMedium
                       ),
                     ),
                   ),
@@ -162,7 +162,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                     child: Text(
                         'حساب کاربری دارید؟',
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                 ),
@@ -179,7 +179,7 @@ void _showSnackBar(BuildContext context, String message) {
     SnackBar(
       content: Text(
           message,
-          style: Theme.of(context).textTheme.headline1,
+          style: Theme.of(context).textTheme.displayLarge,
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,

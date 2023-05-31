@@ -21,8 +21,8 @@ List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
-GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
+// GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
+// GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
 // list of global keys for each form
 // List<GlobalKey<FormState>> _formKey = [];
 String? selectedValue;
@@ -46,8 +46,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     // for (var element in _formKey) {
     //   element.currentState?.dispose();
     // }
-    _formKey.currentState?.dispose();
-    _formKey2.currentState?.dispose();
+    // _formKey.currentState?.dispose();
+    // _formKey2.currentState?.dispose();
     super.dispose();
   }
 
@@ -145,14 +145,17 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                           .colorScheme
                                           .onSurface),
                               color: Theme.of(context).colorScheme.secondary,
+                              tabDuration: const Duration(milliseconds: 300),
                               tabs: const [
                                 'رفت و برگشت',
                                 'یک طرفه',
                               ],
                               controller: _tabController,
                               children: [
-                                buildFormContainer(context, _formKey),
-                                buildFormContainer(context, _formKey2),
+                                // buildFormContainer(context, _formKey),
+                                // buildFormContainer(context, _formKey2),
+                                buildFormContainer(context),
+                                buildFormContainer(context),
                                 // buildFormContainer(context, _formKey[0]),
                                 // buildFormContainer(context, _formKey[1]),
                               ],
@@ -190,7 +193,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
-  Container buildFormContainer(BuildContext context, formKey) {
+  // Container buildFormContainer(BuildContext context, formKey)
+  Container buildFormContainer(BuildContext context)
+  {
     var pageWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -201,9 +206,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             thickness: 3,
             color: Theme.of(context).colorScheme.primary,
           ),
-          Form(
-            key: formKey,
-            child: Padding(
+          // Form(
+          //   key: formKey,
+          //   child:
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
@@ -247,16 +253,16 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                   const SizedBox(height: 20.0),
                   TextButton(
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        formKey.currentState!.save();
-                      }
+                      // if (formKey.currentState!.validate()) {
+                      //   formKey.currentState!.save();
+                      // }
                     },
                     child: const Text('Submit Button'),
                   ),
                 ],
               ),
             ),
-          ),
+          // ),
         ],
       ),
     );
@@ -326,16 +332,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
   buildDropDownMenuWithSearch(
       BuildContext context, String title, textEditingController, type) {
-    // List<String> tempItems = [];
-    // for (var item in items) {
-    //   // TODO: fix search and remove if statement below
-    //   // if (selectedValueFrom != null && item.contains(selectedValueFrom!)) {
-    //       tempItems.add(item);
-    //   // }
-    //   // if (selectedValueTo != null && item.contains(selectedValueTo!)) {
-    //   //     tempItems.add(item);
-    //   // }
-    // }
     if (type == 'from') {
       selectedValue = selectedValueFrom;
     } else {
@@ -349,7 +345,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           title,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        // items: tempItems
         items: items
             .map((item) => DropdownMenuItem(
                   value: item,
@@ -363,6 +358,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         onChanged: (value) {
           setState(() {
             print(items);
+            selectedValue = value.toString();
+            // remove selected value from items
+            items.remove(selectedValue);
+            // add selected value to the end of items
+            items.add(selectedValue!);
             if (type == 'from') {
               selectedValueFrom = value.toString();
             } else {
@@ -528,7 +528,7 @@ void jumpWithAnimationCustom(pageController, int jumpTo) {
   if (pageController.page! - jumpTo == 1 ||
       pageController.page! - jumpTo == -1) {
     pageController.animateToPage(jumpTo,
-        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        duration: const Duration(milliseconds: 150), curve: Curves.easeInOut);
   } else {
     // jump to page without animation
     pageController.jumpToPage(jumpTo);

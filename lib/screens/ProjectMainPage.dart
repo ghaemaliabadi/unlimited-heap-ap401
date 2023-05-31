@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tab_container/tab_container.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 class ProjectMainPage extends StatefulWidget {
   const ProjectMainPage({super.key});
@@ -29,6 +30,13 @@ String? selectedValue;
 String? lastSelectedValue;
 String? selectedValueFrom;
 String? selectedValueTo;
+String departureLabel = '';
+String returnLabel = '';
+Jalali selectedDateForDeparture = Jalali.now();
+JalaliRange selectedDateForReturn = JalaliRange(
+    start: Jalali.now(),
+    end: Jalali.now().add(days: 1)
+);
 final TextEditingController textEditingControllerFrom = TextEditingController();
 final TextEditingController textEditingControllerTo = TextEditingController();
 
@@ -57,6 +65,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _pageController = PageController();
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
+    departureLabel = 'تاریخ رفت';
+    returnLabel = 'تاریخ برگشت';
     // _formKey = List<GlobalKey<FormState>>.generate(
     //     2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
     super.initState();
@@ -155,8 +165,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                               children: [
                                 // buildFormContainer(context, _formKey),
                                 // buildFormContainer(context, _formKey2),
-                                buildFormContainer(context),
-                                buildFormContainer(context),
+                                buildFormContainer(context, 'رفت و برگشت'),
+                                buildFormContainer(context, 'یک طرفه'),
                                 // buildFormContainer(context, _formKey[0]),
                                 // buildFormContainer(context, _formKey[1]),
                               ],
@@ -194,8 +204,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
-  // Container buildFormContainer(BuildContext context, formKey)
-  Container buildFormContainer(BuildContext context) {
+  // Container buildFormContainer(BuildContext context, formKey, type)
+  Container buildFormContainer(BuildContext context, type) {
     var pageWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -250,6 +260,38 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                   ],
                 ),
                 const SizedBox(height: 20.0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: Row(children: [
+                    Text('تاریخ رفت:',
+                        style: Theme.of(context).textTheme.displaySmall),
+                    SizedBox(width: pageWidth / 2 - 45),
+                    () {
+                      if (type == 'رفت و برگشت') {
+                        return Text('تاریخ برگشت:',
+                            style: Theme.of(context).textTheme.displaySmall);
+                      } else {
+                        return Container();
+                      }
+                    }(),
+                    // Text('تاریخ برگشت:',
+                    //     style: Theme.of(context).textTheme.displaySmall),
+                  ]),
+                ),
+                const SizedBox(height: 5.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildDatePicker(context, 'تاریخ رفت'),
+                    () {
+                      if (type == 'رفت و برگشت') {
+                        return buildDatePicker(context, 'تاریخ برگشت');
+                      } else {
+                        return Container();
+                      }
+                    }(),
+                  ],
+                ),
                 TextButton(
                   onPressed: () {
                     // if (formKey.currentState!.validate()) {
@@ -537,6 +579,78 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   void _tapOnBus() {
     int jumpTo = 3;
     jumpWithAnimationCustom(_pageController, jumpTo);
+  }
+
+  Container buildDatePicker(BuildContext context, String type) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 2 - 50,
+      height: 50,
+      padding: const EdgeInsets.only(left: 10, right: 15),
+      decoration: BoxDecoration(
+        // decoration for button
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.black38,
+          width: 2,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Icon(
+            Icons.calendar_today_outlined,
+            color: Colors.black45,
+          ),
+          // button
+          TextButton(
+            onPressed: () async {
+              if (type == 'تاریخ برگشت') {
+                var picked = await showPersianDateRangePicker(
+                  context: context,
+                  initialDateRange: JalaliRange(
+                    start: Jalali.now(),
+                    end: Jalali.now().add(days: 7),
+                  ),
+                  firstDate: Jalali(1385, 8),
+                  lastDate: Jalali(1450, 9),
+                );
+                selectedDateForReturn = picked!;
+              } else {
+                // رفت
+                var picked = await showPersianDatePicker(
+                  context: context,
+                  initialDate: Jalali.now(),
+                  firstDate: Jalali(
+                      selectedDateForDeparture.year,
+                      selectedDateForDeparture.month,
+                      selectedDateForDeparture.day),
+                  lastDate: Jalali(1405, 9),
+                );
+                selectedDateForDeparture = picked!;
+              }
+              setState(() {
+                // update the label
+                if (type == 'تاریخ برگشت') {
+                  departureLabel =
+                      selectedDateForReturn.start.toJalaliDateTime();
+                  returnLabel = selectedDateForReturn.end.toJalaliDateTime();
+                } else {
+                  departureLabel = selectedDateForDeparture.formatFullDate();
+                }
+              });
+            },
+            child: Text(
+              (type == 'تاریخ برگشت') ? returnLabel : departureLabel,
+              style: const TextStyle(
+                color: Colors.black45,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

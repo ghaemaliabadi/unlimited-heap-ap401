@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.5,
-        title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
+        title: Text(widget.title, style: Theme.of(context).textTheme.displayMedium),
       ),
       body: InkResponse(
         containedInkWell: false,
@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
                   child: Text(
                       'آدرس ایمیل و رمز عبور خود را وارد کنید.',
-                      style: Theme.of(context).textTheme.headline1,
+                      style: Theme.of(context).textTheme.displayLarge,
                   )
               ),
               Padding(
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: Text(
                         'ورود',
-                        style: Theme.of(context).textTheme.headline2,
+                        style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ),
                 ),
@@ -126,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () {},
                   child: Text(
                     'فراموشی رمز عبور',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
               ),
@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
 void _showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(text, style: Theme.of(context).textTheme.headline2),
+      content: Text(text, style: Theme.of(context).textTheme.displayMedium),
       backgroundColor: Colors.green,
       duration: const Duration(seconds: 1),
     ),

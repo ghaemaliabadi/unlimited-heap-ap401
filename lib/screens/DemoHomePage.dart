@@ -18,7 +18,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.5,
-        title: Text(widget.title, style: Theme.of(context).textTheme.headline2),
+        title: Text(widget.title, style: Theme.of(context).textTheme.displayMedium),
       ),
       body: Container(
         alignment: Alignment.center,
@@ -29,7 +29,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
                     // add style to text and manually set font size to 36
                     style: Theme.of(context)
                         .textTheme
-                        .headline1
+                        .displayLarge
                         ?.copyWith(fontSize: 36)),
             buildElevatedButtonWithRedirect(
                 context, 'ثبت‌نام', const SignUpPage()),
@@ -68,7 +68,7 @@ Column buildElevatedButtonWithRedirect(
         ),
         child: Text(
           title,
-          style: Theme.of(context).textTheme.headline2,
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
     ],

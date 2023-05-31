@@ -10,44 +10,44 @@ ThemeData buildThemeData() {
     // accentColor: Colors.greenAccent,
     fontFamily: 'kalameh',
     textTheme: const TextTheme(
-      headline1: TextStyle(
+      displayLarge: TextStyle(
         fontSize: 24.0,
         fontWeight: FontWeight.w600,
         color: Colors.black,
       ),
-      headline2: TextStyle(
+      displayMedium: TextStyle(
         fontSize: 24.0,
         fontWeight: FontWeight.w600,
         color: Colors.white,
       ),
-      headline3: TextStyle(
+      displaySmall: TextStyle(
         fontSize: 20.0,
         fontWeight: FontWeight.w600,
         color: Colors.black,
       ),
-      headline4: TextStyle(
+      headlineLarge: TextStyle(
         fontSize: 18.0,
         fontWeight: FontWeight.w600,
         color: Colors.black,
       ),
-      headline5: TextStyle(
+      headlineMedium: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.w600,
         color: Colors.black,
       ),
       // signup page: navigate to login page
-      headline6: TextStyle(
+      headlineSmall: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.w600,
         color: Colors.black,
         decoration: TextDecoration.underline,
       ),
-      bodyText1: TextStyle(
+      bodyLarge: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.w300,
         color: Colors.black,
       ),
-      bodyText2: TextStyle(
+      bodyMedium: TextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.w300,
         color: Colors.black,

@@ -11,7 +11,7 @@ class ProjectMainPage extends StatefulWidget {
   State<ProjectMainPage> createState() => _ProjectMainPage();
 }
 
-final List<String> items = [
+List<String> items = [
   'تهران',
   'مشهد',
   'اصفهان',
@@ -21,10 +21,15 @@ final List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-final _formKey = GlobalKey<FormState>();
-final _formKey2 = GlobalKey<FormState>();
+// GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
+// GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
+// list of global keys for each form
+List<GlobalKey<FormState>> _formKey = [];
 String? selectedValue;
-final TextEditingController textEditingController = TextEditingController();
+String? selectedValueFrom;
+String? selectedValueTo;
+final TextEditingController textEditingControllerFrom = TextEditingController();
+final TextEditingController textEditingControllerTo = TextEditingController();
 
 class _ProjectMainPage extends State<ProjectMainPage> {
   late PageController _pageController = PageController();
@@ -36,24 +41,27 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   void dispose() {
     _pageController.dispose();
     _tabController.dispose();
-    textEditingController.dispose();
+    textEditingControllerFrom.dispose();
+    textEditingControllerTo.dispose();
+    for (var element in _formKey) {
+      element.currentState?.dispose();
+    }
+    // _formKey.currentState?.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    super.initState();
     _pageController = PageController();
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
+    _formKey = List<GlobalKey<FormState>>.generate(
+        2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // var pageWidth = MediaQuery
-    //     .of(context)
-    //     .size
-    //     .width;
     var pageHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
@@ -112,9 +120,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                       onPageChanged: (int i) {
                         FocusScope.of(context).requestFocus(FocusNode());
                         setState(() {
-                          // if (activePageIndex != i) {
                           activePageIndex = i;
-                          // }
                         });
                       },
                       children: <Widget>[
@@ -139,13 +145,15 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                           .onSurface),
                               color: Theme.of(context).colorScheme.secondary,
                               tabs: const [
-                                'دو طرفه',
+                                'رفت و برگشت',
                                 'یک طرفه',
                               ],
                               controller: _tabController,
                               children: [
-                                buildFormContainer(context, _formKey),
-                                buildFormContainer(context, _formKey2),
+                                // buildFormContainer(context, _formKey),
+                                // buildFormContainer(context, _formKey),
+                                buildFormContainer(context, _formKey[0]),
+                                buildFormContainer(context, _formKey[1]),
                               ],
                             ),
                           ),
@@ -182,6 +190,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   Container buildFormContainer(BuildContext context, formKey) {
+    var pageWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
       child: Column(
@@ -194,15 +203,47 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           Form(
             key: formKey,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 20),
-                  buildDropDown(context, title: 'مبدا'),
-                  const SizedBox(height: 10),
-                  buildDropDown(context, title: 'مقصد'),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 20.0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: Row(children: [
+                      Text('از مبدا:',
+                          style: Theme.of(context).textTheme.headline3),
+                      SizedBox(width: pageWidth / 2 - 45),
+                      Text('به مقصد:',
+                          style: Theme.of(context).textTheme.headline3),
+                    ]),
+                  ),
+                  const SizedBox(height: 5.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      buildDropDownMenuWithSearch(
+                          context, 'مبدا', textEditingControllerFrom, 'from'),
+                      // buildDropDown(context, title: 'مبدا'),
+                      // const SizedBox(height: 10.0),
+                      // button for swap from and to
+                      IconButton(
+                        icon: const Icon(Icons.swap_horiz_rounded),
+                        onPressed: () {
+                          setState(() {
+                            var temp = selectedValueFrom;
+                            selectedValueFrom = selectedValueTo;
+                            selectedValueTo = temp;
+                          });
+                        },
+                      ),
+                      // TODO: from to icon
+                      buildDropDownMenuWithSearch(
+                          context, 'مقصد', textEditingControllerTo, 'to'),
+                      // buildDropDown(context, title: 'مقصد'),
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
                   TextButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
@@ -229,7 +270,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         isDense: true,
         contentPadding: EdgeInsets.zero,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
       isExpanded: true,
@@ -271,7 +312,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       ),
       dropdownStyleData: DropdownStyleData(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(10),
           ),
           maxHeight: 200,
           scrollbarTheme: ScrollbarThemeData(
@@ -279,6 +320,130 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             thickness: MaterialStateProperty.all(6),
             thumbVisibility: MaterialStateProperty.all(true),
           )),
+    );
+  }
+
+  buildDropDownMenuWithSearch(
+      BuildContext context, String title, textEditingController, type) {
+    List<String>  tempItems = [];
+    for (var item in items) {
+      // TODO: fix search and remove if statement below
+      // if (selectedValueFrom != null && item.contains(selectedValueFrom!)) {
+          tempItems.add(item);
+      // }
+      // if (selectedValueTo != null && item.contains(selectedValueTo!)) {
+      //     tempItems.add(item);
+      // }
+    }
+    if (type == 'from') {
+      selectedValue = selectedValueFrom;
+    } else {
+      // type == 'to'
+      selectedValue = selectedValueTo;
+    }
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2<String>(
+        isExpanded: true,
+        hint: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        items: tempItems
+            .map((item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ))
+            .toList(),
+        value: selectedValue,
+        onChanged: (value) {
+          setState(() {
+            print(items);
+            if (type == 'from') {
+              selectedValueFrom = value.toString();
+            } else {
+              // type == 'to'
+              selectedValueTo = value.toString();
+            }
+          });
+        },
+        buttonStyleData: ButtonStyleData(
+          height: 50,
+          width: MediaQuery.of(context).size.width / 2 - 50,
+          padding: const EdgeInsets.only(left: 10, right: 15),
+          decoration: BoxDecoration(
+            // decoration for button
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+            border: Border.all(
+              color: Colors.black38,
+              width: 2,
+            ),
+          ),
+        ),
+        dropdownStyleData: DropdownStyleData(
+          maxHeight: 200,
+          padding: null,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 8,
+          scrollbarTheme: ScrollbarThemeData(
+            radius: const Radius.circular(40),
+            thickness: MaterialStateProperty.all(6),
+            thumbVisibility: MaterialStateProperty.all(true),
+          ),
+          // scrollbarTheme: ScrollbarThemeData(
+          //   radius: const Radius.circular(40),
+          //   thickness: MaterialStateProperty.all(6),
+          //   thumbVisibility: MaterialStateProperty.all(true),
+          // ),
+        ),
+        menuItemStyleData: const MenuItemStyleData(
+          height: 40,
+        ),
+        dropdownSearchData: DropdownSearchData(
+          searchController: textEditingController,
+          searchInnerWidgetHeight: 50,
+          searchInnerWidget: Container(
+            height: 50,
+            padding: const EdgeInsets.only(
+              top: 8,
+              bottom: 4,
+              right: 8,
+              left: 8,
+            ),
+            child: TextFormField(
+              expands: true,
+              maxLines: null,
+              controller: textEditingController,
+              decoration: InputDecoration(
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
+                hintText: 'جستجوی $title',
+                hintStyle: const TextStyle(fontSize: 12),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+          ),
+          searchMatchFn: (item, searchValue) {
+            return (item.value.toString().contains(searchValue));
+          },
+        ),
+        //This to clear the search value when you close the menu
+        onMenuStateChange: (isOpen) {
+          if (!isOpen) {
+            textEditingController.clear();
+          }
+        },
+      ),
     );
   }
 
@@ -355,7 +520,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     jumpWithAnimationCustom(_pageController, jumpTo);
   }
 }
-
 
 void jumpWithAnimationCustom(pageController, int jumpTo) {
   // check if page is after or before the current page -> animate to it or just jump

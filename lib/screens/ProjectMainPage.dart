@@ -32,8 +32,8 @@ String? selectedValueFrom;
 String? selectedValueTo;
 String departureLabel = '';
 String returnLabel = '';
-Jalali selectedDateForDeparture = Jalali.now();
-JalaliRange selectedDateForReturn = JalaliRange(
+Jalali selectedDateForDepartureType = Jalali.now();
+JalaliRange selectedDateForReturnType = JalaliRange(
     start: Jalali.now(),
     end: Jalali.now().add(days: 1)
 );
@@ -65,8 +65,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _pageController = PageController();
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
-    departureLabel = 'تاریخ رفت';
-    returnLabel = 'تاریخ برگشت';
+    departureLabel = 'تاریخ سفر';
+    returnLabel = 'تاریخ رفت و برگشت';
     // _formKey = List<GlobalKey<FormState>>.generate(
     //     2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
     super.initState();
@@ -263,18 +263,16 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   child: Row(children: [
-                    Text('تاریخ رفت:',
-                        style: Theme.of(context).textTheme.displaySmall),
-                    SizedBox(width: pageWidth / 2 - 45),
                     () {
                       if (type == 'رفت و برگشت') {
-                        return Text('تاریخ برگشت:',
+                        return Text('تاریخ رفت و برگشت:',
                             style: Theme.of(context).textTheme.displaySmall);
                       } else {
-                        return Container();
+                        return Text('تاریخ سفر:',
+                            style: Theme.of(context).textTheme.displaySmall);
                       }
                     }(),
-                    // Text('تاریخ برگشت:',
+                    // Text('تاریخ رفت و برگشت:',
                     //     style: Theme.of(context).textTheme.displaySmall),
                   ]),
                 ),
@@ -282,12 +280,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    buildDatePicker(context, 'تاریخ رفت'),
                     () {
                       if (type == 'رفت و برگشت') {
-                        return buildDatePicker(context, 'تاریخ برگشت');
+                        return buildDatePicker(context, 'تاریخ رفت و برگشت');
                       } else {
-                        return Container();
+                        return buildDatePicker(context, 'تاریخ سفر');
                       }
                     }(),
                   ],
@@ -583,7 +580,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
   Container buildDatePicker(BuildContext context, String type) {
     return Container(
-      width: MediaQuery.of(context).size.width / 2 - 50,
+      width: MediaQuery.of(context).size.width - 50,
       height: 50,
       padding: const EdgeInsets.only(left: 10, right: 15),
       decoration: BoxDecoration(
@@ -605,43 +602,46 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           // button
           TextButton(
             onPressed: () async {
-              if (type == 'تاریخ برگشت') {
+              if (type == 'تاریخ رفت و برگشت') {
                 var picked = await showPersianDateRangePicker(
                   context: context,
                   initialDateRange: JalaliRange(
                     start: Jalali.now(),
-                    end: Jalali.now().add(days: 7),
+                    end: Jalali.now().add(days: 2),
                   ),
-                  firstDate: Jalali(1385, 8),
-                  lastDate: Jalali(1450, 9),
+                  firstDate: Jalali(Jalali.now().year, Jalali.now().month),
+                  lastDate: Jalali(1405, 9),
                 );
-                selectedDateForReturn = picked!;
+                selectedDateForReturnType = picked!;
+                selectedDateForDepartureType = picked.start;
               } else {
                 // رفت
                 var picked = await showPersianDatePicker(
                   context: context,
                   initialDate: Jalali.now(),
                   firstDate: Jalali(
-                      selectedDateForDeparture.year,
-                      selectedDateForDeparture.month,
-                      selectedDateForDeparture.day),
+                      selectedDateForDepartureType.year,
+                      selectedDateForDepartureType.month,
+                      selectedDateForDepartureType.day),
                   lastDate: Jalali(1405, 9),
                 );
-                selectedDateForDeparture = picked!;
+                selectedDateForDepartureType = picked!;
               }
               setState(() {
                 // update the label
-                if (type == 'تاریخ برگشت') {
-                  departureLabel =
-                      selectedDateForReturn.start.toJalaliDateTime();
-                  returnLabel = selectedDateForReturn.end.toJalaliDateTime();
+                if (type == 'تاریخ رفت و برگشت') {
+                  var start = selectedDateForReturnType.start;
+                  var end = selectedDateForReturnType.end;
+                  departureLabel = "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
+                  returnLabel = "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
+                  returnLabel = '$departureLabel تا $returnLabel';
                 } else {
-                  departureLabel = selectedDateForDeparture.formatFullDate();
+                  departureLabel = "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}";
                 }
               });
             },
             child: Text(
-              (type == 'تاریخ برگشت') ? returnLabel : departureLabel,
+              (type == 'تاریخ رفت و برگشت') ? returnLabel : departureLabel,
               style: const TextStyle(
                 color: Colors.black45,
                 fontSize: 12,

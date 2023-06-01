@@ -32,6 +32,9 @@ String? selectedValueFrom;
 String? selectedValueTo;
 String departureTypeLabel = '';
 String returnTypeLabel = '';
+int adultPassengers = 0;
+int childPassengers = 0;
+int infantPassengers = 0;
 Jalali selectedDateForDepartureType = Jalali.now();
 JalaliRange selectedDateForReturnType = JalaliRange(
     start: Jalali.now(),
@@ -301,20 +304,58 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                     await showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return SizedBox(
-                          height: 300,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                const Text('متن رندم'),
-                                ElevatedButton(
-                                  child: const Text('دکمه تستی'),
-                                  onPressed: () => Navigator.pop(context),
-                                ),
-                              ],
-                            ),
-                        );
+                        return StatefulBuilder(
+                            builder: (BuildContext context, StateSetter setModalState) {
+                            return SizedBox(
+                              height: 300,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text('بزرگسال:',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall),
+                                      SizedBox(width: 10),
+                                      Text('$adultPassengers',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall),
+                                      SizedBox(width: 10),
+                                      IconButton(
+                                        icon: const Icon(Icons.add_circle_outline),
+                                        onPressed: () {
+                                          setModalState(() {
+                                            adultPassengers++;
+                                            Text('$adultPassengers');
+                                          });
+                                          setState(() {});
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.remove_circle_outline),
+                                        onPressed: () {
+                                          setModalState(() {
+                                            if (adultPassengers > 0) {
+                                              adultPassengers--;
+                                            }
+                                          });
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  ElevatedButton(
+                                    child: const Text('دکمه تستی'),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                ],
+                              ),
+                            );
+                        });
                       },
                       shape: ShapeBorder.lerp(
                         RoundedRectangleBorder(
@@ -349,7 +390,12 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "تعداد مسافران",
+                          "تعداد مسافران:",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "${getSumOfPassengers()} مسافر",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
@@ -717,6 +763,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         ),
       ),
     );
+  }
+  getSumOfPassengers() {
+    return adultPassengers + childPassengers + infantPassengers;
   }
 }
 

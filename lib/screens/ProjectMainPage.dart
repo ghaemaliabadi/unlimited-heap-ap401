@@ -598,11 +598,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           var picked = await showPersianDatePicker(
             context: context,
             fieldLabelText: 'تاریخ سفر',
-            initialDate: Jalali.now(),
+            initialDate: selectedDateForDepartureType,
             firstDate: Jalali(
-                selectedDateForDepartureType.year,
-                selectedDateForDepartureType.month,
-                selectedDateForDepartureType.day),
+                Jalali.now().year,
+                Jalali.now().month,
+                Jalali.now().day),
             lastDate: Jalali(1405, 9),
           );
           selectedDateForDepartureType = picked!;

@@ -181,109 +181,124 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               // move to bottom
               margin: EdgeInsets.only(top: pageHeight * 0.55),
               color: Colors.white,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // TODO: add trips.length front of last searches
+              child: () {
+                if(trips.isEmpty) {
+                  // empty Text for white space
+                  return Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15),
-                        child: Text('جستجوهای اخیر',
-                            style: Theme.of(context).textTheme.displayLarge),
+                      const Center(
+                        child: Text(''),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: GestureDetector(
-                          onTap: () {
-                            // do something
-                          },
-                          child: Text(
-                            'پاک کردن',
-                            style:
+                      SizedBox(height: pageHeight * 0.3),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Text('جستجوهای اخیر',
+                                style: Theme.of(context).textTheme.displayLarge),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: GestureDetector(
+                              onTap: () {
+                                // do something
+                              },
+                              child: Text(
+                                'پاک کردن',
+                                style:
                                 Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                      color: Theme.of(context).colorScheme.primary,
-                                      decoration: TextDecoration.underline,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      // list view
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: SizedBox(
+                          height: 100,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: trips.length,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                margin: const EdgeInsets.only(left: 10),
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey[200],
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 1,
+                                      offset: const Offset(0, 1),
                                     ),
+                                  ],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      trips[index].title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall!
+                                          .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      '« ${trips[index].transportBy} »',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      trips[index].dateString,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
+                      SizedBox(height: pageHeight * 0.1624),
                     ],
-                  ),
-                  const SizedBox(height: 20),
-                  // list view
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: trips.length,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            width: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[200],
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 1,
-                                  blurRadius: 1,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  trips[index].title,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displaySmall!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                      ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  '« ${trips[index].transportBy} »',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  trips[index].dateString,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                      ),
-                                ),
-
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: pageHeight * 0.05),
-                ],
-              ),
+                  );
+                }
+              }(),
             ),
           ]),
           // )

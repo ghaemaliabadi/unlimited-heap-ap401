@@ -41,13 +41,13 @@ List<Trip> trips = [
     },
   ),
   Trip(
-    type: 'دو طرفه',
-    from: 'تهران',
-    to: 'مشهد',
-    date: Jalali.now(),
+    type: 'رفت و برگشت',
+    from: 'مشهد',
+    to: 'تبریز',
+    date: Jalali.now().add(days: 2),
     dateRange: JalaliRange(
-      start: Jalali.now(),
-      end: Jalali.now().add(days: 1),
+      start: Jalali.now().add(days: 2),
+      end: Jalali.now().add(days: 5),
     ),
     passengers: {
       'adult': 2,

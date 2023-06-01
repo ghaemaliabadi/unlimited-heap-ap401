@@ -56,8 +56,13 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _pageController = PageController();
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
-    departureTypeLabel = 'تاریخ سفر';
-    returnTypeLabel = 'تاریخ رفت و برگشت';
+    var start = Jalali.now();
+    var end = Jalali.now().add(days: 1);
+    departureTypeLabel =
+    "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
+    returnTypeLabel =
+    "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
+    returnTypeLabel = '$departureTypeLabel الی $returnTypeLabel';
     super.initState();
   }
 
@@ -124,57 +129,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                         });
                       },
                       children: <Widget>[
-                        ConstrainedBox(
-                          constraints: const BoxConstraints.expand(),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TabContainer(
-                              selectedTextStyle: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface),
-                              unselectedTextStyle: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface),
-                              color: Theme.of(context).colorScheme.secondary,
-                              tabDuration: const Duration(milliseconds: 300),
-                              tabs: const [
-                                'رفت و برگشت',
-                                'یک طرفه',
-                              ],
-                              controller: _tabController,
-                              children: [
-                                buildFormContainer(context, 'رفت و برگشت'),
-                                buildFormContainer(context, 'یک طرفه'),
-                              ],
-                            ),
-                          ),
-                        ),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints.expand(),
-                          child: const Center(
-                            child: Text("تست ۲"),
-                          ),
-                        ),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints.expand(),
-                          child: const Center(
-                            child: Text("تست ۳"),
-                          ),
-                        ),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints.expand(),
-                          child: const Center(
-                            child: Text("تست ۴"),
-                          ),
-                        ),
+                        buildConstrainedBox(context, 'پرواز داخلی'),
+                        buildConstrainedBox(context, 'پرواز خارجی'),
+                        buildConstrainedBox(context, 'قطار'),
+                        buildConstrainedBox(context, 'اتوبوس'),
                       ],
                     ),
                   ),
@@ -188,8 +146,44 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
+  ConstrainedBox buildConstrainedBox(BuildContext context, String tripType) {
+    return ConstrainedBox(
+                        constraints: const BoxConstraints.expand(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TabContainer(
+                            selectedTextStyle: Theme.of(context)
+                                .textTheme
+                                .displaySmall!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface),
+                            unselectedTextStyle: Theme.of(context)
+                                .textTheme
+                                .displaySmall!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface),
+                            color: Theme.of(context).colorScheme.secondary,
+                            tabDuration: const Duration(milliseconds: 300),
+                            tabs: const [
+                              'رفت و برگشت',
+                              'یک طرفه',
+                            ],
+                            controller: _tabController,
+                            children: [
+                              buildFormContainer(context, 'رفت و برگشت', tripType),
+                              buildFormContainer(context, 'یک طرفه', tripType),
+                            ],
+                          ),
+                        ),
+                      );
+  }
+
   // Container buildFormContainer(BuildContext context, formKey, type)
-  Container buildFormContainer(BuildContext context, type) {
+  Container buildFormContainer(BuildContext context, type, tripType) {
     var pageWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -292,7 +286,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                       ),
                     ),
                   ),
-                  child: Text('جستجوی پرواز',
+                  child: Text('جستجوی $tripType',
                       style: Theme.of(context).textTheme.displayMedium),
                 ),
               ],
@@ -396,10 +390,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   void checkInputsAndNavigateToResult(BuildContext context) {
     // check destination and origin are not empty
     if (selectedValueFrom == null || selectedValueTo == null) {
-      _showSnackBar(context, 'لطفا مبدا و مقصد را انتخاب کنید');
+      // show error using dialog
+      showDialogError(context, 'مبدا و مقصد نباید خالی باشند.');
       return;
     }
-    // TODO: check date is not empty
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const ResultPage()));
   }
@@ -803,16 +797,26 @@ void jumpWithAnimationCustom(pageController, int jumpTo) {
   }
 }
 
-void _showSnackBar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        message,
-        style: Theme.of(context).textTheme.displayLarge,
-        selectionColor: Colors.red,
-      ),
-      duration: const Duration(seconds: 1),
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-    ),
+Future<dynamic> showDialogError(BuildContext context, String errorText) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        // shadow
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        title: const Text('خطا'),
+        content: Text(errorText),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('تایید'),
+          ),
+        ],
+      );
+    },
   );
 }

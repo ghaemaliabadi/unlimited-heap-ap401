@@ -133,12 +133,13 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               ),
             ],
           ), // Row For Back Icon
-          SingleChildScrollView(
+          // SingleChildScrollView(
             // scroll view for page view vertical scroll
-            physics: const NeverScrollableScrollPhysics(),
-            child: Container(
+            // physics: const NeverScrollableScrollPhysics(),
+            // child:
+            Container(
               // width: pageWidth,
-              height: pageHeight * 0.85,
+              height: pageHeight * 0.6,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 // color: Colors.yellowAccent,
@@ -173,8 +174,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 ],
               ),
             ),
-            // ),
-          )
+          // )
         ],
       ),
     );
@@ -210,7 +210,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
-  // Container buildFormContainer(BuildContext context, formKey, type)
   Container buildFormContainer(BuildContext context, type, tripType) {
     var pageWidth = MediaQuery.of(context).size.width;
     return Container(
@@ -222,13 +221,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             thickness: 3,
             color: Theme.of(context).colorScheme.primary,
           ),
-          // Form(
-          //   key: formKey,
-          //   child:
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 20.0),
                 Padding(
@@ -313,36 +308,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                       style: Theme.of(context).textTheme.displayMedium),
                 ),
                 const SizedBox(height: 24.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: Text('جستجوهای اخیر',
-                          style: Theme.of(context).textTheme.displayLarge),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: GestureDetector(
-                        onTap: () {
-                          // do something
-                        },
-                        child: Text(
-                          'پاک کردن',
-                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                  ],
-                ),
               ],
             ),
           ),
-          // ),
         ],
       ),
     );

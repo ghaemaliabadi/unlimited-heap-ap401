@@ -57,6 +57,22 @@ List<Trip> trips = [
       'infant': 0,
     },
   ),
+  Trip(
+    transportBy: 'اتوبوس',
+    type: 'رفت',
+    from: 'اصفهان',
+    to: 'شیراز',
+    date: Jalali.now().add(days: 1),
+    dateRange: JalaliRange(
+      start: Jalali.now().add(days: 2),
+      end: Jalali.now().add(days: 5),
+    ),
+    passengers: {
+      'adult': 3,
+      'child': 0,
+      'infant': 0,
+    },
+  ),
 ];
 
 String? selectedValue;
@@ -248,60 +264,77 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                             itemCount: trips.length,
                             physics: const AlwaysScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                margin: const EdgeInsets.only(left: 10),
-                                width: 180,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey[200],
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 1,
-                                      offset: const Offset(0, 1),
+                              return GestureDetector(
+                                onTap: () {
+                                  Trip tripData = trips[index];
+                                  // transportBy = trips[index].transportBy;
+                                  // travelType = trips[index].type;
+                                  // selectedValueFrom = trips[index].from;
+                                  // selectedValueTo = trips[index].to;
+                                  // selectedDateForDepartureType =
+                                  //     trips[index].date!;
+                                  // selectedDateForReturnType = trips[index].dateRange!;
+                                  // adultPassengers = trips[index].passengers['adult']!;
+                                  // childPassengers = trips[index].passengers['child']!;
+                                  // infantPassengers = trips[index].passengers['infant']!;
+                                  // setState(() {});
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ResultPage(tripData),
                                     ),
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      trips[index].title,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall!
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                          ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 10),
+                                  width: 180,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[200],
+                                    border: Border.all(
+                                      color: Colors.grey[500]!,
+                                      width: 1,
                                     ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      '« ${trips[index].transportBy} »',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                          ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      trips[index].dateString,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                          ),
-                                    ),
-                                  ],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        trips[index].title,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        '« ${trips[index].transportBy} »',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        trips[index].dateString,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -558,8 +591,21 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       showDialogError(context, 'مبدا و مقصد نباید خالی باشند.');
       return;
     }
+    Trip tripData = Trip(
+      transportBy: transportBy!,
+      type: travelType!,
+      from: selectedValueFrom!,
+      to: selectedValueTo!,
+      date: selectedDateForDepartureType,
+      dateRange: selectedDateForReturnType,
+      passengers: {
+        'adult': adultPassengers,
+        'child': childPassengers,
+        'infant': infantPassengers,
+      },
+    );
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const ResultPage()));
+        .push(MaterialPageRoute(builder: (context) => ResultPage(tripData)));
   }
 
   Row buildPassengerCountRow(BuildContext context, StateSetter setModalState,

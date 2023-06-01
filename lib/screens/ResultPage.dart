@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:unlimited_heap_ap401/models/trip.dart';
 
 class ResultPage extends StatefulWidget {
-  const ResultPage({super.key});
+  const ResultPage(Trip tripData, {super.key});
   @override
   State<ResultPage> createState() => _ResultPageState();
 }

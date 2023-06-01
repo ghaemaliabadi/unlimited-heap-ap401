@@ -303,7 +303,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                       builder: (context) {
                         return SizedBox(
                           height: 300,
-                          child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
@@ -315,7 +314,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                 ),
                               ],
                             ),
-                          ),
                         );
                       },
                       shape: ShapeBorder.lerp(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tab_container/tab_container.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'ResultPage.dart';
 
 class ProjectMainPage extends StatefulWidget {
   const ProjectMainPage({super.key});
@@ -57,8 +58,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _tabController.jumpTo(1);
     departureTypeLabel = 'تاریخ سفر';
     returnTypeLabel = 'تاریخ رفت و برگشت';
-    // _formKey = List<GlobalKey<FormState>>.generate(
-    //     2, (index) => GlobalKey<FormState>(debugLabel: 'formKey$index'));
     super.initState();
   }
 
@@ -67,7 +66,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     var pageHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        // title: Text(widget.title, style: Theme.of(context).textTheme.displayMedium),
         // remove app bar background color
         backgroundColor: Colors.transparent,
         elevation: 0.1,
@@ -280,11 +278,22 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 ),
                 const SizedBox(height: 5.0),
                 buildPassengerSelect(context),
-                TextButton(
+                const SizedBox(height: 30.0),
+                ElevatedButton(
                   onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
+                    checkInputsAndNavigateToResult(context);
                   },
-                  child: const Text('Submit Button'),
+                  style: ButtonStyle(
+                    minimumSize:
+                        MaterialStateProperty.all(const Size(200.0, 50.0)),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(1000.0),
+                      ),
+                    ),
+                  ),
+                  child: Text('جستجوی پرواز',
+                      style: Theme.of(context).textTheme.displayMedium),
                 ),
               ],
             ),
@@ -323,8 +332,19 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                     buildPassengerCountRow(
                         context, setModalState, 'نوزاد', '(۱۰ روز تا ۲ سال)'),
                     ElevatedButton(
-                      child: const Text('دکمه تستی'),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        checkInputsAndNavigateToResult(context);
+                      },
+                      style: ButtonStyle(
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(100.0, 40.0)),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(1000.0),
+                          ),
+                        ),
+                      ),
+                      child: const Text('تایید و جستجو'),
                     ),
                   ],
                 ),
@@ -373,6 +393,17 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
+  void checkInputsAndNavigateToResult(BuildContext context) {
+    // check destination and origin are not empty
+    if (selectedValueFrom == null || selectedValueTo == null) {
+      _showSnackBar(context, 'لطفا مبدا و مقصد را انتخاب کنید');
+      return;
+    }
+    // TODO: check date is not empty
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const ResultPage()));
+  }
+
   Row buildPassengerCountRow(BuildContext context, StateSetter setModalState,
       String passengerType, String passengerTypeDescription) {
     var show = 0;
@@ -406,8 +437,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: Icon(Icons.add_circle_rounded,
-                color: Theme.of(context).colorScheme.primary,
+                icon: Icon(
+                  Icons.add_circle_rounded,
+                  color: Theme.of(context).colorScheme.primary,
                   size: 30,
                 ),
                 onPressed: () {
@@ -434,7 +466,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               Text('$show', style: Theme.of(context).textTheme.displaySmall),
               const SizedBox(width: 10),
               IconButton(
-                icon: Icon(Icons.remove_circle_rounded,
+                icon: Icon(
+                  Icons.remove_circle_rounded,
                   color: Theme.of(context).colorScheme.primary,
                   size: 30,
                 ),
@@ -768,4 +801,18 @@ void jumpWithAnimationCustom(pageController, int jumpTo) {
     // jump to page without animation
     pageController.jumpToPage(jumpTo);
   }
+}
+
+void _showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: Theme.of(context).textTheme.displayLarge,
+        selectionColor: Colors.red,
+      ),
+      duration: const Duration(seconds: 1),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+    ),
+  );
 }

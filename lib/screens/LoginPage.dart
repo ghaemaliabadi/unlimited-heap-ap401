@@ -10,7 +10,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool visiblePassword = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -19,7 +18,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.5,
-        title: Text(widget.title, style: Theme.of(context).textTheme.displayMedium),
+        title: Text(widget.title,
+            style: Theme.of(context).textTheme.displayMedium),
       ),
       body: InkResponse(
         containedInkWell: false,
@@ -38,10 +38,9 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
                   child: Text(
-                      'آدرس ایمیل و رمز عبور خود را وارد کنید.',
-                      style: Theme.of(context).textTheme.displayLarge,
-                  )
-              ),
+                    'آدرس ایمیل و رمز عبور خود را وارد کنید.',
+                    style: Theme.of(context).textTheme.displayLarge,
+                  )),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
@@ -82,8 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                     suffixIcon: IconButton(
                       icon: Icon(visiblePassword
                           ? Icons.visibility
-                          : Icons.visibility_off
-                      ),
+                          : Icons.visibility_off),
                       onPressed: () {
                         setState(() {
                           visiblePassword = !visiblePassword;
@@ -105,7 +103,8 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(const Size(150.0, 50.0)),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(150.0, 50.0)),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(1000.0),
@@ -113,13 +112,15 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: Text(
-                        'ورود',
-                        style: Theme.of(context).textTheme.displayMedium,
+                      'ورود',
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               Expanded(
                 flex: 1,
                 child: GestureDetector(
@@ -138,12 +139,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-void _showSnackBar(BuildContext context, String text) {
+void _showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(text, style: Theme.of(context).textTheme.displayMedium),
-      backgroundColor: Colors.green,
+      content: Text(
+        message,
+        style: Theme.of(context).textTheme.displayLarge,
+      ),
       duration: const Duration(seconds: 1),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
     ),
   );
 }

@@ -22,10 +22,6 @@ List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-// GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'formKey1');
-// GlobalKey<FormState> _formKey2 = GlobalKey<FormState>(debugLabel: 'formKey2');
-// list of global keys for each form
-// List<GlobalKey<FormState>> _formKey = [];
 String? selectedValue;
 String? lastSelectedValue;
 String? selectedValueFrom;
@@ -36,10 +32,8 @@ int adultPassengers = 1;
 int childPassengers = 0;
 int infantPassengers = 0;
 Jalali selectedDateForDepartureType = Jalali.now();
-JalaliRange selectedDateForReturnType = JalaliRange(
-    start: Jalali.now(),
-    end: Jalali.now().add(days: 1)
-);
+JalaliRange selectedDateForReturnType =
+    JalaliRange(start: Jalali.now(), end: Jalali.now().add(days: 1));
 final TextEditingController textEditingControllerFrom = TextEditingController();
 final TextEditingController textEditingControllerTo = TextEditingController();
 
@@ -53,13 +47,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   void dispose() {
     _pageController.dispose();
     _tabController.dispose();
-    // textEditingControllerFrom.dispose();
-    // textEditingControllerTo.dispose();
-    // for (var element in _formKey) {
-    //   element.currentState?.dispose();
-    // }
-    // _formKey.currentState?.dispose();
-    // _formKey2.currentState?.dispose();
     super.dispose();
   }
 
@@ -166,12 +153,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                               ],
                               controller: _tabController,
                               children: [
-                                // buildFormContainer(context, _formKey),
-                                // buildFormContainer(context, _formKey2),
                                 buildFormContainer(context, 'رفت و برگشت'),
                                 buildFormContainer(context, 'یک طرفه'),
-                                // buildFormContainer(context, _formKey[0]),
-                                // buildFormContainer(context, _formKey[1]),
                               ],
                             ),
                           ),
@@ -244,8 +227,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                   children: [
                     buildDropDownMenuWithSearch(
                         context, 'مبدا', textEditingControllerFrom, 'from'),
-                    // buildDropDown(context, title: 'مبدا'),
-                    // const SizedBox(height: 10.0),
                     // button for swap from and to
                     IconButton(
                       icon: const Icon(Icons.swap_horiz_rounded),
@@ -259,7 +240,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                     ),
                     buildDropDownMenuWithSearch(
                         context, 'مقصد', textEditingControllerTo, 'to'),
-                    // buildDropDown(context, title: 'مقصد'),
                   ],
                 ),
                 const SizedBox(height: 20.0),
@@ -302,9 +282,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 buildPassengerSelect(context),
                 TextButton(
                   onPressed: () {
-                    // if (formKey.currentState!.validate()) {
-                    //   formKey.currentState!.save();
-                    // }
+                    // Validate returns true if the form is valid, or false otherwise.
                   },
                   child: const Text('Submit Button'),
                 ),
@@ -319,73 +297,74 @@ class _ProjectMainPage extends State<ProjectMainPage> {
 
   GestureDetector buildPassengerSelect(BuildContext context) {
     return GestureDetector(
-                onTap: () async {
-                  await showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return StatefulBuilder(
-                          builder: (BuildContext context, StateSetter setModalState) {
-                          return SizedBox(
-                            height: 300,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                buildPassengerCountRow(context, setModalState, 'بزرگسال'),
-                                buildPassengerCountRow(context, setModalState, 'کودک'),
-                                buildPassengerCountRow(context, setModalState, 'نوزاد'),
-                                ElevatedButton(
-                                  child: const Text('دکمه تستی'),
-                                  onPressed: () => Navigator.pop(context),
-                                ),
-                              ],
-                            ),
-                          );
-                      });
-                    },
-                    shape: ShapeBorder.lerp(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      0,
+      onTap: () async {
+        await showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setModalState) {
+              return SizedBox(
+                height: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    buildPassengerCountRow(context, setModalState, 'بزرگسال'),
+                    buildPassengerCountRow(context, setModalState, 'کودک'),
+                    buildPassengerCountRow(context, setModalState, 'نوزاد'),
+                    ElevatedButton(
+                      child: const Text('دکمه تستی'),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                  );
-                  setState(() {});
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width - 50,
-                  height: 50,
-                  padding: const EdgeInsets.only(left: 10, right: 15),
-                  decoration: BoxDecoration(
-                    // decoration for button
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Colors.black38,
-                      width: 2,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.supervisor_account,
-                        color: Colors.black45,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        "${getSumOfPassengers()} مسافر",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
               );
+            });
+          },
+          shape: ShapeBorder.lerp(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            0,
+          ),
+        );
+        setState(() {});
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width - 50,
+        height: 50,
+        padding: const EdgeInsets.only(left: 10, right: 15),
+        decoration: BoxDecoration(
+          // decoration for button
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.black38,
+            width: 2,
+          ),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.supervisor_account,
+              color: Colors.black45,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              "${getSumOfPassengers()} مسافر",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  Row buildPassengerCountRow(BuildContext context, StateSetter setModalState, String passengerType) {
+  Row buildPassengerCountRow(
+      BuildContext context, StateSetter setModalState, String passengerType) {
     var show = 0;
     if (passengerType == 'بزرگسال') {
       show = adultPassengers;
@@ -397,122 +376,55 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       show = infantPassengers;
     }
     return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text('$passengerType:',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall),
-                                  SizedBox(width: 10),
-                                  Text('$show',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall),
-                                  SizedBox(width: 10),
-                                  IconButton(
-                                    icon: const Icon(Icons.add_circle_outline),
-                                    onPressed: () {
-                                      setModalState(() {
-                                        if (passengerType == 'بزرگسال') {
-                                          adultPassengers++;
-                                          show = adultPassengers;
-                                        }
-                                        if (passengerType == 'کودک') {
-                                          childPassengers++;
-                                          show = adultPassengers;
-                                        }
-                                        if (passengerType == 'نوزاد') {
-                                          infantPassengers++;
-                                          show = adultPassengers;
-                                          Text('$show');
-                                        }
-                                      });
-                                      setState(() {});
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.remove_circle_outline),
-                                    onPressed: () {
-                                      setModalState(() {
-                                        if (passengerType == 'بزرگسال') {
-                                          if (adultPassengers > 0) adultPassengers--;
-                                          show = adultPassengers;
-                                        }
-                                        if (passengerType == 'کودک') {
-                                          if (childPassengers > 0) childPassengers--;
-                                          show = adultPassengers;
-                                        }
-                                        if (passengerType == 'نوزاد') {
-                                          if (infantPassengers > 0) infantPassengers--;
-                                          show = adultPassengers;
-                                        }
-                                      });
-                                      setState(() {});
-                                    },
-                                  ),
-                                ],
-                              );
-  }
-
-  DropdownButtonFormField2<String> buildDropDown(BuildContext context,
-      {required String title}) {
-    return DropdownButtonFormField2(
-      decoration: InputDecoration(
-        //Add isDense true and zero Padding.
-        //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
-        isDense: true,
-        contentPadding: EdgeInsets.zero,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('$passengerType:',
+            style: Theme.of(context).textTheme.displaySmall),
+        const SizedBox(width: 10),
+        Text('$show', style: Theme.of(context).textTheme.displaySmall),
+        const SizedBox(width: 10),
+        IconButton(
+          icon: const Icon(Icons.add_circle_outline),
+          onPressed: () {
+            setModalState(() {
+              if (passengerType == 'بزرگسال') {
+                adultPassengers++;
+                show = adultPassengers;
+              }
+              if (passengerType == 'کودک') {
+                childPassengers++;
+                show = adultPassengers;
+              }
+              if (passengerType == 'نوزاد') {
+                infantPassengers++;
+                show = adultPassengers;
+                Text('$show');
+              }
+            });
+            setState(() {});
+          },
         ),
-      ),
-      isExpanded: true,
-      hint: Text(
-        title,
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
-      items: items
-          .map((item) => DropdownMenuItem<String>(
-                value: item,
-                child: Text(
-                  item,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ))
-          .toList(),
-      validator: (value) {
-        if (value == null) {
-          return 'لطفا $title رو انتخاب کنید';
-        }
-        return null;
-      },
-      onChanged: (value) {
-        //Do something when changing the item if you want.
-      },
-      onSaved: (value) {
-        selectedValue = value.toString();
-      },
-      buttonStyleData: const ButtonStyleData(
-        height: 60,
-        padding: EdgeInsets.only(left: 20, right: 10),
-      ),
-      iconStyleData: const IconStyleData(
-        icon: Icon(
-          Icons.arrow_drop_down,
-          color: Colors.black45,
+        IconButton(
+          icon: const Icon(Icons.remove_circle_outline),
+          onPressed: () {
+            setModalState(() {
+              if (passengerType == 'بزرگسال') {
+                if (adultPassengers > 0) adultPassengers--;
+                show = adultPassengers;
+              }
+              if (passengerType == 'کودک') {
+                if (childPassengers > 0) childPassengers--;
+                show = adultPassengers;
+              }
+              if (passengerType == 'نوزاد') {
+                if (infantPassengers > 0) infantPassengers--;
+                show = adultPassengers;
+              }
+            });
+            setState(() {});
+          },
         ),
-        iconSize: 30,
-      ),
-      dropdownStyleData: DropdownStyleData(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          maxHeight: 200,
-          scrollbarTheme: ScrollbarThemeData(
-            radius: const Radius.circular(40),
-            thickness: MaterialStateProperty.all(6),
-            thumbVisibility: MaterialStateProperty.all(true),
-          )),
+      ],
     );
   }
 
@@ -685,7 +597,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           alignment: Alignment.center,
           decoration: (activePageIndex == index)
               ? BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: const BorderRadius.all(Radius.circular(1000)),
                 )
               : null,
@@ -738,7 +650,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               start: selectedDateForReturnType.start,
               end: selectedDateForReturnType.end,
             ),
-            firstDate: Jalali(Jalali.now().year, Jalali.now().month, Jalali.now().day),
+            firstDate:
+                Jalali(Jalali.now().year, Jalali.now().month, Jalali.now().day),
             lastDate: Jalali(1405, 9),
           );
           selectedDateForReturnType = picked!;
@@ -749,10 +662,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             context: context,
             fieldLabelText: 'تاریخ سفر',
             initialDate: selectedDateForDepartureType,
-            firstDate: Jalali(
-                Jalali.now().year,
-                Jalali.now().month,
-                Jalali.now().day),
+            firstDate:
+                Jalali(Jalali.now().year, Jalali.now().month, Jalali.now().day),
             lastDate: Jalali(1405, 9),
           );
           selectedDateForDepartureType = picked!;
@@ -762,11 +673,14 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           if (type == 'تاریخ رفت و برگشت') {
             var start = selectedDateForReturnType.start;
             var end = selectedDateForReturnType.end;
-            departureTypeLabel = "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
-            returnTypeLabel = "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
+            departureTypeLabel =
+                "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
+            returnTypeLabel =
+                "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
             returnTypeLabel = '$departureTypeLabel الی $returnTypeLabel';
           } else {
-            departureTypeLabel = "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}";
+            departureTypeLabel =
+                "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}";
           }
         });
       },
@@ -790,15 +704,18 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               color: Colors.black45,
             ),
             const SizedBox(width: 8),
-              Text(
-                (type == 'تاریخ رفت و برگشت') ? returnTypeLabel : departureTypeLabel,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+            Text(
+              (type == 'تاریخ رفت و برگشت')
+                  ? returnTypeLabel
+                  : departureTypeLabel,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
           ],
         ),
       ),
     );
   }
+
   getSumOfPassengers() {
     return adultPassengers + childPassengers + infantPassengers;
   }

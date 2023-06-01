@@ -306,12 +306,22 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               return SizedBox(
                 height: 300,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    buildPassengerCountRow(context, setModalState, 'بزرگسال'),
-                    buildPassengerCountRow(context, setModalState, 'کودک'),
-                    buildPassengerCountRow(context, setModalState, 'نوزاد'),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        children: [
+                          Text('مسافران',
+                              style: Theme.of(context).textTheme.displayLarge),
+                        ],
+                      ),
+                    ),
+                    buildPassengerCountRow(
+                        context, setModalState, 'بزرگسال', '(۱۲ سال به بالا)'),
+                    buildPassengerCountRow(
+                        context, setModalState, 'کودک', '(۲ تا ۱۲ سال)'),
+                    buildPassengerCountRow(
+                        context, setModalState, 'نوزاد', '(۱۰ روز تا ۲ سال)'),
                     ElevatedButton(
                       child: const Text('دکمه تستی'),
                       onPressed: () => Navigator.pop(context),
@@ -363,8 +373,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
-  Row buildPassengerCountRow(
-      BuildContext context, StateSetter setModalState, String passengerType) {
+  Row buildPassengerCountRow(BuildContext context, StateSetter setModalState,
+      String passengerType, String passengerTypeDescription) {
     var show = 0;
     if (passengerType == 'بزرگسال') {
       show = adultPassengers;
@@ -376,53 +386,80 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       show = infantPassengers;
     }
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('$passengerType:',
-            style: Theme.of(context).textTheme.displaySmall),
-        const SizedBox(width: 10),
-        Text('$show', style: Theme.of(context).textTheme.displaySmall),
-        const SizedBox(width: 10),
-        IconButton(
-          icon: const Icon(Icons.add_circle_outline),
-          onPressed: () {
-            setModalState(() {
-              if (passengerType == 'بزرگسال') {
-                adultPassengers++;
-                show = adultPassengers;
-              }
-              if (passengerType == 'کودک') {
-                childPassengers++;
-                show = adultPassengers;
-              }
-              if (passengerType == 'نوزاد') {
-                infantPassengers++;
-                show = adultPassengers;
-                Text('$show');
-              }
-            });
-            setState(() {});
-          },
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Row(
+            children: [
+              Text(passengerType,
+                  style: Theme.of(context).textTheme.displaySmall),
+              const SizedBox(width: 5),
+              Text(passengerTypeDescription,
+                  style: Theme.of(context).textTheme.bodyLarge),
+            ],
+          ),
         ),
-        IconButton(
-          icon: const Icon(Icons.remove_circle_outline),
-          onPressed: () {
-            setModalState(() {
-              if (passengerType == 'بزرگسال') {
-                if (adultPassengers > 0) adultPassengers--;
-                show = adultPassengers;
-              }
-              if (passengerType == 'کودک') {
-                if (childPassengers > 0) childPassengers--;
-                show = adultPassengers;
-              }
-              if (passengerType == 'نوزاد') {
-                if (infantPassengers > 0) infantPassengers--;
-                show = adultPassengers;
-              }
-            });
-            setState(() {});
-          },
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: Icon(Icons.add_circle_rounded,
+                color: Theme.of(context).colorScheme.primary,
+                  size: 30,
+                ),
+                onPressed: () {
+                  setModalState(() {
+                    if (passengerType == 'بزرگسال') {
+                      adultPassengers++;
+                      show = adultPassengers;
+                    }
+                    if (passengerType == 'کودک') {
+                      childPassengers++;
+                      show = adultPassengers;
+                    }
+                    if (passengerType == 'نوزاد') {
+                      infantPassengers++;
+                      show = adultPassengers;
+                      Text('$show',
+                          style: Theme.of(context).textTheme.displaySmall);
+                    }
+                  });
+                  setState(() {});
+                },
+              ),
+              const SizedBox(width: 10),
+              Text('$show', style: Theme.of(context).textTheme.displaySmall),
+              const SizedBox(width: 10),
+              IconButton(
+                icon: Icon(Icons.remove_circle_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 30,
+                ),
+                onPressed: () {
+                  setModalState(() {
+                    if (getSumOfPassengers() != 1) {
+                      if (passengerType == 'بزرگسال') {
+                        if (adultPassengers > 0) adultPassengers--;
+                        show = adultPassengers;
+                      }
+                      if (passengerType == 'کودک') {
+                        if (childPassengers > 0) childPassengers--;
+                        show = adultPassengers;
+                      }
+                      if (passengerType == 'نوزاد') {
+                        if (infantPassengers > 0) infantPassengers--;
+                        show = adultPassengers;
+                      }
+                    }
+                  });
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
         ),
       ],
     );

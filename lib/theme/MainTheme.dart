@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData buildThemeData() {
+
   return ThemeData(
     colorScheme: ColorScheme.fromSwatch().copyWith(
       primary: Colors.green[500],

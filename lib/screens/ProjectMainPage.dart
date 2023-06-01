@@ -576,79 +576,76 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     jumpWithAnimationCustom(_pageController, jumpTo);
   }
 
-  Container buildDatePicker(BuildContext context, String type) {
-    return Container(
-      // TODO: make container clickable or change it to button (search for best widget)
-      // TODO: edit hints
-      width: MediaQuery.of(context).size.width - 50,
-      height: 50,
-      padding: const EdgeInsets.only(left: 10, right: 15),
-      decoration: BoxDecoration(
-        // decoration for button
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.black38,
-          width: 2,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Icon(
-            Icons.calendar_today_outlined,
-            color: Colors.black45,
-          ),
-          // button
-          TextButton(
-            onPressed: () async {
-              if (type == 'تاریخ رفت و برگشت') {
-                var picked = await showPersianDateRangePicker(
-                  context: context,
-                  initialDateRange: JalaliRange(
-                    start: Jalali.now(),
-                    end: Jalali.now().add(days: 2),
-                  ),
-                  firstDate: Jalali(Jalali.now().year, Jalali.now().month),
-                  lastDate: Jalali(1405, 9),
-                );
-                selectedDateForReturnType = picked!;
-                selectedDateForDepartureType = picked.start;
-              } else {
-                // رفت
-                var picked = await showPersianDatePicker(
-                  context: context,
-                  initialDate: Jalali.now(),
-                  firstDate: Jalali(
-                      selectedDateForDepartureType.year,
-                      selectedDateForDepartureType.month,
-                      selectedDateForDepartureType.day),
-                  lastDate: Jalali(1405, 9),
-                );
-                selectedDateForDepartureType = picked!;
-              }
-              setState(() {
-                // update the label
-                if (type == 'تاریخ رفت و برگشت') {
-                  var start = selectedDateForReturnType.start;
-                  var end = selectedDateForReturnType.end;
-                  departureTypeLabel = "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
-                  returnTypeLabel = "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
-                  returnTypeLabel = '$departureTypeLabel تا $returnTypeLabel';
-                } else {
-                  departureTypeLabel = "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}";
-                }
-              });
-            },
-            child: Text(
-              (type == 'تاریخ رفت و برگشت') ? returnTypeLabel : departureTypeLabel,
-              style: const TextStyle(
-                color: Colors.black45,
-                fontSize: 12,
-              ),
+  GestureDetector buildDatePicker(BuildContext context, String type) {
+    return GestureDetector(
+      onTap: () async {
+        if (type == 'تاریخ رفت و برگشت') {
+          var picked = await showPersianDateRangePicker(
+            context: context,
+            fieldStartLabelText: 'تاریخ رفت',
+            fieldEndLabelText: 'تاریخ برگشت',
+            initialDateRange: JalaliRange(
+              start: selectedDateForReturnType.start,
+              end: selectedDateForReturnType.end,
             ),
+            firstDate: Jalali(Jalali.now().year, Jalali.now().month, Jalali.now().day),
+            lastDate: Jalali(1405, 9),
+          );
+          selectedDateForReturnType = picked!;
+          selectedDateForDepartureType = picked.start;
+        } else {
+          // رفت
+          var picked = await showPersianDatePicker(
+            context: context,
+            fieldLabelText: 'تاریخ سفر',
+            initialDate: Jalali.now(),
+            firstDate: Jalali(
+                selectedDateForDepartureType.year,
+                selectedDateForDepartureType.month,
+                selectedDateForDepartureType.day),
+            lastDate: Jalali(1405, 9),
+          );
+          selectedDateForDepartureType = picked!;
+        }
+        setState(() {
+          // update the label
+          if (type == 'تاریخ رفت و برگشت') {
+            var start = selectedDateForReturnType.start;
+            var end = selectedDateForReturnType.end;
+            departureTypeLabel = "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
+            returnTypeLabel = "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
+            returnTypeLabel = '$departureTypeLabel الی $returnTypeLabel';
+          } else {
+            departureTypeLabel = "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}";
+          }
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width - 50,
+        height: 50,
+        padding: const EdgeInsets.only(left: 10, right: 15),
+        decoration: BoxDecoration(
+          // decoration for button
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.black38,
+            width: 2,
           ),
-        ],
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.calendar_today_outlined,
+              color: Colors.black45,
+            ),
+            const SizedBox(width: 8),
+              Text(
+                (type == 'تاریخ رفت و برگشت') ? returnTypeLabel : departureTypeLabel,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+          ],
+        ),
       ),
     );
   }

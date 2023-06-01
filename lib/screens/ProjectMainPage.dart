@@ -32,7 +32,7 @@ String? selectedValueFrom;
 String? selectedValueTo;
 String departureTypeLabel = '';
 String returnTypeLabel = '';
-int adultPassengers = 0;
+int adultPassengers = 1;
 int childPassengers = 0;
 int infantPassengers = 0;
 Jalali selectedDateForDepartureType = Jalali.now();
@@ -294,114 +294,12 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   child: Row(children: [
-                    Text('انتخاب مسافران:',
+                    Text('تعداد مسافران:',
                         style: Theme.of(context).textTheme.displaySmall),
                   ]),
                 ),
                 const SizedBox(height: 5.0),
-                GestureDetector(
-                  onTap: () async {
-                    await showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return StatefulBuilder(
-                            builder: (BuildContext context, StateSetter setModalState) {
-                            return SizedBox(
-                              height: 300,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('بزرگسال:',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall),
-                                      SizedBox(width: 10),
-                                      Text('$adultPassengers',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall),
-                                      SizedBox(width: 10),
-                                      IconButton(
-                                        icon: const Icon(Icons.add_circle_outline),
-                                        onPressed: () {
-                                          setModalState(() {
-                                            adultPassengers++;
-                                            Text('$adultPassengers');
-                                          });
-                                          setState(() {});
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.remove_circle_outline),
-                                        onPressed: () {
-                                          setModalState(() {
-                                            if (adultPassengers > 0) {
-                                              adultPassengers--;
-                                            }
-                                          });
-                                          setState(() {});
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  ElevatedButton(
-                                    child: const Text('دکمه تستی'),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                ],
-                              ),
-                            );
-                        });
-                      },
-                      shape: ShapeBorder.lerp(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        0,
-                      ),
-                    );
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width - 50,
-                    height: 50,
-                    padding: const EdgeInsets.only(left: 10, right: 15),
-                    decoration: BoxDecoration(
-                      // decoration for button
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.black38,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.supervisor_account,
-                          color: Colors.black45,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "تعداد مسافران:",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "${getSumOfPassengers()} مسافر",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                buildPassengerSelect(context),
                 TextButton(
                   onPressed: () {
                     // if (formKey.currentState!.validate()) {
@@ -417,6 +315,143 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         ],
       ),
     );
+  }
+
+  GestureDetector buildPassengerSelect(BuildContext context) {
+    return GestureDetector(
+                onTap: () async {
+                  await showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return StatefulBuilder(
+                          builder: (BuildContext context, StateSetter setModalState) {
+                          return SizedBox(
+                            height: 300,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                buildPassengerCountRow(context, setModalState, 'بزرگسال'),
+                                buildPassengerCountRow(context, setModalState, 'کودک'),
+                                buildPassengerCountRow(context, setModalState, 'نوزاد'),
+                                ElevatedButton(
+                                  child: const Text('دکمه تستی'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            ),
+                          );
+                      });
+                    },
+                    shape: ShapeBorder.lerp(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      0,
+                    ),
+                  );
+                  setState(() {});
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 50,
+                  height: 50,
+                  padding: const EdgeInsets.only(left: 10, right: 15),
+                  decoration: BoxDecoration(
+                    // decoration for button
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Colors.black38,
+                      width: 2,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.supervisor_account,
+                        color: Colors.black45,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        "${getSumOfPassengers()} مسافر",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+  }
+
+  Row buildPassengerCountRow(BuildContext context, StateSetter setModalState, String passengerType) {
+    var show = 0;
+    if (passengerType == 'بزرگسال') {
+      show = adultPassengers;
+    }
+    if (passengerType == 'کودک') {
+      show = childPassengers;
+    }
+    if (passengerType == 'نوزاد') {
+      show = infantPassengers;
+    }
+    return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('$passengerType:',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall),
+                                  SizedBox(width: 10),
+                                  Text('$show',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall),
+                                  SizedBox(width: 10),
+                                  IconButton(
+                                    icon: const Icon(Icons.add_circle_outline),
+                                    onPressed: () {
+                                      setModalState(() {
+                                        if (passengerType == 'بزرگسال') {
+                                          adultPassengers++;
+                                          show = adultPassengers;
+                                        }
+                                        if (passengerType == 'کودک') {
+                                          childPassengers++;
+                                          show = adultPassengers;
+                                        }
+                                        if (passengerType == 'نوزاد') {
+                                          infantPassengers++;
+                                          show = adultPassengers;
+                                          Text('$show');
+                                        }
+                                      });
+                                      setState(() {});
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.remove_circle_outline),
+                                    onPressed: () {
+                                      setModalState(() {
+                                        if (passengerType == 'بزرگسال') {
+                                          if (adultPassengers > 0) adultPassengers--;
+                                          show = adultPassengers;
+                                        }
+                                        if (passengerType == 'کودک') {
+                                          if (childPassengers > 0) childPassengers--;
+                                          show = adultPassengers;
+                                        }
+                                        if (passengerType == 'نوزاد') {
+                                          if (infantPassengers > 0) infantPassengers--;
+                                          show = adultPassengers;
+                                        }
+                                      });
+                                      setState(() {});
+                                    },
+                                  ),
+                                ],
+                              );
   }
 
   DropdownButtonFormField2<String> buildDropDown(BuildContext context,

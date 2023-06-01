@@ -95,9 +95,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     var start = Jalali.now();
     var end = Jalali.now().add(days: 1);
     departureTypeLabel =
-        "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
+        convertEnToFa("${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}");
     returnTypeLabel =
-        "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
+        convertEnToFa("${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}");
     returnTypeLabel = '$departureTypeLabel الی $returnTypeLabel';
     super.initState();
   }
@@ -201,8 +201,15 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 15),
-                            child: Text('جستجوهای اخیر',
-                                style: Theme.of(context).textTheme.displayLarge),
+                            child: Row(
+                              children: [
+                                Text('جستجوهای اخیر',
+                                    style: Theme.of(context).textTheme.displayLarge),
+                                Text(" (${convertEnToFa(trips.length.toString())})",
+                                    style: Theme.of(context).textTheme.displaySmall),
+                              ],
+
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 15),
@@ -885,10 +892,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
             returnTypeLabel =
                 "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
-            returnTypeLabel = '$departureTypeLabel الی $returnTypeLabel';
+            returnTypeLabel = convertEnToFa('$departureTypeLabel الی $returnTypeLabel');
           } else {
             departureTypeLabel =
-                "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}";
+                convertEnToFa("${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}");
           }
         });
       },
@@ -925,7 +932,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   getSumOfPassengers() {
-    return adultPassengers + childPassengers + infantPassengers;
+    return convertEnToFa((adultPassengers + childPassengers + infantPassengers).toString());
   }
 }
 
@@ -963,4 +970,8 @@ Future<dynamic> showDialogError(BuildContext context, String errorText) {
       );
     },
   );
+}
+
+convertEnToFa(String txt) {
+  return txt.replaceAll('0', '۰').replaceAll('1', '۱').replaceAll('2', '۲').replaceAll('3', '۳').replaceAll('4', '۴').replaceAll('5', '۵').replaceAll('6', '۶').replaceAll('7', '۷').replaceAll('8', '۸').replaceAll('9', '۹');
 }

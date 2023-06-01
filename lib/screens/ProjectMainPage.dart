@@ -242,7 +242,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
                                 margin: const EdgeInsets.only(left: 10),
-                                width: 150,
+                                width: 180,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.grey[200],

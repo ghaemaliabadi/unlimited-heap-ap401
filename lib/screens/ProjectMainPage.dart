@@ -287,6 +287,77 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                     }(),
                   ],
                 ),
+                const SizedBox(height: 20.0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: Row(children: [
+                    Text('انتخاب مسافران:',
+                        style: Theme.of(context).textTheme.displaySmall),
+                  ]),
+                ),
+                const SizedBox(height: 5.0),
+                GestureDetector(
+                  onTap: () async {
+                    await showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return SizedBox(
+                          height: 300,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                const Text('متن رندم'),
+                                ElevatedButton(
+                                  child: const Text('دکمه تستی'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      shape: ShapeBorder.lerp(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        0,
+                      ),
+                    );
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 50,
+                    height: 50,
+                    padding: const EdgeInsets.only(left: 10, right: 15),
+                    decoration: BoxDecoration(
+                      // decoration for button
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.black38,
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.supervisor_account,
+                          color: Colors.black45,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "تعداد مسافران",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 TextButton(
                   onPressed: () {
                     // if (formKey.currentState!.validate()) {
@@ -535,7 +606,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           alignment: Alignment.center,
           decoration: (activePageIndex == index)
               ? BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.primary,
                   borderRadius: const BorderRadius.all(Radius.circular(1000)),
                 )
               : null,

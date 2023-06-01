@@ -61,6 +61,8 @@ List<Trip> trips = [
 
 String? selectedValue;
 String? lastSelectedValue;
+String? transportBy;
+String? travelType;
 String? selectedValueFrom;
 String? selectedValueTo;
 String departureTypeLabel = '';
@@ -94,10 +96,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     _tabController.jumpTo(1);
     var start = Jalali.now();
     var end = Jalali.now().add(days: 1);
-    departureTypeLabel =
-        convertEnToFa("${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}");
-    returnTypeLabel =
-        convertEnToFa("${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}");
+    departureTypeLabel = convertEnToFa(
+        "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}");
+    returnTypeLabel = convertEnToFa(
+        "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}");
     returnTypeLabel = '$departureTypeLabel الی $returnTypeLabel';
     super.initState();
   }
@@ -181,9 +183,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               // move to bottom
               margin: EdgeInsets.only(top: pageHeight * 0.55),
               color: Colors.white,
-                        // TODO: add trips.length front of last searches
               child: () {
-                if(trips.isEmpty) {
+                if (trips.isEmpty) {
                   // empty Text for white space
                   return Column(
                     children: [
@@ -204,11 +205,15 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                             child: Row(
                               children: [
                                 Text('جستجوهای اخیر',
-                                    style: Theme.of(context).textTheme.displayLarge),
-                                Text(" (${convertEnToFa(trips.length.toString())})",
-                                    style: Theme.of(context).textTheme.displaySmall),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
+                                Text(
+                                    " (${convertEnToFa(trips.length.toString())})",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall),
                               ],
-
                             ),
                           ),
                           Padding(
@@ -219,11 +224,14 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                               },
                               child: Text(
                                 'پاک کردن',
-                                style:
-                                Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  decoration: TextDecoration.underline,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge
+                                    ?.copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      decoration: TextDecoration.underline,
+                                    ),
                               ),
                             ),
                           ),
@@ -264,10 +272,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                           .textTheme
                                           .displaySmall!
                                           .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                      ),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
@@ -276,10 +284,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                           .textTheme
                                           .bodySmall!
                                           .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                      ),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
@@ -288,12 +296,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                           .textTheme
                                           .bodySmall!
                                           .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                      ),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
                                     ),
-
                                   ],
                                 ),
                               );
@@ -315,6 +322,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   ConstrainedBox buildConstrainedBox(BuildContext context, String tripType) {
+    transportBy = tripType;
     return ConstrainedBox(
       constraints: const BoxConstraints.expand(),
       child: Padding(
@@ -345,6 +353,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   Container buildFormContainer(BuildContext context, type, tripType) {
+    if (type == 'رفت و برگشت') {
+      travelType = 'رفت و برگشت';
+    } else {
+      travelType = 'یک طرفه';
+    }
     var pageWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -892,10 +905,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 "${start.formatter.wN} ${start.formatter.dd} ${start.formatter.mN}";
             returnTypeLabel =
                 "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}";
-            returnTypeLabel = convertEnToFa('$departureTypeLabel الی $returnTypeLabel');
+            returnTypeLabel =
+                convertEnToFa('$departureTypeLabel الی $returnTypeLabel');
           } else {
-            departureTypeLabel =
-                convertEnToFa("${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}");
+            departureTypeLabel = convertEnToFa(
+                "${selectedDateForDepartureType.formatter.wN} ${selectedDateForDepartureType.formatter.dd} ${selectedDateForDepartureType.formatter.mN}");
           }
         });
       },
@@ -932,7 +946,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   getSumOfPassengers() {
-    return convertEnToFa((adultPassengers + childPassengers + infantPassengers).toString());
+    return convertEnToFa(
+        (adultPassengers + childPassengers + infantPassengers).toString());
   }
 }
 
@@ -973,5 +988,15 @@ Future<dynamic> showDialogError(BuildContext context, String errorText) {
 }
 
 convertEnToFa(String txt) {
-  return txt.replaceAll('0', '۰').replaceAll('1', '۱').replaceAll('2', '۲').replaceAll('3', '۳').replaceAll('4', '۴').replaceAll('5', '۵').replaceAll('6', '۶').replaceAll('7', '۷').replaceAll('8', '۸').replaceAll('9', '۹');
+  return txt
+      .replaceAll('0', '۰')
+      .replaceAll('1', '۱')
+      .replaceAll('2', '۲')
+      .replaceAll('3', '۳')
+      .replaceAll('4', '۴')
+      .replaceAll('5', '۵')
+      .replaceAll('6', '۶')
+      .replaceAll('7', '۷')
+      .replaceAll('8', '۸')
+      .replaceAll('9', '۹');
 }

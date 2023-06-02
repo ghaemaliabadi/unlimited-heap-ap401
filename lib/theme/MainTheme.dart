@@ -70,7 +70,7 @@ BoxDecoration defaultBoxDecoration() {
         color: Colors.grey.withOpacity(0.2),
         spreadRadius: 1,
         blurRadius: 4,
-        offset: Offset(0, 3),
+        offset: const Offset(0, 3),
       ),
     ],
   );

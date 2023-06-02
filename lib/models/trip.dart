@@ -25,15 +25,19 @@ class Trip {
 
   String get title => '$from به $to';
 
+  String get goDate {
+    return convertEnToFa(
+        "${dateRange?.start.formatter.wN} ${dateRange?.start.formatter.dd} ${dateRange?.start.formatter.mN}");
+  }
+
+  String get backDate {
+    return convertEnToFa(
+        "${dateRange?.end.formatter.wN} ${dateRange?.end.formatter.dd} ${dateRange?.end.formatter.mN}");
+  }
+
   String get dateString {
     if (type == 'رفت و برگشت') {
-      var start = dateRange?.start;
-      var end = dateRange?.end;
-      var departureTypeLabel =
-          "${start?.formatter.wN} ${start?.formatter.dd} ${start?.formatter.mN}";
-      var returnTypeLabel =
-          "${end?.formatter.wN} ${end?.formatter.dd} ${end?.formatter.mN}";
-      return convertEnToFa('$departureTypeLabel » $returnTypeLabel');
+      return convertEnToFa('$goDate » $backDate');
     } else {
       return convertEnToFa(
           "${date?.formatter.wN} ${date?.formatter.dd} ${date?.formatter.mN}");

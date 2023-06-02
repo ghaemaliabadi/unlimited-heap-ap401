@@ -264,7 +264,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          ResultPage(tripData),
+                                          ResultPage(tripData: tripData),
                                     ),
                                   );
                                 },
@@ -275,7 +275,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.grey[200],
                                     border: Border.all(
-                                      color: Colors.grey[500]!,
+                                      color: Colors.grey[400]!,
                                       width: 1,
                                     ),
                                   ),
@@ -579,7 +579,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       },
     );
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ResultPage(tripData)));
+        .push(MaterialPageRoute(builder: (context) => ResultPage(tripData: tripData)));
   }
 
   Row buildPassengerCountRow(BuildContext context, StateSetter setModalState,

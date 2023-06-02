@@ -27,7 +27,7 @@ List<Ticket> tickets = [
     company: Company('زاگرس'),
     price: 920000,
     remainingSeats: 68,
-    description: '',
+    description: 'توضیحات تستی نام واسه قطار',
     tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
   ),
   Ticket(
@@ -217,45 +217,68 @@ class _ResultPageState extends State<ResultPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        ticket.transportBy,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 8.0),
-                      Row(
-                        children: [
-                          Text(
-                            ticket.from,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                      () {
+                      if (ticket.description != '') {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            ticket.description,
+                            style: Theme.of(context).textTheme.displaySmall,
                           ),
-                          const SizedBox(width: 8.0),
-                          const Icon(
-                            Icons.arrow_forward,
-                            size: 16.0,
-                          ),
-                          const SizedBox(width: 8.0),
-                          Text(
-                            ticket.to,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8.0),
+                        );
+                      } else {
+                        return const SizedBox(height: 0);
+                      }
+                      }(),
+                      () {
+                        return Row(
+                          children: ticket.tags
+                              .map(
+                                (tag) => Container(
+                                  margin: const EdgeInsets.only(right: 4.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 4.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueAccent.withOpacity(0.15),
+                                    borderRadius: BorderRadius.circular(1000),
+                                  ),
+                                  child: Text(
+                                    tag,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Colors.black,
+                                        ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        );
+                      }(),
+                      () {
+                        if (ticket.description == '') {
+                          return const SizedBox(height: 12.0);
+                        } else {
+                          return const SizedBox(height: 8.0);
+                        }
+                      }(),
                       Row(
                         children: [
                           Text(
                             ticket.outboundTimeString,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                           const SizedBox(width: 8.0),
+                          // TODO: replace with our own icon data
                           const Icon(
-                            Icons.arrow_forward,
-                            size: 16.0,
+                            Icons.arrow_forward_rounded,
+                            size: 24.0,
                           ),
                           const SizedBox(width: 8.0),
                           Text(
                             ticket.inboundTimeString,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context).textTheme.displayLarge,
                           ),
                         ],
                       ),
@@ -264,7 +287,13 @@ class _ResultPageState extends State<ResultPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 24.0),
+            () {
+              if (ticket.description == '') {
+                return const SizedBox(height: 24.0);
+              } else {
+                return const SizedBox(height: 16.0);
+              }
+            }(),
             const Divider(
               height: 2.0,
               color: Colors.black,

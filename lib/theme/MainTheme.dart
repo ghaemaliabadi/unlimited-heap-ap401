@@ -56,3 +56,22 @@ ThemeData buildThemeData() {
     ),
   );
 }
+
+BoxDecoration defaultBoxDecoration() {
+  return BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    color: Colors.white,
+    border: Border.all(
+      color: Colors.black38,
+      width: 1,
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.2),
+        spreadRadius: 1,
+        blurRadius: 4,
+        offset: Offset(0, 3),
+      ),
+    ],
+  );
+}

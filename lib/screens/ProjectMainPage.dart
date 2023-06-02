@@ -3,8 +3,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tab_container/tab_container.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/trip.dart';
+import '../theme/MainTheme.dart';
 import 'ResultPage.dart';
-
 class ProjectMainPage extends StatefulWidget {
   const ProjectMainPage({super.key});
 
@@ -155,12 +155,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           ), // Row For Back Icon
           Column(children: [
             Container(
-              // width: pageWidth,
-              // height: pageHeight * 0.57,
               height: 500,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
-                // color: Colors.yellowAccent,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -230,9 +227,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                     .textTheme
                                     .headlineLarge
                                     ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       decoration: TextDecoration.underline,
                                     ),
                               ),
@@ -284,8 +280,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                     ),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         trips[index].title,
@@ -545,15 +540,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         width: MediaQuery.of(context).size.width - 50,
         height: 50,
         padding: const EdgeInsets.only(left: 10, right: 15),
-        decoration: BoxDecoration(
-          // decoration for button
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-          border: Border.all(
-            color: Colors.black38,
-            width: 2,
-          ),
-        ),
+        decoration: defaultBoxDecoration(),
         child: Row(
           children: [
             const Icon(
@@ -757,15 +744,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           height: 50,
           width: MediaQuery.of(context).size.width / 2 - 50,
           padding: const EdgeInsets.only(left: 10, right: 15),
-          decoration: BoxDecoration(
-            // decoration for button
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.black38,
-              width: 2,
-            ),
-          ),
+          decoration: defaultBoxDecoration(),
         ),
         dropdownStyleData: DropdownStyleData(
           maxHeight: 200,
@@ -950,15 +929,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         width: MediaQuery.of(context).size.width - 50,
         height: 50,
         padding: const EdgeInsets.only(left: 10, right: 15),
-        decoration: BoxDecoration(
-          // decoration for button
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-          border: Border.all(
-            color: Colors.black38,
-            width: 2,
-          ),
-        ),
+        decoration: defaultBoxDecoration(),
         child: Row(
           children: [
             const Icon(

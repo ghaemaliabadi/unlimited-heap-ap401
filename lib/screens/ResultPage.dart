@@ -4,6 +4,7 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/models/trip.dart';
 import 'package:unlimited_heap_ap401/models/ticket.dart';
 import '../models/company.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: must_be_immutable
 class ResultPage extends StatefulWidget {
@@ -206,7 +207,23 @@ class _ResultPageState extends State<ResultPage> {
               ],
             ),
           ),
-          Expanded(child: buildListViewForCards()),
+          FutureBuilder(
+            future: Future.delayed(const Duration(seconds: 2))
+                .then((value) => tickets),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Expanded(child: buildListViewForCards());
+              } else {
+                return Center(
+                  child: LoadingAnimationWidget.fourRotatingDots(
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 100,
+                  ),
+                );
+              }
+            },
+          ),
+          // Expanded(child: buildListViewForCards()),
         ],
       ),
     );
@@ -477,6 +494,7 @@ class _ResultPageState extends State<ResultPage> {
     // Trip tripData = widget.tripData;
     // list of dates
     var nowDate = Jalali.now();
+    // TODO: config with for and navigate scrollbar to selected date
     List<Jalali> dates = [
       Jalali(nowDate.year, nowDate.month, nowDate.day),
       Jalali(nowDate.year, nowDate.month, nowDate.day + 1),
@@ -518,17 +536,16 @@ class _ResultPageState extends State<ResultPage> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      widget.tripData.date = dates[index];
-                    });
-                    // remove this page and go to result page
-                    // widget.tripData.date = dates[index];
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   PageRouteBuilder(
-                    //       pageBuilder: (context, animation1, animation2) =>
-                    //           ResultPage(tripData: widget.tripData)),
-                    // );
+                    // setState(() {
+                    //   widget.tripData.date = dates[index];
+                    // });
+                    widget.tripData.date = dates[index];
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              ResultPage(tripData: widget.tripData)),
+                    );
                   },
                   child: Column(
                     children: [

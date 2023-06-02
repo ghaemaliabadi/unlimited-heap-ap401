@@ -80,8 +80,15 @@ List<Ticket> tickets = [
   ),
 ];
 
+ScrollController _scrollController = ScrollController();
+
 @override
-void initState(widget) {}
+void initState() {
+}
+
+void dispose() {
+  _scrollController.dispose();
+}
 
 class _ResultPageState extends State<ResultPage> {
   // trip data
@@ -143,7 +150,11 @@ class _ResultPageState extends State<ResultPage> {
               children: [
                 InkWell(
                   onTap: () {
-                    print("Hi");
+                    _scrollController.animateTo(
+                      _scrollController.position.pixels - MediaQuery.of(context).size.width * 0.19,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
                   },
                   child: const Padding(
                     padding: EdgeInsets.fromLTRB(0, 6, 16, 0),
@@ -156,7 +167,12 @@ class _ResultPageState extends State<ResultPage> {
                 buildListViewForDateSelect(),
                 InkWell(
                   onTap: () {
-                    print("Hi");
+                    // scroll to left
+                    _scrollController.animateTo(
+                      _scrollController.position.pixels + MediaQuery.of(context).size.width * 0.19,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
                   },
                   child: const Padding(
                     padding: EdgeInsets.fromLTRB(16, 6, 0, 0),
@@ -474,6 +490,7 @@ class _ResultPageState extends State<ResultPage> {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: dates.length,
+        controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(

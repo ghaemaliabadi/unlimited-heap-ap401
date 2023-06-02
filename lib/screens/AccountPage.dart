@@ -20,6 +20,7 @@ class _AccountPageState extends State<AccountPage> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               elevation: 1.5,
               bottom: TabBar(
+                indicatorColor: Theme.of(context).colorScheme.primary,
                 splashFactory: NoSplash.splashFactory,
                 tabs: [
                   Tab(
@@ -49,6 +50,30 @@ class _AccountPageState extends State<AccountPage> {
           ),
           body: const TabBarView(
             children: [
+              Center(
+                child: Text('تراکنش‌ها'),
+              ),
+              Center(
+                child: Text('سفرها'),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Card(
+                        margin: EdgeInsets.symmetric(vertical: 20.0),
+                        color: Colors.transparent,
+                        elevation: 0.0,
+                        child: CircleAvatar(
+                          radius: 50.0,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: AssetImage('assets/images/user.png'),
+                        ),
+                      ),
+                    ],
+                  ),
+              ),
             ],
           ),
         ),

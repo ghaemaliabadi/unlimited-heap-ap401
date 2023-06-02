@@ -80,6 +80,63 @@ class _AccountPageState extends State<AccountPage> {
                         color: Theme.of(context).colorScheme.primary,
                         thickness: 1.5,
                       ),
+                      Card(
+                        margin: const EdgeInsets.all(10.0),
+                        elevation: 2.5,
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(10.0),
+                          height: 140.0,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'اطلاعات حساب کاربری',
+                                    style: Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                  const Icon(Icons.person_pin),
+                                ],
+                              ),
+                              const SizedBox(height: 20.0,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'sample@sample.com',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  const SizedBox(width: 50.0,),
+                                  Text(
+                                    'ایمیل',
+                                    style: Theme.of(context).textTheme.titleSmall,
+
+                                  ),
+                                  const Icon(Icons.email, size: 16.0,),
+                                ],
+                              ),
+                              const SizedBox(height: 20.0,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    '۰ ریال',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  const SizedBox(width: 50.0,),
+                                  Text(
+                                    'موجودی حساب',
+                                    style: Theme.of(context).textTheme.titleSmall,
+
+                                  ),
+                                  const Icon(Icons.money, size: 16.0,),
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ),
                     ],
                   ),
               ),

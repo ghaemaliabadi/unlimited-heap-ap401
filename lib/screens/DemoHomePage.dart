@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unlimited_heap_ap401/screens/AccountPage.dart';
 import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
 import 'SignUpPage.dart';
@@ -37,6 +38,8 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 context, 'ورود', const LoginPage()),
             buildElevatedButtonWithRedirect(
                 context, 'صفحه اصلی پروژه', const ProjectMainPage()),
+            buildElevatedButtonWithRedirect(
+                context, 'حساب کاربری', const AccountPage()),
           ],
         ),
       ),

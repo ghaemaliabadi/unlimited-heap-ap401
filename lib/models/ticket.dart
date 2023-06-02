@@ -1,7 +1,8 @@
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'company.dart';
 
-class Trip {
-  Trip({
+class Ticket {
+  Ticket({
     required this.transportBy,
     required this.from,
     required this.to,
@@ -19,9 +20,9 @@ class Trip {
   String to;
   Jalali? outboundDate;
   Jalali? inboundDate;
-  String company;
+  Company company;
   int price;
   int remainingSeats;
   String description;
-  Map<String, bool> tags;
+  List<String> tags;
 }

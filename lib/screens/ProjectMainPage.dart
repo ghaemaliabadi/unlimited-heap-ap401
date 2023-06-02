@@ -153,199 +153,189 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               ),
             ],
           ), // Row For Back Icon
-          SingleChildScrollView(
-            // scroll view for page view vertical scroll
-            physics: const NeverScrollableScrollPhysics(),
-            child: Column(children: [
-              SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                child: Container(
-                  // width: pageWidth,
-                  // height: pageHeight * 0.57,
-                  height: 500,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    // color: Colors.yellowAccent,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0.0),
-                        child: _menuBar(context),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: PageView(
-                          controller: _pageController,
-                          // scroll  view for page view horizontal scroll
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          onPageChanged: (int i) {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            setState(() {
-                              activePageIndex = i;
-                            });
-                          },
-                          children: <Widget>[
-                            buildConstrainedBox(context, 'پرواز داخلی'),
-                            buildConstrainedBox(context, 'پرواز خارجی'),
-                            buildConstrainedBox(context, 'قطار'),
-                            buildConstrainedBox(context, 'اتوبوس'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+          Column(children: [
+            Container(
+              // width: pageWidth,
+              // height: pageHeight * 0.57,
+              height: 500,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                // color: Colors.yellowAccent,
               ),
-              SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Container(
-                  // move to bottom
-                  color: Colors.white,
-                  child: () {
-                    if (!trips.isEmpty) {
-                      return Column(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    child: _menuBar(context),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: PageView(
+                      controller: _pageController,
+                      // scroll  view for page view horizontal scroll
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      onPageChanged: (int i) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        setState(() {
+                          activePageIndex = i;
+                        });
+                      },
+                      children: <Widget>[
+                        buildConstrainedBox(context, 'پرواز داخلی'),
+                        buildConstrainedBox(context, 'پرواز خارجی'),
+                        buildConstrainedBox(context, 'قطار'),
+                        buildConstrainedBox(context, 'اتوبوس'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              // move to bottom
+              color: Colors.white,
+              child: () {
+                if (!trips.isEmpty) {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 15),
-                                child: Row(
-                                  children: [
-                                    Text('جستجوهای اخیر',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayLarge),
-                                    Text(
-                                        " (${convertEnToFa(trips.length.toString())})",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // do something
-                                  },
-                                  child: Text(
-                                    'پاک کردن',
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Row(
+                              children: [
+                                Text('جستجوهای اخیر',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headlineLarge
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                                        .displayLarge),
+                                Text(
+                                    " (${convertEnToFa(trips.length.toString())})",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall),
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 20),
-                          // list view
                           Padding(
-                            padding: const EdgeInsets.only(right: 16),
-                            child: SizedBox(
-                              height: 100,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: trips.length,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Trip tripData = trips[index];
-                                      // transportBy = trips[index].transportBy;
-                                      // travelType = trips[index].type;
-                                      // selectedValueFrom = trips[index].from;
-                                      // selectedValueTo = trips[index].to;
-                                      // selectedDateForDepartureType =
-                                      //     trips[index].date!;
-                                      // selectedDateForReturnType = trips[index].dateRange!;
-                                      // adultPassengers = trips[index].passengers['adult']!;
-                                      // childPassengers = trips[index].passengers['child']!;
-                                      // infantPassengers = trips[index].passengers['infant']!;
-                                      // setState(() {});
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ResultPage(tripData),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                      width: 180,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.grey[200],
-                                        border: Border.all(
-                                          color: Colors.grey[500]!,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            trips[index].title,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displaySmall!
-                                                .copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            '« ${trips[index].transportBy} »',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            trips[index].dateString,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
+                            padding: const EdgeInsets.only(left: 15),
+                            child: GestureDetector(
+                              onTap: () {
+                                // do something
+                              },
+                              child: Text(
+                                'پاک کردن',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary,
+                                      decoration: TextDecoration.underline,
                                     ),
-                                  );
-                                },
                               ),
                             ),
                           ),
                         ],
-                      );
-                    }
-                  }(),
-                ),
-              ),
-            ]),
-          )
+                      ),
+                      const SizedBox(height: 20),
+                      // list view
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: SizedBox(
+                          height: 100,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: trips.length,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Trip tripData = trips[index];
+                                  // transportBy = trips[index].transportBy;
+                                  // travelType = trips[index].type;
+                                  // selectedValueFrom = trips[index].from;
+                                  // selectedValueTo = trips[index].to;
+                                  // selectedDateForDepartureType =
+                                  //     trips[index].date!;
+                                  // selectedDateForReturnType = trips[index].dateRange!;
+                                  // adultPassengers = trips[index].passengers['adult']!;
+                                  // childPassengers = trips[index].passengers['child']!;
+                                  // infantPassengers = trips[index].passengers['infant']!;
+                                  // setState(() {});
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ResultPage(tripData),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 10),
+                                  width: 180,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[200],
+                                    border: Border.all(
+                                      color: Colors.grey[500]!,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        trips[index].title,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        '« ${trips[index].transportBy} »',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        trips[index].dateString,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }(),
+            ),
+          ])
         ],
       ),
     );

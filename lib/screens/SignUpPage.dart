@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
+import 'ProjectMainPage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -135,6 +136,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ProjectMainPage()));
                       }
                     },
                     style: ButtonStyle(

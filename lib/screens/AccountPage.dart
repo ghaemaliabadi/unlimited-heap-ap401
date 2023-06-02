@@ -20,6 +20,7 @@ class _AccountPageState extends State<AccountPage> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               elevation: 1.5,
               bottom: TabBar(
+                splashFactory: NoSplash.splashFactory,
                 tabs: [
                   Tab(
                       icon: const Icon(Icons.credit_card),

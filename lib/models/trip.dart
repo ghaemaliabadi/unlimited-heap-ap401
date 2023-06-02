@@ -24,21 +24,33 @@ class Trip {
   };
 
   String get title => '$from به $to';
+
   String get dateString {
     if (type == 'رفت و برگشت') {
       var start = dateRange?.start;
       var end = dateRange?.end;
       var departureTypeLabel =
-      "${start?.formatter.wN} ${start?.formatter.dd} ${start?.formatter.mN}";
+          "${start?.formatter.wN} ${start?.formatter.dd} ${start?.formatter.mN}";
       var returnTypeLabel =
-      "${end?.formatter.wN} ${end?.formatter.dd} ${end?.formatter.mN}";
+          "${end?.formatter.wN} ${end?.formatter.dd} ${end?.formatter.mN}";
       return convertEnToFa('$departureTypeLabel » $returnTypeLabel');
     } else {
-      return convertEnToFa("${date?.formatter.wN} ${date?.formatter.dd} ${date?.formatter.mN}");
+      return convertEnToFa(
+          "${date?.formatter.wN} ${date?.formatter.dd} ${date?.formatter.mN}");
     }
   }
 }
 
 convertEnToFa(String txt) {
-  return txt.replaceAll('0', '۰').replaceAll('1', '۱').replaceAll('2', '۲').replaceAll('3', '۳').replaceAll('4', '۴').replaceAll('5', '۵').replaceAll('6', '۶').replaceAll('7', '۷').replaceAll('8', '۸').replaceAll('9', '۹');
+  return txt
+      .replaceAll('0', '۰')
+      .replaceAll('1', '۱')
+      .replaceAll('2', '۲')
+      .replaceAll('3', '۳')
+      .replaceAll('4', '۴')
+      .replaceAll('5', '۵')
+      .replaceAll('6', '۶')
+      .replaceAll('7', '۷')
+      .replaceAll('8', '۸')
+      .replaceAll('9', '۹');
 }

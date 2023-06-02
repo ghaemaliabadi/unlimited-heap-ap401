@@ -173,7 +173,7 @@ class _ResultPageState extends State<ResultPage> {
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black38,
-                  offset: Offset(1, 3),
+                  offset: Offset(0, 2),
                   blurRadius: 4.0,
                 ),
               ],
@@ -210,6 +210,54 @@ class _ResultPageState extends State<ResultPage> {
                       Text(
                         ticket.company.name,
                         style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 16.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        ticket.transportBy,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 8.0),
+                      Row(
+                        children: [
+                          Text(
+                            ticket.from,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(width: 8.0),
+                          const Icon(
+                            Icons.arrow_forward,
+                            size: 16.0,
+                          ),
+                          const SizedBox(width: 8.0),
+                          Text(
+                            ticket.to,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8.0),
+                      Row(
+                        children: [
+                          Text(
+                            ticket.outboundTimeString,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(width: 8.0),
+                          const Icon(
+                            Icons.arrow_forward,
+                            size: 16.0,
+                          ),
+                          const SizedBox(width: 8.0),
+                          Text(
+                            ticket.inboundTimeString,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -294,7 +342,7 @@ class _ResultPageState extends State<ResultPage> {
                   ),
                 )
               ],
-            )
+            ) // price and remaining seats
           ],
         ),
       ),

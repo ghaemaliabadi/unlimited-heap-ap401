@@ -218,17 +218,17 @@ class _ResultPageState extends State<ResultPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       () {
-                      if (ticket.description != '') {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Text(
-                            ticket.description,
-                            style: Theme.of(context).textTheme.displaySmall,
-                          ),
-                        );
-                      } else {
-                        return const SizedBox(height: 0);
-                      }
+                        if (ticket.description != '') {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Text(
+                              ticket.description,
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          );
+                        } else {
+                          return const SizedBox(height: 0);
+                        }
                       }(),
                       () {
                         return Row(
@@ -263,24 +263,44 @@ class _ResultPageState extends State<ResultPage> {
                           return const SizedBox(height: 8.0);
                         }
                       }(),
-                      Row(
-                        children: [
-                          Text(
-                            ticket.outboundTimeString,
-                            style: Theme.of(context).textTheme.displayLarge,
-                          ),
-                          const SizedBox(width: 8.0),
-                          // TODO: replace with our own icon data
-                          const Icon(
-                            Icons.arrow_forward_rounded,
-                            size: 24.0,
-                          ),
-                          const SizedBox(width: 8.0),
-                          Text(
-                            ticket.inboundTimeString,
-                            style: Theme.of(context).textTheme.displayLarge,
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Row(
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  ticket.outboundTimeString,
+                                  style: Theme.of(context).textTheme.displayLarge,
+                                ),
+                                const SizedBox(height: 4.0),
+                                Text(
+                                  ticket.from,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 8.0),
+                            const Icon(
+                              Icons.arrow_forward_rounded,
+                              size: 32.0,
+                            ),
+                            const SizedBox(width: 4.0),
+                            Column(
+                              children: [
+                                Text(
+                                  ticket.inboundTimeString,
+                                  style: Theme.of(context).textTheme.displayLarge,
+                                ),
+                                const SizedBox(height: 4.0),
+                                Text(
+                                  ticket.to,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -289,16 +309,16 @@ class _ResultPageState extends State<ResultPage> {
             ),
             () {
               if (ticket.description == '') {
-                return const SizedBox(height: 24.0);
+                return const SizedBox(height: 26.0);
               } else {
-                return const SizedBox(height: 16.0);
+                return const SizedBox(height: 4.0);
               }
             }(),
             const Divider(
               height: 2.0,
               color: Colors.black,
             ),
-            const SizedBox(height: 12.0),
+            const SizedBox(height: 8.0),
             Column(
               children: [
                 Padding(

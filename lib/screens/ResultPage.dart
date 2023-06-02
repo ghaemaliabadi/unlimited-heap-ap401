@@ -25,9 +25,9 @@ List<Ticket> tickets = [
     outboundDate: Jalali(1401, 3, 15, 12, 30),
     inboundDate: Jalali(1400, 3, 15, 13, 35),
     company: Company('زاگرس'),
-    price: 1210000,
-    remainingSeats: 12,
-    description: 'بلیط هواپیما با زاگرس',
+    price: 920000,
+    remainingSeats: 68,
+    description: '',
     tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
   ),
   Ticket(
@@ -38,8 +38,8 @@ List<Ticket> tickets = [
     inboundDate: Jalali(1400, 3, 15, 15, 25),
     company: Company('ماهان'),
     price: 1210000,
-    remainingSeats: 12,
-    description: 'بلیط هواپیما با ماهان ایر',
+    remainingSeats: 55,
+    description: '',
     tags: ['CF8', 'اکونومی', 'سیستمی'],
   ),
   Ticket(
@@ -49,10 +49,10 @@ List<Ticket> tickets = [
     outboundDate: Jalali(1401, 3, 15, 15, 30),
     inboundDate: Jalali(1400, 3, 15, 16, 35),
     company: Company('زاگرس'),
-    price: 1210000,
+    price: 1590000,
     remainingSeats: 12,
-    description: 'بلیط هواپیما با زاگرس',
-    tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
+    description: '',
+    tags: ['Fokker 100', 'بیزنس', 'سیستمی'],
   ),
   Ticket(
     transportBy: 'هواپیما',
@@ -61,9 +61,21 @@ List<Ticket> tickets = [
     outboundDate: Jalali(1401, 3, 15, 18, 20),
     inboundDate: Jalali(1400, 3, 15, 18, 25),
     company: Company('ماهان'),
-    price: 1210000,
-    remainingSeats: 12,
-    description: 'بلیط هواپیما با ماهان ایر',
+    price: 990000,
+    remainingSeats: 0,
+    description: '',
+    tags: ['CF8', 'اکونومی', 'سیستمی'],
+  ),
+  Ticket(
+    transportBy: 'هواپیما',
+    from: 'تهران',
+    to: 'مشهد',
+    outboundDate: Jalali(1401, 3, 15, 18, 20),
+    inboundDate: Jalali(1400, 3, 15, 18, 25),
+    company: Company('وارش'),
+    price: 1120000,
+    remainingSeats: 15,
+    description: '',
     tags: ['CF8', 'اکونومی', 'سیستمی'],
   ),
 ];
@@ -124,81 +136,149 @@ class _ResultPageState extends State<ResultPage> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: tickets.length,
-        itemBuilder: (context, index) {
-          return ticketCard(ticket: tickets[index]);
-        },
-      ),
+      body: buildListView(),
+    );
+  }
+
+  ListView buildListView() {
+    tickets.sort((a, b) => a.remainingSeats.compareTo(b.remainingSeats));
+    tickets = tickets.reversed.toList();
+    return ListView.builder(
+      itemCount: tickets.length,
+      itemBuilder: (context, index) {
+        return ticketCard(ticket: tickets[index]);
+      },
     );
   }
 
   Widget ticketCard({required Ticket ticket}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      height: 150,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            offset: Offset(0, 2),
-            blurRadius: 4.0,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-           Padding(
-             padding: const EdgeInsets.fromLTRB(16.0, 12, 16.0, 0),
-             child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+    return GestureDetector(
+      onTap: () {
+        if (ticket.remainingSeats > 0) {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => TicketPage(ticket: ticket),
+          //   ),
+          // );
+          print("ok");
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        height: 170,
+        decoration: () {
+          if (ticket.remainingSeats > 0) {
+            return BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black38,
+                  offset: Offset(0, 2),
+                  blurRadius: 4.0,
+                ),
+              ],
+            );
+          } else {
+            return BoxDecoration(
+              color: Colors.grey.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(
+                color: Colors.grey.withOpacity(0.8),
+                width: 1.0,
+              ),
+            );
+          }
+        }(),
+        child: Column(
+          children: [
+             Padding(
+               padding: const EdgeInsets.fromLTRB(16.0, 12, 16.0, 0),
+               child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          ticket.company.logo!,
+                          width: 50.0,
+                          height: 50.0,
+                        ),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          ticket.company.name,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ],
+               ),
+             ),
+            const SizedBox(height: 24.0),
+            const Divider(
+              height: 2.0,
+              color: Colors.black,
+            ),
+            const SizedBox(height: 12.0),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        ticket.company.logo!,
-                        width: 50.0,
-                        height: 50.0,
-                      ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        ticket.company.name,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                      () {
+                      if (ticket.remainingSeats > 0) {
+                        return Text(
+                          '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey[700],
+                            fontSize: 16.0,
+                          ),
+                        );
+                      } else {
+                        return  Text(
+                          'تکمیل ظرفیت',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.red[700],
+                            fontSize: 16.0,
+                          ),
+                        );
+                      }
+                      }(),
+                      Row(
+                        children: [
+                          Text(
+                            '${convertEnToFa(numberFormat.format(ticket.price))}',
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  fontSize: 28.0,
+                                  color: Colors.blueAccent,
+                                  fontWeight: FontWeight.bold,
+                                )
+                          ),
+                          const SizedBox(width: 4.0),
+                          Column(
+                            children: [
+                              const SizedBox(height: 4.0),
+                              Text(
+                                'تومان',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: Colors.grey[700],
+                                      fontSize: 18.0,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-             ),
-           ),
-          const SizedBox(height: 12.0),
-          const Divider(
-            height: 2.0,
-            color: Colors.black,
-          ),
-          const SizedBox(height: 12.0),
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    Text(
-                      '${convertEnToFa(numberFormat.format(ticket.price))} تومان',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

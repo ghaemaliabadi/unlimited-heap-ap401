@@ -53,6 +53,12 @@ ThemeData buildThemeData() {
         fontWeight: FontWeight.w300,
         color: Colors.black,
       ),
+      // Account page: app bar
+      titleMedium: TextStyle(
+        fontSize: 18.0,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+      ),
     ),
   );
 }

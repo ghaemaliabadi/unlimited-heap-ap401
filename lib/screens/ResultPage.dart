@@ -214,10 +214,13 @@ class _ResultPageState extends State<ResultPage> {
               if (snapshot.hasData) {
                 return Expanded(child: buildListViewForCards());
               } else {
-                return Center(
-                  child: LoadingAnimationWidget.fourRotatingDots(
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 100,
+                return Padding(
+                  padding: const EdgeInsets.only(top: 100.0),
+                  child: Center(
+                    child: LoadingAnimationWidget.fourRotatingDots(
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 100,
+                    ),
                   ),
                 );
               }

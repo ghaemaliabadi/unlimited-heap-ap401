@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/models/trip.dart';
 import 'package:unlimited_heap_ap401/models/ticket.dart';
@@ -14,6 +15,7 @@ class ResultPage extends StatefulWidget {
   State<ResultPage> createState() => _ResultPageState();
 }
 
+var numberFormat = NumberFormat("###,###", "en_US");
 
 List<Ticket> tickets = [
   Ticket(
@@ -89,7 +91,7 @@ class _ResultPageState extends State<ResultPage> {
             //replace with our own icon data.
           ),
           titleSpacing: 0,
-          elevation: 4.5,
+          elevation: 2.5,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -170,12 +172,12 @@ class _ResultPageState extends State<ResultPage> {
                 ],
              ),
            ),
-          SizedBox(height: 12.0),
+          const SizedBox(height: 12.0),
           const Divider(
             height: 2.0,
             color: Colors.black,
           ),
-          SizedBox(height: 12.0),
+          const SizedBox(height: 12.0),
           Column(
             children: [
               Padding(
@@ -184,11 +186,11 @@ class _ResultPageState extends State<ResultPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${ticket.remainingSeats} صندلی باقی مانده',
+                      '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     Text(
-                      '${ticket.price} تومان',
+                      '${convertEnToFa(numberFormat.format(ticket.price))} تومان',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
@@ -200,4 +202,19 @@ class _ResultPageState extends State<ResultPage> {
       ),
     );
   }
+}
+
+convertEnToFa(txt) {
+  txt = txt.toString();
+  return txt
+      .replaceAll('0', '۰')
+      .replaceAll('1', '۱')
+      .replaceAll('2', '۲')
+      .replaceAll('3', '۳')
+      .replaceAll('4', '۴')
+      .replaceAll('5', '۵')
+      .replaceAll('6', '۶')
+      .replaceAll('7', '۷')
+      .replaceAll('8', '۸')
+      .replaceAll('9', '۹');
 }

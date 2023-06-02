@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/models/trip.dart';
+import 'package:unlimited_heap_ap401/models/ticket.dart';
+
+import '../models/company.dart';
 
 class ResultPage extends StatefulWidget {
   final Trip tripData;
@@ -9,6 +13,58 @@ class ResultPage extends StatefulWidget {
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
+
+
+List<Ticket> tickets = [
+  Ticket(
+    transportBy: 'هواپیما',
+    from: 'تهران',
+    to: 'مشهد',
+    outboundDate: Jalali(1401, 3, 15, 12, 30),
+    inboundDate: Jalali(1400, 3, 15, 13, 35),
+    company: Company('زاگرس'),
+    price: 1210000,
+    remainingSeats: 12,
+    description: 'بلیط هواپیما با زاگرس',
+    tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
+  ),
+  Ticket(
+    transportBy: 'هواپیما',
+    from: 'تهران',
+    to: 'مشهد',
+    outboundDate: Jalali(1401, 3, 15, 14, 20),
+    inboundDate: Jalali(1400, 3, 15, 15, 25),
+    company: Company('ماهان'),
+    price: 1210000,
+    remainingSeats: 12,
+    description: 'بلیط هواپیما با ماهان ایر',
+    tags: ['CF8', 'اکونومی', 'سیستمی'],
+  ),
+  Ticket(
+    transportBy: 'هواپیما',
+    from: 'تهران',
+    to: 'مشهد',
+    outboundDate: Jalali(1401, 3, 15, 15, 30),
+    inboundDate: Jalali(1400, 3, 15, 16, 35),
+    company: Company('زاگرس'),
+    price: 1210000,
+    remainingSeats: 12,
+    description: 'بلیط هواپیما با زاگرس',
+    tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
+  ),
+  Ticket(
+    transportBy: 'هواپیما',
+    from: 'تهران',
+    to: 'مشهد',
+    outboundDate: Jalali(1401, 3, 15, 18, 20),
+    inboundDate: Jalali(1400, 3, 15, 18, 25),
+    company: Company('ماهان'),
+    price: 1210000,
+    remainingSeats: 12,
+    description: 'بلیط هواپیما با ماهان ایر',
+    tags: ['CF8', 'اکونومی', 'سیستمی'],
+  ),
+];
 
 @override
 void initState(widget) {

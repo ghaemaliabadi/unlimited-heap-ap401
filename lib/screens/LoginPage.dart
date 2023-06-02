@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unlimited_heap_ap401/screens/ProjectMainPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -101,6 +102,9 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _showSnackBar(context, 'ورود با موفقیت انجام شد.');
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ProjectMainPage()));
                       }
                     },
                     style: ButtonStyle(

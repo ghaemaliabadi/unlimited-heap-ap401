@@ -81,9 +81,7 @@ List<Ticket> tickets = [
 ];
 
 @override
-void initState(widget) {
-
-}
+void initState(widget) {}
 
 class _ResultPageState extends State<ResultPage> {
   // trip data
@@ -175,46 +173,49 @@ class _ResultPageState extends State<ResultPage> {
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black38,
-                  offset: Offset(0, 2),
+                  offset: Offset(1, 3),
                   blurRadius: 4.0,
                 ),
               ],
             );
           } else {
             return BoxDecoration(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey[300],
               borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(
-                color: Colors.grey.withOpacity(0.8),
-                width: 1.0,
-              ),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black45,
+                  offset: Offset(1, 3),
+                  blurRadius: 4.0,
+                ),
+              ],
             );
           }
         }(),
         child: Column(
           children: [
-             Padding(
-               padding: const EdgeInsets.fromLTRB(16.0, 12, 16.0, 0),
-               child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          ticket.company.logo!,
-                          width: 50.0,
-                          height: 50.0,
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          ticket.company.name,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                  ],
-               ),
-             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 12, 16.0, 0),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        ticket.company.logo!,
+                        width: 50.0,
+                        height: 50.0,
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        ticket.company.name,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 24.0),
             const Divider(
               height: 2.0,
@@ -229,47 +230,58 @@ class _ResultPageState extends State<ResultPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       () {
-                      if (ticket.remainingSeats > 0) {
-                        return Text(
-                          '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[700],
-                            fontSize: 16.0,
-                          ),
-                        );
-                      } else {
-                        return  Text(
-                          'تکمیل ظرفیت',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.red[700],
-                            fontSize: 16.0,
-                          ),
-                        );
-                      }
+                        if (ticket.remainingSeats > 0) {
+                          return Text(
+                            '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Colors.grey[700],
+                                  fontSize: 16.0,
+                                ),
+                          );
+                        } else {
+                          return Text(
+                            'تکمیل ظرفیت',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Colors.red[700],
+                                  fontSize: 16.0,
+                                ),
+                          );
+                        }
                       }(),
                       Row(
                         children: [
                           Text(
-                            '${convertEnToFa(numberFormat.format(ticket.price))}',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  fontSize: 28.0,
-                                  color: (ticket) {
-                                    if (ticket.remainingSeats > 0) {
-                                      return Colors.blueAccent;
-                                    } else {
-                                      return Colors.grey[700];
-                                    }
-                                  }(ticket),
-                                  fontWeight: FontWeight.bold,
-                                )
-                          ),
+                              '${convertEnToFa(numberFormat.format(ticket.price))}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    fontSize: 28.0,
+                                    color: (ticket) {
+                                      if (ticket.remainingSeats > 0) {
+                                        return Colors.blueAccent;
+                                      } else {
+                                        return Colors.grey[700];
+                                      }
+                                    }(ticket),
+                                    fontWeight: FontWeight.bold,
+                                  )),
                           const SizedBox(width: 4.0),
                           Column(
                             children: [
                               const SizedBox(height: 4.0),
                               Text(
                                 'تومان',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
                                       color: Colors.grey[700],
                                       fontSize: 18.0,
                                     ),

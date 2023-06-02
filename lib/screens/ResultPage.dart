@@ -134,10 +134,41 @@ class _ResultPageState extends State<ResultPage> {
           ),
         ),
       ),
-      body:
-      Column(
+      body: Column(
         children: [
-          buildListViewForDateSelect(),
+          Container(
+            height: 60.0,
+            color: Colors.grey[200],
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    print("Hi");
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                buildListViewForDateSelect(),
+                InkWell(
+                  onTap: () {
+                    print("Hi");
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 16.0, 14.0, 8.0),
             child: Row(
@@ -292,7 +323,8 @@ class _ResultPageState extends State<ResultPage> {
                               children: [
                                 Text(
                                   ticket.outboundTimeString,
-                                  style: Theme.of(context).textTheme.displayLarge,
+                                  style:
+                                      Theme.of(context).textTheme.displayLarge,
                                 ),
                                 const SizedBox(height: 4.0),
                                 Text(
@@ -311,7 +343,8 @@ class _ResultPageState extends State<ResultPage> {
                               children: [
                                 Text(
                                   ticket.inboundTimeString,
-                                  style: Theme.of(context).textTheme.displayLarge,
+                                  style:
+                                      Theme.of(context).textTheme.displayLarge,
                                 ),
                                 const SizedBox(height: 4.0),
                                 Text(
@@ -436,8 +469,8 @@ class _ResultPageState extends State<ResultPage> {
       Jalali(nowDate.year, nowDate.month, nowDate.day + 10),
     ];
     return SizedBox(
-      height: 50,
-      width: MediaQuery.of(context).size.width,
+      height: 40,
+      width: MediaQuery.of(context).size.width * 0.7,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: dates.length,
@@ -458,8 +491,7 @@ class _ResultPageState extends State<ResultPage> {
               // setState(() {});
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) =>
-                      ResultPage(tripData: widget.tripData),
+                  builder: (context) => ResultPage(tripData: widget.tripData),
                 ),
               );
             },
@@ -480,6 +512,7 @@ class _ResultPageState extends State<ResultPage> {
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text("sample Text")
                 ],
               ),
             ),

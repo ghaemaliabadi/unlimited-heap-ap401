@@ -144,14 +144,14 @@ class _ResultPageState extends State<ResultPage> {
       body: Column(
         children: [
           Container(
-            height: 60.0,
+            height: 65.0,
             color: Colors.grey[200],
             child: Row(
               children: [
                 InkWell(
                   onTap: () {
                     _scrollController.animateTo(
-                      _scrollController.position.pixels - MediaQuery.of(context).size.width * 0.19,
+                      _scrollController.position.pixels - MediaQuery.of(context).size.width * 0.196,
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut,
                     );
@@ -169,7 +169,7 @@ class _ResultPageState extends State<ResultPage> {
                   onTap: () {
                     // scroll to left
                     _scrollController.animateTo(
-                      _scrollController.position.pixels + MediaQuery.of(context).size.width * 0.19,
+                      _scrollController.position.pixels + MediaQuery.of(context).size.width * 0.196,
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut,
                     );
@@ -469,6 +469,7 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   buildListViewForDateSelect() {
+    // Trip tripData = widget.tripData;
     // list of dates
     var nowDate = Jalali.now();
     List<Jalali> dates = [
@@ -485,7 +486,7 @@ class _ResultPageState extends State<ResultPage> {
       Jalali(nowDate.year, nowDate.month, nowDate.day + 10),
     ];
     return SizedBox(
-      height: 40,
+      height: 50,
       width: MediaQuery.of(context).size.width * 0.81,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -514,7 +515,7 @@ class _ResultPageState extends State<ResultPage> {
             },
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-              width: MediaQuery.of(context).size.width * 0.195,
+              width: MediaQuery.of(context).size.width * 0.197,
               decoration: BoxDecoration(
                 // borderRadius: BorderRadius.circular(10),
                 color: Colors.grey[200],
@@ -526,10 +527,33 @@ class _ResultPageState extends State<ResultPage> {
                   ),
                 ),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("sample Text")
+                  GestureDetector(
+                    // TODO: onTap, change the date of trip
+                    onTap: null,
+                    child: Column(
+                      children: [
+                        Text(
+                          '${dates[index].formatter.wN.substring(0, 1) + ' - ' + convertEnToFa(dates[index].formatter.mm)}/' + convertEnToFa(dates[index].day),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black45,
+                          ),
+                        ),
+                        Text(
+                          '${convertEnToFa(numberFormat.format(1265))}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

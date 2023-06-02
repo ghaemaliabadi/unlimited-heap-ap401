@@ -3,14 +3,16 @@ import 'package:unlimited_heap_ap401/models/trip.dart';
 
 class ResultPage extends StatefulWidget {
   final Trip tripData;
+
   const ResultPage({Key? key, required this.tripData}) : super(key: key);
+
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
 
 @override
 void initState(widget) {
-
+  Trip tripData = widget.tripData;
 }
 
 class _ResultPageState extends State<ResultPage> {
@@ -38,6 +40,11 @@ class _ResultPageState extends State<ResultPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  () {
+                    print(
+                        'tripData.transportBy: ${tripData.transportBy} ${tripData.title}');
+                    return const SizedBox.shrink();
+                  }(),
                   Text('بلیط ${tripData.transportBy} ${tripData.title}',
                       style: Theme.of(context).textTheme.displayMedium),
                   const SizedBox(height: 2.0),

@@ -5,6 +5,7 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/trip.dart';
 import '../theme/MainTheme.dart';
 import 'ResultPage.dart';
+
 class ProjectMainPage extends StatefulWidget {
   const ProjectMainPage({super.key});
 
@@ -117,6 +118,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     returnTypeLabel = convertEnToFa(
         "${end.formatter.wN} ${end.formatter.dd} ${end.formatter.mN}");
     returnTypeLabel = '$departureTypeLabel الی $returnTypeLabel';
+    transportBy = 'پرواز داخلی';
     super.initState();
   }
 
@@ -193,7 +195,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               // move to bottom
               color: Colors.white,
               child: () {
-                if (!trips.isEmpty) {
+                if (trips.isNotEmpty) {
                   return Column(
                     children: [
                       Row(
@@ -337,7 +339,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   ConstrainedBox buildConstrainedBox(BuildContext context, String tripType) {
-    transportBy = tripType;
     return ConstrainedBox(
       constraints: const BoxConstraints.expand(),
       child: Padding(
@@ -368,11 +369,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   }
 
   Container buildFormContainer(BuildContext context, type, tripType) {
-    if (type == 'رفت و برگشت') {
-      travelType = 'رفت و برگشت';
-    } else {
-      travelType = 'یک طرفه';
-    }
     var pageWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -565,6 +561,11 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       showDialogError(context, 'مبدا و مقصد نباید خالی باشند.');
       return;
     }
+    if (_tabController.index == 1) {
+      travelType = 'یک طرفه';
+    } else {
+      travelType = 'رفت و برگشت';
+    }
     Trip tripData = Trip(
       transportBy: transportBy!,
       type: travelType!,
@@ -578,8 +579,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         'infant': infantPassengers,
       },
     );
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ResultPage(tripData: tripData)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ResultPage(tripData: tripData)));
   }
 
   Row buildPassengerCountRow(BuildContext context, StateSetter setModalState,
@@ -861,21 +862,25 @@ class _ProjectMainPage extends State<ProjectMainPage> {
   void _tapOnDomesticFlight() {
     int jumpTo = 0;
     jumpWithAnimationCustom(_pageController, jumpTo);
+    transportBy = 'پرواز داخلی';
   }
 
   void _tapOnInternationalFlight() {
     int jumpTo = 1;
     jumpWithAnimationCustom(_pageController, jumpTo);
+    transportBy = 'پرواز خارجی';
   }
 
   void _tapOnTrain() {
     int jumpTo = 2;
     jumpWithAnimationCustom(_pageController, jumpTo);
+    transportBy = 'قطار';
   }
 
   void _tapOnBus() {
     int jumpTo = 3;
     jumpWithAnimationCustom(_pageController, jumpTo);
+    transportBy = 'اتوبوس';
   }
 
   GestureDetector buildDatePicker(BuildContext context, String type) {

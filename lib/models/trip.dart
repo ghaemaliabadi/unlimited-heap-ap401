@@ -37,7 +37,7 @@ class Trip {
 
   String get dateString {
     if (type == 'رفت و برگشت') {
-      return convertEnToFa('$goDate » $backDate');
+      return '$goDate » $backDate';
     } else {
       return convertEnToFa(
           "${date?.formatter.wN} ${date?.formatter.dd} ${date?.formatter.mN}");

@@ -24,11 +24,11 @@ class _SignUpPageState extends State<SignUpPage> {
         title: Text(widget.title,
             style: Theme.of(context).textTheme.displayMedium),
       ),
-      body: InkResponse(
-        // TODO: fix the splash bug
-        containedInkWell: false,
+      body: InkWell(
+        splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },

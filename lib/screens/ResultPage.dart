@@ -122,6 +122,82 @@ class _ResultPageState extends State<ResultPage> {
           ),
         ),
       ),
+      body: ListView.builder(
+        itemCount: tickets.length,
+        itemBuilder: (context, index) {
+          return ticketCard(ticket: tickets[index]);
+        },
+      ),
+    );
+  }
+
+  Widget ticketCard({required Ticket ticket}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      height: 150,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 2),
+            blurRadius: 4.0,
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+           Padding(
+             padding: const EdgeInsets.fromLTRB(16.0, 12, 16.0, 0),
+             child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        ticket.company.logo!,
+                        width: 50.0,
+                        height: 50.0,
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        ticket.company.name,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+                ],
+             ),
+           ),
+          SizedBox(height: 12.0),
+          const Divider(
+            height: 2.0,
+            color: Colors.black,
+          ),
+          SizedBox(height: 12.0),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${ticket.remainingSeats} صندلی باقی مانده',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      '${ticket.price} تومان',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

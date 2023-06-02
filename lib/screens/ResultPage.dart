@@ -3,13 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/models/trip.dart';
 import 'package:unlimited_heap_ap401/models/ticket.dart';
-
 import '../models/company.dart';
 
+// ignore: must_be_immutable
 class ResultPage extends StatefulWidget {
-  final Trip tripData;
+  Trip tripData;
 
-  const ResultPage({Key? key, required this.tripData}) : super(key: key);
+  ResultPage({Key? key, required this.tripData}) : super(key: key);
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -79,18 +79,20 @@ List<Ticket> tickets = [
     tags: ['CF8', 'اکونومی', 'سیستمی'],
   ),
 ];
-
 ScrollController _scrollController = ScrollController();
 
-@override
-void initState() {
-}
-
-void dispose() {
-  _scrollController.dispose();
-}
-
 class _ResultPageState extends State<ResultPage> {
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    super.initState();
+  }
+
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   // trip data
   @override
   Widget build(BuildContext context) {
@@ -151,7 +153,8 @@ class _ResultPageState extends State<ResultPage> {
                 InkWell(
                   onTap: () {
                     _scrollController.animateTo(
-                      _scrollController.position.pixels - MediaQuery.of(context).size.width * 0.196,
+                      _scrollController.position.pixels -
+                          MediaQuery.of(context).size.width * 0.196,
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut,
                     );
@@ -169,7 +172,8 @@ class _ResultPageState extends State<ResultPage> {
                   onTap: () {
                     // scroll to left
                     _scrollController.animateTo(
-                      _scrollController.position.pixels + MediaQuery.of(context).size.width * 0.196,
+                      _scrollController.position.pixels +
+                          MediaQuery.of(context).size.width * 0.196,
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut,
                     );
@@ -194,6 +198,7 @@ class _ResultPageState extends State<ResultPage> {
                   color: Colors.grey,
                 ),
                 const SizedBox(width: 8.0),
+                // TODO: add filter menu and sort dropdown
                 Text(
                   'قیمت‌ها برای یک بزرگسال محاسبه شده است.',
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -494,68 +499,61 @@ class _ResultPageState extends State<ResultPage> {
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-              // transportBy = trips[index].transportBy;
-              // travelType = trips[index].type;
-              // selectedValueFrom = trips[index].from;
-              // selectedValueTo = trips[index].to;
-              // selectedDateForDepartureType =
-              //     trips[index].date!;
-              // selectedDateForReturnType = trips[index].dateRange!;
-              // adultPassengers = trips[index].passengers['adult']!;
-              // childPassengers = trips[index].passengers['child']!;
-              // infantPassengers = trips[index].passengers['infant']!;
-              // setState(() {});
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ResultPage(tripData: widget.tripData),
-                ),
-              );
-            },
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-              width: MediaQuery.of(context).size.width * 0.197,
-              decoration: BoxDecoration(
-                // borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[200],
-                // border from left
-                border: Border(
-                  left: BorderSide(
-                    color: Colors.grey[500]!,
-                    width: 1,
-                  ),
+          return Container(
+            margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+            width: MediaQuery.of(context).size.width * 0.197,
+            decoration: BoxDecoration(
+              // borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[200],
+              // border from left
+              border: Border(
+                left: BorderSide(
+                  color: Colors.grey[500]!,
+                  width: 1,
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    // TODO: onTap, change the date of trip
-                    onTap: null,
-                    child: Column(
-                      children: [
-                        Text(
-                          '${dates[index].formatter.wN.substring(0, 1) + ' - ' + convertEnToFa(dates[index].formatter.mm)}/' + convertEnToFa(dates[index].day),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black45,
-                          ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      widget.tripData.date = dates[index];
+                    });
+                    // remove this page and go to result page
+                    // widget.tripData.date = dates[index];
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   PageRouteBuilder(
+                    //       pageBuilder: (context, animation1, animation2) =>
+                    //           ResultPage(tripData: widget.tripData)),
+                    // );
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        // ignore: prefer_interpolation_to_compose_strings
+                        '${dates[index].formatter.wN.substring(0, 1) + ' - ' + convertEnToFa(dates[index].formatter.mm)}/' +
+                            convertEnToFa(dates[index].day),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black45,
                         ),
-                        Text(
-                          '${convertEnToFa(numberFormat.format(1265))}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54,
-                          ),
+                      ),
+                      Text(
+                        '${convertEnToFa(numberFormat.format(1265))}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

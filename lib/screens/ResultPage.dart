@@ -12,7 +12,7 @@ class ResultPage extends StatefulWidget {
 
 @override
 void initState(widget) {
-  Trip tripData = widget.tripData;
+
 }
 
 class _ResultPageState extends State<ResultPage> {
@@ -40,11 +40,6 @@ class _ResultPageState extends State<ResultPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  () {
-                    print(
-                        'tripData.transportBy: ${tripData.transportBy} ${tripData.title}');
-                    return const SizedBox.shrink();
-                  }(),
                   Text('بلیط ${tripData.transportBy} ${tripData.title}',
                       style: Theme.of(context).textTheme.displayMedium),
                   const SizedBox(height: 2.0),

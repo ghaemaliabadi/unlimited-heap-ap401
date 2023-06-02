@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
+import 'ProjectMainPage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -24,11 +25,11 @@ class _SignUpPageState extends State<SignUpPage> {
         title: Text(widget.title,
             style: Theme.of(context).textTheme.displayMedium),
       ),
-      body: InkResponse(
-        // TODO: fix the splash bug
-        containedInkWell: false,
+      body: InkWell(
+        splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
@@ -135,6 +136,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ProjectMainPage()));
                       }
                     },
                     style: ButtonStyle(

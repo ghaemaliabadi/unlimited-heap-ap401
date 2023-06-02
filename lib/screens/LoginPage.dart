@@ -21,10 +21,11 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(widget.title,
             style: Theme.of(context).textTheme.displayMedium),
       ),
-      body: InkResponse(
-        containedInkWell: false,
+      body: InkWell(
+        splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },

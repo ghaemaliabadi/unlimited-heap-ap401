@@ -146,7 +146,7 @@ class _ResultPageState extends State<ResultPage> {
                     print("Hi");
                   },
                   child: const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                    padding: EdgeInsets.fromLTRB(0, 6, 16, 0),
                     child: Icon(
                       Icons.arrow_back_ios,
                       color: Colors.grey,
@@ -159,7 +159,7 @@ class _ResultPageState extends State<ResultPage> {
                     print("Hi");
                   },
                   child: const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                    padding: EdgeInsets.fromLTRB(16, 6, 0, 0),
                     child: Icon(
                       Icons.arrow_forward_ios,
                       color: Colors.grey,
@@ -470,7 +470,7 @@ class _ResultPageState extends State<ResultPage> {
     ];
     return SizedBox(
       height: 40,
-      width: MediaQuery.of(context).size.width * 0.7,
+      width: MediaQuery.of(context).size.width * 0.81,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: dates.length,
@@ -497,7 +497,7 @@ class _ResultPageState extends State<ResultPage> {
             },
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-              width: 80,
+              width: MediaQuery.of(context).size.width * 0.195,
               decoration: BoxDecoration(
                 // borderRadius: BorderRadius.circular(10),
                 color: Colors.grey[200],

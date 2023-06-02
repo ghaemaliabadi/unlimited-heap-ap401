@@ -134,11 +134,33 @@ class _ResultPageState extends State<ResultPage> {
           ),
         ),
       ),
-      body: buildListView(),
+      body:
+      Column(
+        children: [
+          buildListViewForDateSelect(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 16.0, 14.0, 8.0),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.info_outline,
+                  color: Colors.grey,
+                ),
+                const SizedBox(width: 8.0),
+                Text(
+                  'قیمت‌ها برای یک بزرگسال محاسبه شده است.',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            ),
+          ),
+          Expanded(child: buildListViewForCards()),
+        ],
+      ),
     );
   }
 
-  ListView buildListView() {
+  ListView buildListViewForCards() {
     tickets.sort((a, b) => a.remainingSeats.compareTo(b.remainingSeats));
     tickets = tickets.reversed.toList();
     return ListView.builder(
@@ -159,7 +181,6 @@ class _ResultPageState extends State<ResultPage> {
           //     builder: (context) => TicketPage(ticket: ticket),
           //   ),
           // );
-          print("ok");
         }
       },
       child: Container(
@@ -394,6 +415,76 @@ class _ResultPageState extends State<ResultPage> {
             ) // price and remaining seats
           ],
         ),
+      ),
+    );
+  }
+
+  buildListViewForDateSelect() {
+    // list of dates
+    var nowDate = Jalali.now();
+    List<Jalali> dates = [
+      Jalali(nowDate.year, nowDate.month, nowDate.day),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 1),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 2),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 3),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 4),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 5),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 6),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 7),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 8),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 9),
+      Jalali(nowDate.year, nowDate.month, nowDate.day + 10),
+    ];
+    return SizedBox(
+      height: 50,
+      width: MediaQuery.of(context).size.width,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: dates.length,
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return GestureDetector(
+            onTap: () {
+              // transportBy = trips[index].transportBy;
+              // travelType = trips[index].type;
+              // selectedValueFrom = trips[index].from;
+              // selectedValueTo = trips[index].to;
+              // selectedDateForDepartureType =
+              //     trips[index].date!;
+              // selectedDateForReturnType = trips[index].dateRange!;
+              // adultPassengers = trips[index].passengers['adult']!;
+              // childPassengers = trips[index].passengers['child']!;
+              // infantPassengers = trips[index].passengers['infant']!;
+              // setState(() {});
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ResultPage(tripData: widget.tripData),
+                ),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              width: 80,
+              decoration: BoxDecoration(
+                // borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[200],
+                // border from left
+                border: Border(
+                  left: BorderSide(
+                    color: Colors.grey[500]!,
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

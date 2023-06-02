@@ -253,7 +253,13 @@ class _ResultPageState extends State<ResultPage> {
                             '${convertEnToFa(numberFormat.format(ticket.price))}',
                             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                   fontSize: 28.0,
-                                  color: Colors.blueAccent,
+                                  color: (ticket) {
+                                    if (ticket.remainingSeats > 0) {
+                                      return Colors.blueAccent;
+                                    } else {
+                                      return Colors.grey[700];
+                                    }
+                                  }(ticket),
                                   fontWeight: FontWeight.bold,
                                 )
                           ),

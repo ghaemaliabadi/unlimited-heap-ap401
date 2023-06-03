@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:unlimited_heap_ap401/screens/AccountPage.dart';
+import 'AccountPage.dart';
 import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
 import 'SignUpPage.dart';
-// import signup
 
 class DemoHomePage extends StatefulWidget {
   const DemoHomePage({Key? key, required this.title}) : super(key: key);

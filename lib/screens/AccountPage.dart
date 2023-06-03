@@ -169,6 +169,63 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                         )
                       ),
+                      Card(
+                        margin: EdgeInsets.all(10.0),
+                        elevation: 2.5,
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding : EdgeInsets.all(10.0),
+                          height: 200.0,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Icon(Icons.person_sharp),
+                                  const SizedBox(width: 5.0,),
+                                  Text(
+                                    'اطلاعات شخصی',
+                                    style: Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                  const SizedBox(width: 150.0,),
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          'ویرایش اطلاعات',
+                                          style: Theme.of(context).textTheme.labelMedium,
+                                        ),
+                                        const Icon(
+                                          Icons.edit_rounded,
+                                          size: 16.0,
+                                          color: Colors.blueAccent,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20.0,),
+                              Row(
+                                children: [
+                                  const SizedBox(width: 5.0,),
+                                  Text(
+                                    'نام و نام خانوادگی',
+                                    style: Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                  const SizedBox(width: 50.0,),
+                                  Text(
+                                    'نام نام خانوادگی',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                ],
+                              ),
+                            ]
+                          ),
+                        )
+                      )
                     ],
                   ),
               ),

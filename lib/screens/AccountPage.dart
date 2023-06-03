@@ -230,7 +230,38 @@ class _AccountPageState extends State<AccountPage> {
                             ]
                           ),
                         )
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              side: BorderSide(
+                                width: 2.0,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              )
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                    Icons.key,
+                                    color: Theme.of(context).colorScheme.primary,
+                                ),
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'ویرایش رمز عبور',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                )
+                              ],
+                            )
+                        ),
+                      ),
                     ],
                   ),
               ),
@@ -264,7 +295,7 @@ Row buildRowForUserInfo(BuildContext context, String title, String value) {
     ],
   );
 }
-
+// TODO: add validation to email text field
 Future<dynamic> showDialogWithTextFormField(BuildContext context) async {
   return showDialog(
     context: context,

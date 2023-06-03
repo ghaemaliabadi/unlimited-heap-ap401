@@ -27,8 +27,13 @@ class _AccountPageState extends State<AccountPage> {
         length: 3,
         child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(80.0),
+            preferredSize: const Size.fromHeight(100.0),
             child: AppBar(
+              title: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.arrow_back),
+                iconSize: 24.0,
+              ),
               backgroundColor: Theme.of(context).colorScheme.primary,
               elevation: 1.5,
               bottom: TabBar(

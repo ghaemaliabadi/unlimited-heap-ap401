@@ -121,19 +121,26 @@ class _AccountPageState extends State<AccountPage> {
                                     'sample@sample.com',
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
-                                  const SizedBox(width: 50.0,),
+                                  const SizedBox(width: 30.0,),
                                   InkWell(
                                     onTap: () {},
                                     child: Row(
                                       children: [
-                                        Text(
-                                          'ویرایش',
-                                          style: Theme.of(context).textTheme.labelMedium,
-                                        ),
-                                        const Icon(
-                                          Icons.edit_rounded,
-                                          size: 16.0,
-                                          color: Colors.blueAccent,
+                                        InkWell(
+                                          onTap: () {},
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'ویرایش',
+                                                style: Theme.of(context).textTheme.labelMedium,
+                                              ),
+                                              const Icon(
+                                                Icons.edit_rounded,
+                                                size: 16.0,
+                                                color: Colors.blueAccent,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -155,7 +162,7 @@ class _AccountPageState extends State<AccountPage> {
                                     '۰ ریال',
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
-                                  const SizedBox(width: 50.0),
+                                  const SizedBox(width: 30.0),
                                   InkWell(
                                     onTap: () {},
                                     child: Text(
@@ -187,7 +194,7 @@ class _AccountPageState extends State<AccountPage> {
                                     'اطلاعات شخصی',
                                     style: Theme.of(context).textTheme.titleLarge,
                                   ),
-                                  const SizedBox(width: 150.0,),
+                                  const SizedBox(width: 80.0,),
                                   InkWell(
                                     onTap: () {},
                                     child: Row(

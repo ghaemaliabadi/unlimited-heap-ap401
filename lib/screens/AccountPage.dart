@@ -170,12 +170,12 @@ class _AccountPageState extends State<AccountPage> {
                         )
                       ),
                       Card(
-                        margin: EdgeInsets.all(10.0),
+                        margin: const EdgeInsets.all(10.0),
                         elevation: 2.5,
                         child: Container(
                           alignment: Alignment.center,
-                          padding : EdgeInsets.all(10.0),
-                          height: 200.0,
+                          padding : const EdgeInsets.all(10.0),
+                          height: 210.0,
                           child: Column(
                             children: [
                               Row(
@@ -208,20 +208,14 @@ class _AccountPageState extends State<AccountPage> {
                                 ],
                               ),
                               const SizedBox(height: 20.0,),
-                              Row(
-                                children: [
-                                  const SizedBox(width: 5.0,),
-                                  Text(
-                                    'نام و نام خانوادگی',
-                                    style: Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  const SizedBox(width: 50.0,),
-                                  Text(
-                                    'نام نام خانوادگی',
-                                    style: Theme.of(context).textTheme.headlineMedium,
-                                  ),
-                                ],
-                              ),
+                              buildRowForUserInfo(context, 'نام و نام خانوادگی',
+                                  'نام و نام خانوادگی'),
+                              const SizedBox(height: 20.0,),
+                              buildRowForUserInfo(context, 'کد ملی', 'کد ملی'),
+                              const SizedBox(height: 20.0,),
+                              buildRowForUserInfo(context, 'شماره تماس', 'شماره تماس'),
+                              const SizedBox(height: 20.0,),
+                              buildRowForUserInfo(context, 'تاریخ تولد', 'تاریخ تولد'),
                             ]
                           ),
                         )
@@ -241,4 +235,21 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+}
+
+Row buildRowForUserInfo(BuildContext context, String title, String value) {
+  return Row(
+    children: [
+      const SizedBox(width: 5.0,),
+      Text(
+        title,
+        style: Theme.of(context).textTheme.titleSmall,
+      ),
+      const SizedBox(width: 50.0,),
+      Text(
+        value,
+        style: Theme.of(context).textTheme.headlineMedium,
+      ),
+    ],
+  );
 }

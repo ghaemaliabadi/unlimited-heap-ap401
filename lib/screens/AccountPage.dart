@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -11,7 +12,17 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Demo',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('fa'), // farsi
+      ],
       debugShowCheckedModeBanner: false,
+
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -24,6 +35,13 @@ class _AccountPageState extends State<AccountPage> {
                 indicatorColor: Theme.of(context).colorScheme.primary,
                 splashFactory: NoSplash.splashFactory,
                 tabs: [
+                  Tab(
+                      icon: const Icon(Icons.person),
+                      child: Text(
+                        'حساب کاربری',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                  ),
                   Tab(
                       icon: const Icon(Icons.credit_card),
                       child: Text(
@@ -38,25 +56,12 @@ class _AccountPageState extends State<AccountPage> {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                   ),
-                  Tab(
-                      icon: const Icon(Icons.person),
-                      child: Text(
-                        'حساب کاربری',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                  ),
                 ],
               ),
             )
           ),
           body: TabBarView(
             children: [
-              const Center(
-                child: Text('تراکنش‌ها'),
-              ),
-              const Center(
-                child: Text('سفرها'),
-              ),
               Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -90,47 +95,46 @@ class _AccountPageState extends State<AccountPage> {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  const Icon(Icons.person_pin),
                                   Text(
                                     'اطلاعات حساب کاربری',
                                     style: Theme.of(context).textTheme.titleLarge,
                                   ),
-                                  const Icon(Icons.person_pin),
                                 ],
                               ),
                               const SizedBox(height: 20.0,),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'sample@sample.com',
-                                    style: Theme.of(context).textTheme.headlineMedium,
-                                  ),
-                                  const SizedBox(width: 50.0,),
+                                  const Icon(Icons.email, size: 16.0,),
                                   Text(
                                     'ایمیل',
                                     style: Theme.of(context).textTheme.titleSmall,
 
                                   ),
-                                  const Icon(Icons.email, size: 16.0,),
+                                  const SizedBox(width: 50.0,),
+                                  Text(
+                                    'sample@sample.com',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 20.0,),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  const Icon(Icons.money, size: 16.0,),
+                                  Text(
+                                    'موجودی حساب',
+                                    style: Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                  const SizedBox(width: 50.0,),
                                   Text(
                                     '۰ ریال',
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
-                                  const SizedBox(width: 50.0,),
-                                  Text(
-                                    'موجودی حساب',
-                                    style: Theme.of(context).textTheme.titleSmall,
-
-                                  ),
-                                  const Icon(Icons.money, size: 16.0,),
                                 ],
                               )
                             ],
@@ -139,6 +143,12 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ],
                   ),
+              ),
+              const Center(
+                child: Text('تراکنش‌ها'),
+              ),
+              const Center(
+                child: Text('سفرها'),
               ),
             ],
           ),

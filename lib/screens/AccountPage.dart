@@ -121,6 +121,23 @@ class _AccountPageState extends State<AccountPage> {
                                     'sample@sample.com',
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
+                                  const SizedBox(width: 50.0,),
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'ویرایش',
+                                          style: Theme.of(context).textTheme.labelMedium,
+                                        ),
+                                        const Icon(
+                                          Icons.edit_rounded,
+                                          size: 16.0,
+                                          color: Colors.blueAccent,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 20.0,),

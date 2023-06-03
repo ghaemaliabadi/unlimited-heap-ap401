@@ -126,21 +126,14 @@ class _AccountPageState extends State<AccountPage> {
                                     onTap: () {},
                                     child: Row(
                                       children: [
-                                        InkWell(
-                                          onTap: () {},
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                'ویرایش',
-                                                style: Theme.of(context).textTheme.labelMedium,
-                                              ),
-                                              const Icon(
-                                                Icons.edit_rounded,
-                                                size: 16.0,
-                                                color: Colors.blueAccent,
-                                              ),
-                                            ],
-                                          ),
+                                        Text(
+                                          'ویرایش',
+                                          style: Theme.of(context).textTheme.labelMedium,
+                                        ),
+                                        const Icon(
+                                          Icons.edit_rounded,
+                                          size: 16.0,
+                                          color: Colors.blueAccent,
                                         ),
                                       ],
                                     ),

@@ -26,6 +26,7 @@ class _AccountPageState extends State<AccountPage> {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(100.0),
             child: AppBar(
@@ -128,7 +129,9 @@ class _AccountPageState extends State<AccountPage> {
                                   ),
                                   const SizedBox(width: 30.0,),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      showDialogWithTextFormField(context);
+                                    },
                                     child: Row(
                                       children: [
                                         Text(
@@ -162,7 +165,10 @@ class _AccountPageState extends State<AccountPage> {
                                   ),
                                   const SizedBox(width: 30.0),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      // TODO: fix the animation to next tab here
+                                      DefaultTabController.of(context).animateTo(1);
+                                    },
                                     child: Text(
                                       'افزایش موجودی  >',
                                       style: Theme.of(context).textTheme.labelMedium,
@@ -256,5 +262,30 @@ Row buildRowForUserInfo(BuildContext context, String title, String value) {
         style: Theme.of(context).textTheme.headlineMedium,
       ),
     ],
+  );
+}
+
+Future<dynamic> showDialogWithTextFormField(BuildContext context) async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        title: const Text('ویرایش آدرس ایمیل'),
+        content: TextFormField(
+
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('تایید'),
+          ),
+        ],
+      );
+    },
   );
 }

@@ -64,6 +64,12 @@ ThemeData buildThemeData() {
         fontWeight: FontWeight.w600,
         color: Colors.grey,
       ),
+      // account page: user info
+      labelMedium: TextStyle(
+        fontSize: 16.0,
+        fontWeight: FontWeight.w600,
+        color: Colors.blueAccent,
+      ),
     ),
   );
 }

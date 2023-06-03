@@ -98,6 +98,7 @@ class _AccountPageState extends State<AccountPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   const Icon(Icons.person_pin),
+                                  const SizedBox(width: 5.0,),
                                   Text(
                                     'اطلاعات حساب کاربری',
                                     style: Theme.of(context).textTheme.titleLarge,
@@ -109,6 +110,7 @@ class _AccountPageState extends State<AccountPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   const Icon(Icons.email, size: 16.0,),
+                                  const SizedBox(width: 5.0,),
                                   Text(
                                     'ایمیل',
                                     style: Theme.of(context).textTheme.titleSmall,
@@ -126,6 +128,7 @@ class _AccountPageState extends State<AccountPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   const Icon(Icons.money, size: 16.0,),
+                                  const SizedBox(width: 5.0,),
                                   Text(
                                     'موجودی حساب',
                                     style: Theme.of(context).textTheme.titleSmall,
@@ -134,6 +137,14 @@ class _AccountPageState extends State<AccountPage> {
                                   Text(
                                     '۰ ریال',
                                     style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  const SizedBox(width: 50.0),
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Text(
+                                      'افزایش موجودی  >',
+                                      style: Theme.of(context).textTheme.labelMedium,
+                                    ),
                                   ),
                                 ],
                               )

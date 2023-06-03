@@ -275,7 +275,12 @@ Future<dynamic> showDialogWithTextFormField(BuildContext context) async {
         ),
         title: const Text('ویرایش آدرس ایمیل'),
         content: TextFormField(
-
+          style: Theme.of(context).textTheme.headlineMedium,
+          showCursor: true,
+          decoration: const InputDecoration(
+            alignLabelWithHint: true,
+            labelText: 'ایمیل جدید',
+          ),
         ),
         actions: [
           TextButton(

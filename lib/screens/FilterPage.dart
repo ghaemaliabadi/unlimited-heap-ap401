@@ -1,12 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'LoginPage.dart';
-import 'ProjectMainPage.dart';
 
+// ignore: must_be_immutable
 class FilterPage extends StatefulWidget {
   HashSet<String>? tags;
-  List<String>? companies;
+  HashSet<String>? companies;
   FilterPage({super.key, this.tags, this.companies});
   @override
   State<FilterPage> createState() => _FilterPageState();

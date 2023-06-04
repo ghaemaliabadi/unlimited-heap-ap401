@@ -88,8 +88,8 @@ List<Ticket> tickets = [
     tags: ['CF8', 'اکونومی', 'سیستمی'],
   ),
 ];
-HashSet<String>? allTags;
-List<String>? allCompanies;
+HashSet<String>? allTags = HashSet();
+HashSet<String>? allCompanies = HashSet();
 AutoScrollController _scrollController = AutoScrollController();
 
 class _ResultPageState extends State<ResultPage> {
@@ -107,12 +107,12 @@ class _ResultPageState extends State<ResultPage> {
   // trip data
   @override
   Widget build(BuildContext context) {
-    // trip data
-    final Trip tripData = widget.tripData;
     for (var ticket in tickets) {
       allTags?.addAll(ticket.tags);
       allCompanies?.add(ticket.company.name);
     }
+    // trip data
+    final Trip tripData = widget.tripData;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
@@ -212,14 +212,12 @@ class _ResultPageState extends State<ResultPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // navigate to filter page with tags
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => FilterPage(
                               tags: allTags,
                               companies: allCompanies,
-
                             ),
                           ),
                         );

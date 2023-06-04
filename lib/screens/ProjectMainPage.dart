@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tab_container/tab_container.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import '../models/sort.dart';
 import '../models/trip.dart';
 import '../theme/MainTheme.dart';
 import 'ResultPage.dart';
@@ -266,7 +267,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          ResultPage(tripData: tripData),
+                                          ResultPage(tripData: tripData, sort: Sort()),
                                     ),
                                   );
                                 },
@@ -580,7 +581,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       },
     );
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ResultPage(tripData: tripData)));
+        builder: (context) => ResultPage(tripData: tripData, sort: Sort())));
   }
 
   Row buildPassengerCountRow(BuildContext context, StateSetter setModalState,

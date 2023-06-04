@@ -7,11 +7,14 @@ import '../models/company.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 
+import '../models/sort.dart';
+
 // ignore: must_be_immutable
 class ResultPage extends StatefulWidget {
   Trip tripData;
+  Sort sort;
 
-  ResultPage({Key? key, required this.tripData}) : super(key: key);
+  ResultPage({Key? key, required this.tripData, required this.sort}) : super(key: key);
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -237,8 +240,16 @@ class _ResultPageState extends State<ResultPage> {
                     PullDownButton(
                         itemBuilder: (context) => [
                               PullDownMenuItem.selectable(
-                                onTap: () {},
-                                selected: true,
+                                onTap: () {
+                                  setState(() {
+                                    widget.sort.byPriceAsc = true;
+                                    widget.sort.byPriceDesc = false;
+                                    widget.sort.byTimeAsc = false;
+                                    widget.sort.byTimeDesc = false;
+                                    tickets = sortTickets(tickets);
+                                  });
+                                },
+                                selected: widget.sort.byPriceAsc,
                                 title: 'ارزان ترین',
                                 icon: Icons.arrow_downward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
@@ -250,8 +261,16 @@ class _ResultPageState extends State<ResultPage> {
                                   )
                               ),
                               PullDownMenuItem.selectable(
-                                onTap: () {},
-                                selected: false,
+                                onTap: () {
+                                  setState(() {
+                                    widget.sort.byPriceAsc = false;
+                                    widget.sort.byPriceDesc = true;
+                                    widget.sort.byTimeAsc = false;
+                                    widget.sort.byTimeDesc = false;
+                                    tickets = sortTickets(tickets);
+                                  });
+                                },
+                                selected: widget.sort.byPriceDesc,
                                 title: 'گران ترین',
                                 icon: Icons.arrow_upward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
@@ -263,8 +282,16 @@ class _ResultPageState extends State<ResultPage> {
                                   )
                               ),
                               PullDownMenuItem.selectable(
-                                onTap: () {},
-                                selected: false,
+                                onTap: () {
+                                  setState(() {
+                                    widget.sort.byPriceAsc = false;
+                                    widget.sort.byPriceDesc = false;
+                                    widget.sort.byTimeAsc = true;
+                                    widget.sort.byTimeDesc = false;
+                                    tickets = sortTickets(tickets);
+                                  });
+                                },
+                                selected: widget.sort.byTimeAsc,
                                 title: 'زودترین',
                                 icon: Icons.arrow_downward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
@@ -276,8 +303,16 @@ class _ResultPageState extends State<ResultPage> {
                                   )
                               ),
                               PullDownMenuItem.selectable(
-                                onTap: () {},
-                                selected: false,
+                                onTap: () {
+                                  setState(() {
+                                    widget.sort.byPriceAsc = false;
+                                    widget.sort.byPriceDesc = false;
+                                    widget.sort.byTimeAsc = false;
+                                    widget.sort.byTimeDesc = true;
+                                    tickets = sortTickets(tickets);
+                                  });
+                                },
+                                selected: widget.sort.byTimeDesc,
                                 title: 'دیرترین',
                                 icon: Icons.arrow_upward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
@@ -348,29 +383,50 @@ class _ResultPageState extends State<ResultPage> {
               ],
             ),
           ),
-          FutureBuilder(
-            future: Future.delayed(const Duration(seconds: 2))
-                .then((value) => tickets),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Expanded(child: buildListViewForCards());
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 100.0),
-                  child: Center(
-                    child: LoadingAnimationWidget.fourRotatingDots(
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 100,
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
+          buildListWithLoading(tickets),
           // Expanded(child: buildListViewForCards()),
         ],
       ),
     );
+  }
+  List<Ticket> sortTickets(List<Ticket> tickets) {
+    if (widget.sort.byPriceAsc) {
+      tickets.sort((a, b) => a.price.compareTo(b.price));
+    } else if (widget.sort.byPriceDesc) {
+      tickets.sort((a, b) => b.price.compareTo(a.price));
+    } else if (widget.sort.byTimeAsc) {
+      // outboundDate
+      tickets.sort(
+          (a, b) => (a.outboundDate!.hour * 60 + a.outboundDate!.minute).compareTo(b.outboundDate!.hour * 60 + b.outboundDate!.minute)
+      );
+    } else if (widget.sort.byTimeDesc) {
+      // outboundDate
+      tickets.sort(
+              (a, b) => (b.outboundDate!.hour * 60 + b.outboundDate!.minute).compareTo(a.outboundDate!.hour * 60 + a.outboundDate!.minute)
+      );
+    }
+    return tickets;
+  }
+  FutureBuilder<List<Ticket>> buildListWithLoading(tickets) {
+    return FutureBuilder(
+          future: Future.delayed(const Duration(seconds: 2))
+              .then((value) => tickets),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Expanded(child: buildListViewForCards());
+            } else {
+              return Padding(
+                padding: const EdgeInsets.only(top: 100.0),
+                child: Center(
+                  child: LoadingAnimationWidget.fourRotatingDots(
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 100,
+                  ),
+                ),
+              );
+            }
+          },
+        );
   }
 
   ListView buildListViewForCards() {
@@ -688,7 +744,7 @@ class _ResultPageState extends State<ResultPage> {
                       context,
                       PageRouteBuilder(
                           pageBuilder: (context, animation1, animation2) =>
-                              ResultPage(tripData: widget.tripData)),
+                              ResultPage(tripData: widget.tripData, sort: widget.sort,)),
                     );
                   },
                   child: Column(

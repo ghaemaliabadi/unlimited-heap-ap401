@@ -4,9 +4,9 @@ class Sort {
   bool byTimeDesc;
   bool byTimeAsc;
   Sort({
-    this.byPriceDesc = true,
-    this.byPriceAsc = false,
-    this.byTimeDesc = false,
+    this.byPriceAsc = true,
+    this.byPriceDesc = false,
     this.byTimeAsc = false,
+    this.byTimeDesc = false,
   });
 }

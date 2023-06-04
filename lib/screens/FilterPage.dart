@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -44,6 +43,8 @@ class _FilterPageState extends State<FilterPage> {
                 });
               },
             ),
+            // از ساعت تا ساعت
+            Text('از ${convertIntToTimeStr(_startValue.toDouble())} تا ${convertIntToTimeStr(_endValue.toDouble())}'),
             // print companies
             Text(widget.companies.toString()),
             // print tags

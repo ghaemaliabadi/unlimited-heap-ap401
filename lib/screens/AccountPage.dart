@@ -324,6 +324,13 @@ class CustomAlertDialog extends StatefulWidget {
 class _CustomAlertDialogState extends State<CustomAlertDialog> {
 
   final _formKey = GlobalKey<FormState>();
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -335,6 +342,7 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
       content: Form(
         key: _formKey,
         child: TextFormField(
+          controller: _controller,
           validator: (value) {
             RegExp regExp = RegExp(widget.emailRegex);
             if (value == null || value.isEmpty) {
@@ -356,6 +364,8 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
         TextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
+              // TODO: show success message
+              sampleUser.setEmail(_controller.text);
               Navigator.of(context).pop();
             }
           },

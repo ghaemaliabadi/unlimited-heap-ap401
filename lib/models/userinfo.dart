@@ -46,6 +46,10 @@ class User {
         "${(nationalID ?? '-')} "
     );
   }
+
+  void setEmail(String text) {
+    email = text;
+  }
 }
 
 convertEnToFa(String txt) {

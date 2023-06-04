@@ -5,6 +5,7 @@ import 'package:unlimited_heap_ap401/models/trip.dart';
 import 'package:unlimited_heap_ap401/models/ticket.dart';
 import '../models/company.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 
 // ignore: must_be_immutable
 class ResultPage extends StatefulWidget {
@@ -192,17 +193,157 @@ class _ResultPageState extends State<ResultPage> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 16.0, 14.0, 8.0),
-            child: Row(
+            child: Column(
               children: [
-                const Icon(
-                  Icons.info_outline,
-                  color: Colors.grey,
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => FilterPage(),
+                        //   ),
+                        // );
+                      },
+                      child: Container(
+                          height: 32.0,
+                          width: 120.0,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(1000),
+                            border: Border.all(color: Colors.grey[300]!,
+                                width: 1.5,
+                                style: BorderStyle.solid),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.filter_list,
+                                color: Colors.black54,
+                              ),
+                              const SizedBox(width: 8.0),
+                              Text(
+                                'فیلترها',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          )),
+                    ),
+                    const SizedBox(width: 8.0),
+                    PullDownButton(
+                        itemBuilder: (context) => [
+                              PullDownMenuItem.selectable(
+                                onTap: () {},
+                                selected: true,
+                                title: 'ارزان ترین',
+                                icon: Icons.arrow_downward_rounded,
+                                  itemTheme: PullDownMenuItemTheme(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge?.copyWith(
+                                      fontSize: 20.0,
+                                    ),
+                                  )
+                              ),
+                              PullDownMenuItem.selectable(
+                                onTap: () {},
+                                selected: false,
+                                title: 'گران ترین',
+                                icon: Icons.arrow_upward_rounded,
+                                  itemTheme: PullDownMenuItemTheme(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge?.copyWith(
+                                      fontSize: 20.0,
+                                    ),
+                                  )
+                              ),
+                              PullDownMenuItem.selectable(
+                                onTap: () {},
+                                selected: false,
+                                title: 'زودترین',
+                                icon: Icons.arrow_downward_rounded,
+                                  itemTheme: PullDownMenuItemTheme(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge?.copyWith(
+                                      fontSize: 20.0,
+                                    ),
+                                  )
+                              ),
+                              PullDownMenuItem.selectable(
+                                onTap: () {},
+                                selected: false,
+                                title: 'دیرترین',
+                                icon: Icons.arrow_upward_rounded,
+                                  itemTheme: PullDownMenuItemTheme(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge?.copyWith(
+                                      fontSize: 20.0,
+                                    ),
+                                  )
+                              ),
+                            ],
+                        buttonBuilder: (context, showMenu) => GestureDetector(
+                              onTap: showMenu,
+                              child: Container(
+                                  height: 32.0,
+                                  width: 140.0,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 4.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(1000),
+                                    border:
+                                        Border.all(color: Colors.blueAccent,
+                                        width: 2.0,
+                                        ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.sort_rounded,
+                                        color: Colors.blue,
+                                      ),
+                                      const SizedBox(width: 6.0),
+                                      Text(
+                                        'مرتب‌سازی',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge?.copyWith(
+                                          color: Colors.blue[800],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 1.0),
+                                      const Icon(
+                                        Icons.arrow_drop_down_rounded,
+                                        color: Colors.blue,
+                                      ),
+                                    ],
+                                  )),
+                            ))
+                  ],
                 ),
-                const SizedBox(width: 8.0),
-                // TODO: add filter menu and sort dropdown
-                Text(
-                  'قیمت‌ها برای یک بزرگسال محاسبه شده است.',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                SizedBox(height: 8.0),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.info_outline,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(width: 8.0),
+                    // TODO: add filter menu and sort dropdown
+                    Text(
+                      'قیمت‌ها برای یک بزرگسال محاسبه شده است.',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
                 ),
               ],
             ),

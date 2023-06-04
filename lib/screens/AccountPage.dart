@@ -26,7 +26,6 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -178,16 +177,7 @@ class _AccountPageState extends State<AccountPage> {
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
                                   const SizedBox(width: 30.0),
-                                  InkWell(
-                                    onTap: () {
-                                      // TODO: fix the animation to next tab here
-                                      DefaultTabController.of(context).animateTo(1);
-                                    },
-                                    child: Text(
-                                      'افزایش موجودی  >',
-                                      style: Theme.of(context).textTheme.labelMedium,
-                                    ),
-                                  ),
+                                  const GoToTransfersTab(),
                                 ],
                               )
                             ],
@@ -341,4 +331,26 @@ Future<dynamic> showDialogWithTextFormField(BuildContext context) async {
       );
     },
   );
+}
+
+class GoToTransfersTab extends StatelessWidget {
+  const GoToTransfersTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        DefaultTabController.of(context).animateTo(1);
+      },
+      child: const Text(
+        'افزایش موجودی  >',
+        style: TextStyle(
+          fontFamily: 'kalameh',
+          fontSize: 16.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.blueAccent,
+        ),
+      ),
+    );
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import '../models/userinfo.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -7,6 +8,13 @@ class AccountPage extends StatefulWidget {
   @override
   State<AccountPage> createState() => _AccountPageState();
 }
+
+User sampleUser = User(
+  username: 'نام کاربری',
+  password: 'Aa@010101',
+  email: 'sample@sample.com',
+  balance: '۰',
+);
 
 class _AccountPageState extends State<AccountPage> {
   @override
@@ -83,7 +91,7 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                       Text(
-                        'نام کاربری',
+                        sampleUser.username,
                         style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       Divider(
@@ -124,7 +132,7 @@ class _AccountPageState extends State<AccountPage> {
                                   ),
                                   const SizedBox(width: 50.0,),
                                   Text(
-                                    'sample@sample.com',
+                                    sampleUser.email,
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
                                   const SizedBox(width: 30.0,),
@@ -160,7 +168,7 @@ class _AccountPageState extends State<AccountPage> {
                                   ),
                                   const SizedBox(width: 50.0,),
                                   Text(
-                                    '۰ ریال',
+                                    '${sampleUser.balance} ریال',
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
                                   const SizedBox(width: 30.0),
@@ -220,11 +228,13 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                               const SizedBox(height: 20.0,),
                               buildRowForUserInfo(context, 'نام و نام خانوادگی',
-                                  'نام و نام خانوادگی'),
+                                  sampleUser.getFullName()),
                               const SizedBox(height: 20.0,),
-                              buildRowForUserInfo(context, 'کد ملی', 'کد ملی'),
+                              buildRowForUserInfo(context, 'کد ملی',
+                                  (sampleUser.nationalID ?? '-')),
                               const SizedBox(height: 20.0,),
-                              buildRowForUserInfo(context, 'شماره تماس', 'شماره تماس'),
+                              buildRowForUserInfo(context, 'شماره تماس',
+                                  (sampleUser.phoneNumber ?? '-')),
                               const SizedBox(height: 20.0,),
                               buildRowForUserInfo(context, 'تاریخ تولد', 'تاریخ تولد'),
                             ]
@@ -279,7 +289,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 }
 
-Row buildRowForUserInfo(BuildContext context, String title, String value) {
+Row buildRowForUserInfo(BuildContext context, String title, String? value) {
   return Row(
     children: [
       const SizedBox(width: 5.0,),
@@ -289,7 +299,7 @@ Row buildRowForUserInfo(BuildContext context, String title, String value) {
       ),
       const SizedBox(width: 50.0,),
       Text(
-        value,
+        value?? '-',
         style: Theme.of(context).textTheme.headlineMedium,
       ),
     ],

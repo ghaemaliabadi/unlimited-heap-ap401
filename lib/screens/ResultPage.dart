@@ -14,7 +14,8 @@ class ResultPage extends StatefulWidget {
   Trip tripData;
   Sort sort;
 
-  ResultPage({Key? key, required this.tripData, required this.sort}) : super(key: key);
+  ResultPage({Key? key, required this.tripData, required this.sort})
+      : super(key: key);
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -217,7 +218,8 @@ class _ResultPageState extends State<ResultPage> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(1000),
-                            border: Border.all(color: Colors.grey[300]!,
+                            border: Border.all(
+                                color: Colors.grey[300]!,
                                 width: 1.5,
                                 style: BorderStyle.solid),
                           ),
@@ -240,120 +242,120 @@ class _ResultPageState extends State<ResultPage> {
                     PullDownButton(
                         itemBuilder: (context) => [
                               PullDownMenuItem.selectable(
-                                onTap: () {
-                                  setState(() {
-                                    widget.sort.byPriceAsc = false;
-                                    widget.sort.byPriceDesc = false;
-                                    widget.sort.byTimeAsc = false;
-                                    widget.sort.byTimeDesc = false;
-                                    widget.sort.defaultSort = true;
-                                    tickets = sortTickets(tickets);
-                                    buildListWithLoading(tickets);
-                                  });
-                                },
-                                selected: widget.sort.defaultSort,
-                                title: 'پیش فرض',
-                                icon: Icons.arrow_downward_rounded,
+                                  onTap: () {
+                                    setState(() {
+                                      widget.sort.byPriceAsc = false;
+                                      widget.sort.byPriceDesc = false;
+                                      widget.sort.byTimeAsc = false;
+                                      widget.sort.byTimeDesc = false;
+                                      widget.sort.defaultSort = true;
+                                      tickets = sortTickets(tickets);
+                                      buildListWithLoading(tickets);
+                                    });
+                                  },
+                                  selected: widget.sort.defaultSort,
+                                  title: 'پیش فرض',
+                                  icon: Icons.arrow_downward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
-                                        .bodyLarge?.copyWith(
-                                      fontSize: 20.0,
-                                    ),
-                                  )
-                              ),
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          fontSize: 20.0,
+                                        ),
+                                  )),
                               PullDownMenuItem.selectable(
-                                onTap: () {
-                                  setState(() {
-                                    widget.sort.byPriceAsc = true;
-                                    widget.sort.byPriceDesc = false;
-                                    widget.sort.byTimeAsc = false;
-                                    widget.sort.byTimeDesc = false;
-                                    widget.sort.defaultSort = false;
-                                    tickets = sortTickets(tickets);
-                                    buildListWithLoading(tickets);
-                                  });
-                                },
-                                selected: widget.sort.byPriceAsc,
-                                title: 'ارزان ترین',
-                                icon: Icons.arrow_downward_rounded,
+                                  onTap: () {
+                                    setState(() {
+                                      widget.sort.byPriceAsc = true;
+                                      widget.sort.byPriceDesc = false;
+                                      widget.sort.byTimeAsc = false;
+                                      widget.sort.byTimeDesc = false;
+                                      widget.sort.defaultSort = false;
+                                      tickets = sortTickets(tickets);
+                                      buildListWithLoading(tickets);
+                                    });
+                                  },
+                                  selected: widget.sort.byPriceAsc,
+                                  title: 'ارزان ترین',
+                                  icon: Icons.arrow_downward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
-                                        .bodyLarge?.copyWith(
-                                      fontSize: 20.0,
-                                    ),
-                                  )
-                              ),
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          fontSize: 20.0,
+                                        ),
+                                  )),
                               PullDownMenuItem.selectable(
-                                onTap: () {
-                                  setState(() {
-                                    widget.sort.byPriceAsc = false;
-                                    widget.sort.byPriceDesc = true;
-                                    widget.sort.byTimeAsc = false;
-                                    widget.sort.byTimeDesc = false;
-                                    widget.sort.defaultSort = false;
-                                    tickets = sortTickets(tickets);
-                                    buildListWithLoading(tickets);
-                                  });
-                                },
-                                selected: widget.sort.byPriceDesc,
-                                title: 'گران ترین',
-                                icon: Icons.arrow_upward_rounded,
+                                  onTap: () {
+                                    setState(() {
+                                      widget.sort.byPriceAsc = false;
+                                      widget.sort.byPriceDesc = true;
+                                      widget.sort.byTimeAsc = false;
+                                      widget.sort.byTimeDesc = false;
+                                      widget.sort.defaultSort = false;
+                                      tickets = sortTickets(tickets);
+                                      buildListWithLoading(tickets);
+                                    });
+                                  },
+                                  selected: widget.sort.byPriceDesc,
+                                  title: 'گران ترین',
+                                  icon: Icons.arrow_upward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
-                                        .bodyLarge?.copyWith(
-                                      fontSize: 20.0,
-                                    ),
-                                  )
-                              ),
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          fontSize: 20.0,
+                                        ),
+                                  )),
                               PullDownMenuItem.selectable(
-                                onTap: () {
-                                  setState(() {
-                                    widget.sort.byPriceAsc = false;
-                                    widget.sort.byPriceDesc = false;
-                                    widget.sort.byTimeAsc = true;
-                                    widget.sort.byTimeDesc = false;
-                                    widget.sort.defaultSort = false;
-                                    tickets = sortTickets(tickets);
-                                    buildListWithLoading(tickets);
-                                  });
-                                },
-                                selected: widget.sort.byTimeAsc,
-                                title: 'زودترین',
-                                icon: Icons.arrow_downward_rounded,
+                                  onTap: () {
+                                    setState(() {
+                                      widget.sort.byPriceAsc = false;
+                                      widget.sort.byPriceDesc = false;
+                                      widget.sort.byTimeAsc = true;
+                                      widget.sort.byTimeDesc = false;
+                                      widget.sort.defaultSort = false;
+                                      tickets = sortTickets(tickets);
+                                      buildListWithLoading(tickets);
+                                    });
+                                  },
+                                  selected: widget.sort.byTimeAsc,
+                                  title: 'زودترین',
+                                  icon: Icons.arrow_downward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
-                                        .bodyLarge?.copyWith(
-                                      fontSize: 20.0,
-                                    ),
-                                  )
-                              ),
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          fontSize: 20.0,
+                                        ),
+                                  )),
                               PullDownMenuItem.selectable(
-                                onTap: () {
-                                  setState(() {
-                                    widget.sort.byPriceAsc = false;
-                                    widget.sort.byPriceDesc = false;
-                                    widget.sort.byTimeAsc = false;
-                                    widget.sort.byTimeDesc = true;
-                                    widget.sort.defaultSort = false;
-                                    tickets = sortTickets(tickets);
-                                    buildListWithLoading(tickets);
-                                  });
-                                },
-                                selected: widget.sort.byTimeDesc,
-                                title: 'دیرترین',
-                                icon: Icons.arrow_upward_rounded,
+                                  onTap: () {
+                                    setState(() {
+                                      widget.sort.byPriceAsc = false;
+                                      widget.sort.byPriceDesc = false;
+                                      widget.sort.byTimeAsc = false;
+                                      widget.sort.byTimeDesc = true;
+                                      widget.sort.defaultSort = false;
+                                      tickets = sortTickets(tickets);
+                                      buildListWithLoading(tickets);
+                                    });
+                                  },
+                                  selected: widget.sort.byTimeDesc,
+                                  title: 'دیرترین',
+                                  icon: Icons.arrow_upward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
-                                        .bodyLarge?.copyWith(
-                                      fontSize: 20.0,
-                                    ),
-                                  )
-                              ),
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          fontSize: 20.0,
+                                        ),
+                                  )),
                             ],
                         buttonBuilder: (context, showMenu) => GestureDetector(
                               onTap: showMenu,
@@ -365,10 +367,10 @@ class _ResultPageState extends State<ResultPage> {
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(1000),
-                                    border:
-                                        Border.all(color: Colors.blueAccent,
-                                        width: 2.0,
-                                        ),
+                                    border: Border.all(
+                                      color: Colors.blueAccent,
+                                      width: 2.0,
+                                    ),
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -382,9 +384,10 @@ class _ResultPageState extends State<ResultPage> {
                                         widget.sort.buttonText,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyLarge?.copyWith(
-                                          color: Colors.blue[800],
-                                        ),
+                                            .bodyLarge
+                                            ?.copyWith(
+                                              color: Colors.blue[800],
+                                            ),
                                       ),
                                       const SizedBox(width: 1.0),
                                       const Icon(
@@ -420,42 +423,44 @@ class _ResultPageState extends State<ResultPage> {
       ),
     );
   }
+
   List<Ticket> sortTickets(List<Ticket> tickets) {
     if (widget.sort.byPriceAsc) {
       tickets.sort((a, b) => a.price.compareTo(b.price));
     } else if (widget.sort.byPriceDesc) {
       tickets.sort((a, b) => b.price.compareTo(a.price));
     } else if (widget.sort.byTimeAsc || widget.sort.defaultSort) {
-      tickets.sort(
-          (a, b) => (a.outboundDate!.hour * 60 + a.outboundDate!.minute).compareTo(b.outboundDate!.hour * 60 + b.outboundDate!.minute)
-      );
+      tickets.sort((a, b) =>
+          (a.outboundDate!.hour * 60 + a.outboundDate!.minute)
+              .compareTo(b.outboundDate!.hour * 60 + b.outboundDate!.minute));
     } else if (widget.sort.byTimeDesc) {
-      tickets.sort(
-              (a, b) => (b.outboundDate!.hour * 60 + b.outboundDate!.minute).compareTo(a.outboundDate!.hour * 60 + a.outboundDate!.minute)
-      );
+      tickets.sort((a, b) =>
+          (b.outboundDate!.hour * 60 + b.outboundDate!.minute)
+              .compareTo(a.outboundDate!.hour * 60 + a.outboundDate!.minute));
     }
     return divideByRemainingSeats(tickets);
   }
+
   FutureBuilder<List<Ticket>> buildListWithLoading(tickets) {
     return FutureBuilder(
-          future: Future.delayed(const Duration(seconds: 2))
-              .then((value) => tickets),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Expanded(child: buildListViewForCards());
-            } else {
-              return Padding(
-                padding: const EdgeInsets.only(top: 100.0),
-                child: Center(
-                  child: LoadingAnimationWidget.fourRotatingDots(
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 100,
-                  ),
-                ),
-              );
-            }
-          },
-        );
+      future:
+          Future.delayed(const Duration(seconds: 2)).then((value) => tickets),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Expanded(child: buildListViewForCards());
+        } else {
+          return Padding(
+            padding: const EdgeInsets.only(top: 100.0),
+            child: Center(
+              child: LoadingAnimationWidget.fourRotatingDots(
+                color: Theme.of(context).colorScheme.primary,
+                size: 100,
+              ),
+            ),
+          );
+        }
+      },
+    );
   }
 
   ListView buildListViewForCards() {
@@ -737,19 +742,14 @@ class _ResultPageState extends State<ResultPage> {
     // list of dates
     var nowDate = Jalali.now();
     // TODO: config with for and navigate scrollbar to selected date
-    List<Jalali> dates = [
-      Jalali(nowDate.year, nowDate.month, nowDate.day),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 1),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 2),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 3),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 4),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 5),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 6),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 7),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 8),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 9),
-      Jalali(nowDate.year, nowDate.month, nowDate.day + 10),
-    ];
+    List<Jalali> dates = [];
+    var now = Jalali(nowDate.year, nowDate.month, nowDate.day);
+    var selected = Jalali(widget.tripData.date!.year, widget.tripData.date!.month, widget.tripData.date!.day);
+    for (var i = -30; i < 30; i++) {
+      if (selected.addDays(i).isAfter(now) || selected.addDays(i).isAtSameMomentAs(now)) {
+        dates.add(selected.addDays(i));
+      }
+    }
     return SizedBox(
       height: 50,
       width: MediaQuery.of(context).size.width * 0.81,
@@ -786,7 +786,10 @@ class _ResultPageState extends State<ResultPage> {
                       context,
                       PageRouteBuilder(
                           pageBuilder: (context, animation1, animation2) =>
-                              ResultPage(tripData: widget.tripData, sort: widget.sort,)),
+                              ResultPage(
+                                tripData: widget.tripData,
+                                sort: widget.sort,
+                              )),
                     );
                   },
                   child: Column(

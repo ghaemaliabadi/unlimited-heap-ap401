@@ -242,12 +242,36 @@ class _ResultPageState extends State<ResultPage> {
                               PullDownMenuItem.selectable(
                                 onTap: () {
                                   setState(() {
+                                    widget.sort.byPriceAsc = false;
+                                    widget.sort.byPriceDesc = false;
+                                    widget.sort.byTimeAsc = false;
+                                    widget.sort.byTimeDesc = false;
+                                    widget.sort.defaultSort = true;
+                                    tickets = sortTickets(tickets);
+                                    buildListWithLoading(tickets);
+                                  });
+                                },
+                                selected: widget.sort.defaultSort,
+                                title: 'پیش فرض',
+                                icon: Icons.arrow_downward_rounded,
+                                  itemTheme: PullDownMenuItemTheme(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge?.copyWith(
+                                      fontSize: 20.0,
+                                    ),
+                                  )
+                              ),
+                              PullDownMenuItem.selectable(
+                                onTap: () {
+                                  setState(() {
                                     widget.sort.byPriceAsc = true;
                                     widget.sort.byPriceDesc = false;
                                     widget.sort.byTimeAsc = false;
                                     widget.sort.byTimeDesc = false;
+                                    widget.sort.defaultSort = false;
                                     tickets = sortTickets(tickets);
-
+                                    buildListWithLoading(tickets);
                                   });
                                 },
                                 selected: widget.sort.byPriceAsc,
@@ -268,8 +292,9 @@ class _ResultPageState extends State<ResultPage> {
                                     widget.sort.byPriceDesc = true;
                                     widget.sort.byTimeAsc = false;
                                     widget.sort.byTimeDesc = false;
+                                    widget.sort.defaultSort = false;
                                     tickets = sortTickets(tickets);
-
+                                    buildListWithLoading(tickets);
                                   });
                                 },
                                 selected: widget.sort.byPriceDesc,
@@ -290,8 +315,9 @@ class _ResultPageState extends State<ResultPage> {
                                     widget.sort.byPriceDesc = false;
                                     widget.sort.byTimeAsc = true;
                                     widget.sort.byTimeDesc = false;
+                                    widget.sort.defaultSort = false;
                                     tickets = sortTickets(tickets);
-
+                                    buildListWithLoading(tickets);
                                   });
                                 },
                                 selected: widget.sort.byTimeAsc,
@@ -312,7 +338,9 @@ class _ResultPageState extends State<ResultPage> {
                                     widget.sort.byPriceDesc = false;
                                     widget.sort.byTimeAsc = false;
                                     widget.sort.byTimeDesc = true;
+                                    widget.sort.defaultSort = false;
                                     tickets = sortTickets(tickets);
+                                    buildListWithLoading(tickets);
                                   });
                                 },
                                 selected: widget.sort.byTimeDesc,
@@ -351,7 +379,7 @@ class _ResultPageState extends State<ResultPage> {
                                       ),
                                       const SizedBox(width: 6.0),
                                       Text(
-                                        'مرتب‌سازی',
+                                        widget.sort.buttonText,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge?.copyWith(
@@ -397,13 +425,11 @@ class _ResultPageState extends State<ResultPage> {
       tickets.sort((a, b) => a.price.compareTo(b.price));
     } else if (widget.sort.byPriceDesc) {
       tickets.sort((a, b) => b.price.compareTo(a.price));
-    } else if (widget.sort.byTimeAsc) {
-      // outboundDate
+    } else if (widget.sort.byTimeAsc || widget.sort.defaultSort) {
       tickets.sort(
           (a, b) => (a.outboundDate!.hour * 60 + a.outboundDate!.minute).compareTo(b.outboundDate!.hour * 60 + b.outboundDate!.minute)
       );
     } else if (widget.sort.byTimeDesc) {
-      // outboundDate
       tickets.sort(
               (a, b) => (b.outboundDate!.hour * 60 + b.outboundDate!.minute).compareTo(a.outboundDate!.hour * 60 + a.outboundDate!.minute)
       );

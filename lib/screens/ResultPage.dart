@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -7,8 +9,8 @@ import 'package:unlimited_heap_ap401/models/ticket.dart';
 import '../models/company.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pull_down_button/pull_down_button.dart';
-
 import '../models/sort.dart';
+import 'FilterPage.dart';
 
 // ignore: must_be_immutable
 class ResultPage extends StatefulWidget {
@@ -86,13 +88,15 @@ List<Ticket> tickets = [
     tags: ['CF8', 'اکونومی', 'سیستمی'],
   ),
 ];
+HashSet<String>? allTags;
+List<String>? allCompanies;
 AutoScrollController _scrollController = AutoScrollController();
 
 class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
     _scrollController = AutoScrollController();
-    _scrollController.scrollToIndex((widget.tripData.date!.day + widget.tripData.date!.month * 31) - (Jalali.now().day + Jalali.now().month * 31), preferPosition: AutoScrollPosition.begin);
+    _scrollController.scrollToIndex((widget.tripData.date!.day + widget.tripData.date!.month * 31) - (Jalali.now().day + Jalali.now().month * 31), preferPosition: AutoScrollPosition.begin, duration: const Duration(milliseconds: 1));
     super.initState();
   }
 
@@ -105,6 +109,10 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     // trip data
     final Trip tripData = widget.tripData;
+    for (var ticket in tickets) {
+      allTags?.addAll(ticket.tags);
+      allCompanies?.add(ticket.company.name);
+    }
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
@@ -204,12 +212,17 @@ class _ResultPageState extends State<ResultPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => FilterPage(),
-                        //   ),
-                        // );
+                        // navigate to filter page with tags
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FilterPage(
+                              tags: allTags,
+                              companies: allCompanies,
+
+                            ),
+                          ),
+                        );
                       },
                       child: Container(
                           height: 32.0,

@@ -143,7 +143,7 @@ class _AccountPageState extends State<AccountPage> {
                                   const SizedBox(width: 30.0,),
                                   InkWell(
                                     onTap: () {
-                                      showDialogWithTextFormField(context);
+                                      showDialogToEditEmail(context);
                                     },
                                     child: Row(
                                       children: [
@@ -302,17 +302,48 @@ Row buildRowForUserInfo(BuildContext context, String title, String? value) {
     ],
   );
 }
-// TODO: add validation to email text field
-Future<dynamic> showDialogWithTextFormField(BuildContext context) async {
+
+Future<dynamic> showDialogToEditEmail(BuildContext context) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        title: const Text('ویرایش آدرس ایمیل'),
-        content: TextFormField(
+      return const CustomAlertDialog();
+    },
+  );
+}
+
+class CustomAlertDialog extends StatefulWidget {
+  const CustomAlertDialog({super.key});
+
+  final String emailRegex = "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
+
+  @override
+  State<CustomAlertDialog> createState() => _CustomAlertDialogState();
+}
+
+class _CustomAlertDialogState extends State<CustomAlertDialog> {
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      title: const Text('ویرایش آدرس ایمیل'),
+      content: Form(
+        key: _formKey,
+        child: TextFormField(
+          validator: (value) {
+            RegExp regExp = RegExp(widget.emailRegex);
+            if (value == null || value.isEmpty) {
+              return 'لطفا ایمیل را وارد کنید.';
+            } else if (!regExp.hasMatch(value)) {
+              return 'ایمیل واردشده معتبر نیست.';
+            }
+            return null;
+          },
           style: Theme.of(context).textTheme.headlineMedium,
           showCursor: true,
           decoration: const InputDecoration(
@@ -320,17 +351,19 @@ Future<dynamic> showDialogWithTextFormField(BuildContext context) async {
             labelText: 'ایمیل جدید',
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
               Navigator.of(context).pop();
-            },
-            child: const Text('تایید'),
-          ),
-        ],
-      );
-    },
-  );
+            }
+          },
+          child: const Text('تایید'),
+        ),
+      ],
+    );
+  }
 }
 
 class GoToTransfersTab extends StatelessWidget {

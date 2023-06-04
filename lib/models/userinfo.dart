@@ -18,7 +18,7 @@ class User {
   String email;
   String? balance;
   String? phoneNumber;
-  JalaliDate? birthDate;
+  Jalali? birthDate;
   String? firstName;
   String? lastName;
   String? nationalID;
@@ -26,4 +26,26 @@ class User {
   String getFullName() {
     return '${firstName ?? '-'} ${lastName ?? ''}';
   }
+
+  String getBirthDateString() {
+    return convertEnToFa(
+        "${(birthDate != null ? birthDate?.formatter.wN : '-')} "
+            "${(birthDate != null ? birthDate?.formatter.dd : '')} "
+            "${(birthDate != null ? birthDate?.formatter.mN : '')} "
+    );
+  }
+}
+
+convertEnToFa(String txt) {
+  return txt
+      .replaceAll('0', '۰')
+      .replaceAll('1', '۱')
+      .replaceAll('2', '۲')
+      .replaceAll('3', '۳')
+      .replaceAll('4', '۴')
+      .replaceAll('5', '۵')
+      .replaceAll('6', '۶')
+      .replaceAll('7', '۷')
+      .replaceAll('8', '۸')
+      .replaceAll('9', '۹');
 }

@@ -11,11 +11,15 @@ class AccountPage extends StatefulWidget {
 }
 
 User sampleUser = User(
-  username: 'نام کاربری',
+  username: 'sample_username',
   password: 'Aa@010101',
   email: 'sample@sample.com',
   balance: '۰',
+  phoneNumber: '۰۹۱۲۳۴۵۶۷۸۹',
   birthDate: Jalali(1370, 1, 1),
+  firstName: 'محمد',
+  lastName: 'محمدی',
+  nationalID: '0920513',
 );
 
 class _AccountPageState extends State<AccountPage> {

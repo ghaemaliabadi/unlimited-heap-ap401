@@ -247,6 +247,7 @@ class _ResultPageState extends State<ResultPage> {
                                     widget.sort.byTimeAsc = false;
                                     widget.sort.byTimeDesc = false;
                                     tickets = sortTickets(tickets);
+
                                   });
                                 },
                                 selected: widget.sort.byPriceAsc,
@@ -268,6 +269,7 @@ class _ResultPageState extends State<ResultPage> {
                                     widget.sort.byTimeAsc = false;
                                     widget.sort.byTimeDesc = false;
                                     tickets = sortTickets(tickets);
+
                                   });
                                 },
                                 selected: widget.sort.byPriceDesc,
@@ -289,6 +291,7 @@ class _ResultPageState extends State<ResultPage> {
                                     widget.sort.byTimeAsc = true;
                                     widget.sort.byTimeDesc = false;
                                     tickets = sortTickets(tickets);
+
                                   });
                                 },
                                 selected: widget.sort.byTimeAsc,
@@ -405,7 +408,7 @@ class _ResultPageState extends State<ResultPage> {
               (a, b) => (b.outboundDate!.hour * 60 + b.outboundDate!.minute).compareTo(a.outboundDate!.hour * 60 + a.outboundDate!.minute)
       );
     }
-    return tickets;
+    return divideByRemainingSeats(tickets);
   }
   FutureBuilder<List<Ticket>> buildListWithLoading(tickets) {
     return FutureBuilder(
@@ -430,14 +433,27 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   ListView buildListViewForCards() {
-    tickets.sort((a, b) => a.remainingSeats.compareTo(b.remainingSeats));
-    tickets = tickets.reversed.toList();
+    tickets = divideByRemainingSeats(tickets);
     return ListView.builder(
       itemCount: tickets.length,
       itemBuilder: (context, index) {
         return ticketCard(ticket: tickets[index]);
       },
     );
+  }
+
+  List<Ticket> divideByRemainingSeats(List<Ticket> tickets) {
+    List<Ticket> remaining0Tickets = [];
+    List<Ticket> otherTickets = [];
+    for (var ticket in tickets) {
+      if (ticket.remainingSeats == 0) {
+        remaining0Tickets.add(ticket);
+      } else {
+        otherTickets.add(ticket);
+      }
+    }
+    tickets = otherTickets + remaining0Tickets;
+    return tickets;
   }
 
   Widget ticketCard({required Ticket ticket}) {

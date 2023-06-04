@@ -29,9 +29,9 @@ class User {
 
   String getBirthDateString() {
     return convertEnToFa(
-        "${(birthDate != null ? birthDate?.formatter.wN : '-')} "
-            "${(birthDate != null ? birthDate?.formatter.dd : '')} "
+        "${(birthDate != null ? birthDate?.formatter.dd : '-')} "
             "${(birthDate != null ? birthDate?.formatter.mN : '')} "
+            "${(birthDate != null ? birthDate?.formatter.yyyy : '')} "
     );
   }
 }

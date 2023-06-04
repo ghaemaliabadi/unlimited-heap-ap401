@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/userinfo.dart';
 
 class AccountPage extends StatefulWidget {
@@ -14,6 +15,7 @@ User sampleUser = User(
   password: 'Aa@010101',
   email: 'sample@sample.com',
   balance: '۰',
+  birthDate: Jalali(1370, 1, 1),
 );
 
 class _AccountPageState extends State<AccountPage> {
@@ -236,7 +238,8 @@ class _AccountPageState extends State<AccountPage> {
                               buildRowForUserInfo(context, 'شماره تماس',
                                   (sampleUser.phoneNumber ?? '-')),
                               const SizedBox(height: 20.0,),
-                              buildRowForUserInfo(context, 'تاریخ تولد', 'تاریخ تولد'),
+                              buildRowForUserInfo(context, 'تاریخ تولد',
+                                  (sampleUser.getBirthDateString())),
                             ]
                           ),
                         )
@@ -299,7 +302,7 @@ Row buildRowForUserInfo(BuildContext context, String title, String? value) {
       ),
       const SizedBox(width: 50.0,),
       Text(
-        value?? '-',
+        value!,
         style: Theme.of(context).textTheme.headlineMedium,
       ),
     ],

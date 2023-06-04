@@ -744,10 +744,12 @@ class _ResultPageState extends State<ResultPage> {
     // TODO: config with for and navigate scrollbar to selected date
     List<Jalali> dates = [];
     var now = Jalali(nowDate.year, nowDate.month, nowDate.day);
-    var selected = Jalali(widget.tripData.date!.year, widget.tripData.date!.month, widget.tripData.date!.day);
+    var selected = Jalali(widget.tripData.date!.year,
+        widget.tripData.date!.month, widget.tripData.date!.day);
     for (var i = -30; i < 30; i++) {
-      if (selected.addDays(i).isAfter(now) || selected.addDays(i).isAtSameMomentAs(now)) {
-        dates.add(selected.addDays(i));
+      var date = selected.addDays(i);
+      if (date.isAfter(now) || date.isAtSameMomentAs(now)) {
+        dates.add(date);
       }
     }
     return SizedBox(
@@ -759,40 +761,40 @@ class _ResultPageState extends State<ResultPage> {
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-            width: MediaQuery.of(context).size.width * 0.197,
-            decoration: BoxDecoration(
-              // borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[200],
-              // border from left
-              border: Border(
-                left: BorderSide(
-                  color: Colors.grey[500]!,
-                  width: 1,
+          return GestureDetector(
+            onTap: () {
+              // setState(() {
+              //   widget.tripData.date = dates[index];
+              // });
+              widget.tripData.date = dates[index];
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) =>
+                        ResultPage(
+                          tripData: widget.tripData,
+                          sort: widget.sort,
+                        )),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              width: MediaQuery.of(context).size.width * 0.197,
+              decoration: BoxDecoration(
+                color: (widget.tripData.date == dates[index])
+                    ? Colors.blueAccent.withOpacity(0.3)
+                    : Colors.grey[200],
+                border: Border(
+                  left: BorderSide(
+                    color: Colors.grey[500]!,
+                    width: 1,
+                  ),
                 ),
               ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    // setState(() {
-                    //   widget.tripData.date = dates[index];
-                    // });
-                    widget.tripData.date = dates[index];
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) =>
-                              ResultPage(
-                                tripData: widget.tripData,
-                                sort: widget.sort,
-                              )),
-                    );
-                  },
-                  child: Column(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
                     children: [
                       Text(
                         // ignore: prefer_interpolation_to_compose_strings
@@ -814,8 +816,8 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

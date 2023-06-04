@@ -34,6 +34,18 @@ class User {
             "${(birthDate != null ? birthDate?.formatter.yyyy : '')} "
     );
   }
+
+  String getPhoneNumber() {
+    return convertEnToFa(
+        "${(phoneNumber ?? '-')} "
+    );
+  }
+
+  String getNationalID() {
+    return convertEnToFa(
+        "${(nationalID ?? '-')} "
+    );
+  }
 }
 
 convertEnToFa(String txt) {

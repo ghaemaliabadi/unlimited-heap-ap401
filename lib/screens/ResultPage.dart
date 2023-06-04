@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:unlimited_heap_ap401/models/trip.dart';
 import 'package:unlimited_heap_ap401/models/ticket.dart';
 import '../models/company.dart';
@@ -85,17 +86,17 @@ List<Ticket> tickets = [
     tags: ['CF8', 'اکونومی', 'سیستمی'],
   ),
 ];
-ScrollController _scrollController = ScrollController();
+AutoScrollController _scrollController = AutoScrollController();
 
 class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
-    _scrollController = ScrollController();
+    _scrollController = AutoScrollController();
+    _scrollController.scrollToIndex((widget.tripData.date!.day + widget.tripData.date!.month * 31) - (Jalali.now().day + Jalali.now().month * 31), preferPosition: AutoScrollPosition.begin);
     super.initState();
   }
 
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -746,7 +747,7 @@ class _ResultPageState extends State<ResultPage> {
     var now = Jalali(nowDate.year, nowDate.month, nowDate.day);
     var selected = Jalali(widget.tripData.date!.year,
         widget.tripData.date!.month, widget.tripData.date!.day);
-    for (var i = -30; i < 30; i++) {
+    for (var i = -180; i < 180; i++) {
       var date = selected.addDays(i);
       if (date.isAfter(now) || date.isAtSameMomentAs(now)) {
         dates.add(date);
@@ -761,62 +762,67 @@ class _ResultPageState extends State<ResultPage> {
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-              // setState(() {
-              //   widget.tripData.date = dates[index];
-              // });
-              widget.tripData.date = dates[index];
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) =>
-                        ResultPage(
-                          tripData: widget.tripData,
-                          sort: widget.sort,
-                        )),
-              );
-            },
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-              width: MediaQuery.of(context).size.width * 0.197,
-              decoration: BoxDecoration(
-                color: (widget.tripData.date == dates[index])
-                    ? Colors.blueAccent.withOpacity(0.3)
-                    : Colors.grey[200],
-                border: Border(
-                  left: BorderSide(
-                    color: Colors.grey[500]!,
-                    width: 1,
+          return AutoScrollTag(
+            key: ValueKey(index),
+            controller: _scrollController,
+            index: index,
+            child: GestureDetector(
+              onTap: () {
+                // setState(() {
+                //   widget.tripData.date = dates[index];
+                // });
+                widget.tripData.date = dates[index];
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          ResultPage(
+                            tripData: widget.tripData,
+                            sort: widget.sort,
+                          )),
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                width: MediaQuery.of(context).size.width * 0.197,
+                decoration: BoxDecoration(
+                  color: (widget.tripData.date == dates[index])
+                      ? Colors.blueAccent.withOpacity(0.3)
+                      : Colors.grey[200],
+                  border: Border(
+                    left: BorderSide(
+                      color: Colors.grey[500]!,
+                      width: 1,
+                    ),
                   ),
                 ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        // ignore: prefer_interpolation_to_compose_strings
-                        '${dates[index].formatter.wN.substring(0, 1) + ' - ' + convertEnToFa(dates[index].formatter.mm)}/' +
-                            convertEnToFa(dates[index].day),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black45,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          // ignore: prefer_interpolation_to_compose_strings
+                          '${dates[index].formatter.wN.substring(0, 1) + ' - ' + convertEnToFa(dates[index].formatter.mm)}/' +
+                              convertEnToFa(dates[index].day),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black45,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${convertEnToFa(numberFormat.format(1265))}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54,
+                        Text(
+                          '${convertEnToFa(numberFormat.format(1265))}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );

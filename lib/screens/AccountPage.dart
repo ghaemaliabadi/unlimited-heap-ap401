@@ -410,6 +410,9 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
 
   final _formKey = GlobalKey<FormState>();
   final _controller = TextEditingController();
+  bool visibleCurrentPassword = false;
+  bool visibleNewPassword = false;
+  bool visibleConfirmNewPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -433,10 +436,23 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
                 return null;
               },
               style: Theme.of(context).textTheme.headlineMedium,
+              obscureText: visibleCurrentPassword,
               showCursor: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 alignLabelWithHint: true,
                 labelText: 'رمز عبور فعلی',
+                suffixIcon: IconButton(
+                  iconSize: 16.0,
+                  alignment: Alignment.bottomLeft,
+                  icon: Icon(visibleCurrentPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      visibleCurrentPassword = !visibleCurrentPassword;
+                    });
+                  },
+                ),
               ),
             ),
             TextFormField(
@@ -457,10 +473,23 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
                 return null;
               },
               style: Theme.of(context).textTheme.headlineMedium,
+              obscureText: visibleNewPassword,
               showCursor: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 alignLabelWithHint: true,
                 labelText: 'رمز عبور جدید',
+                suffixIcon: IconButton(
+                  iconSize: 16.0,
+                  alignment: Alignment.bottomLeft,
+                  icon: Icon(visibleNewPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      visibleNewPassword = !visibleNewPassword;
+                    });
+                  },
+                ),
               ),
             ),
             TextFormField(
@@ -473,10 +502,23 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
                 return null;
               },
               style: Theme.of(context).textTheme.headlineMedium,
+              obscureText: visibleConfirmNewPassword,
               showCursor: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 alignLabelWithHint: true,
                 labelText: 'تکرار رمز عبور جدید',
+                suffixIcon: IconButton(
+                  iconSize: 16.0,
+                  alignment: Alignment.bottomLeft,
+                  icon: Icon(visibleConfirmNewPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      visibleConfirmNewPassword = !visibleConfirmNewPassword;
+                    });
+                  },
+                ),
               ),
             ),
           ],

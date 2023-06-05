@@ -23,6 +23,9 @@ User sampleUser = User(
 );
 
 class _AccountPageState extends State<AccountPage> {
+
+  // static bool _emailEdited = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -133,7 +136,6 @@ class _AccountPageState extends State<AccountPage> {
                                   Text(
                                     'ایمیل',
                                     style: Theme.of(context).textTheme.titleSmall,
-
                                   ),
                                   const SizedBox(width: 50.0,),
                                   Text(
@@ -144,6 +146,11 @@ class _AccountPageState extends State<AccountPage> {
                                   InkWell(
                                     onTap: () {
                                       showDialogToEditEmail(context);
+                                      // if (_emailEdited) {
+                                      //   ScaffoldMessenger.of(context).showSnackBar(
+                                      //     const SnackBar(content: Text('hi there')),
+                                      //   );
+                                      // }
                                     },
                                     child: Row(
                                       children: [
@@ -261,9 +268,12 @@ class _AccountPageState extends State<AccountPage> {
                                     color: Theme.of(context).colorScheme.primary,
                                 ),
                                 const SizedBox(width: 5.0,),
-                                Text(
-                                  'ویرایش رمز عبور',
-                                  style: Theme.of(context).textTheme.headlineMedium,
+                                TextButton(
+                                  onPressed: () => showDialogToEditPassword(context),
+                                  child: Text(
+                                      'ویرایش رمز عبور',
+                                      style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
                                 )
                               ],
                             )
@@ -307,21 +317,21 @@ Future<dynamic> showDialogToEditEmail(BuildContext context) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return const CustomAlertDialog();
+      return const CustomAlertDialogToEditEmail();
     },
   );
 }
 
-class CustomAlertDialog extends StatefulWidget {
-  const CustomAlertDialog({super.key});
+class CustomAlertDialogToEditEmail extends StatefulWidget {
+  const CustomAlertDialogToEditEmail({super.key});
 
   final String emailRegex = "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
 
   @override
-  State<CustomAlertDialog> createState() => _CustomAlertDialogState();
+  State<CustomAlertDialogToEditEmail> createState() => _CustomAlertDialogToEditEmailState();
 }
 
-class _CustomAlertDialogState extends State<CustomAlertDialog> {
+class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEmail> {
 
   final _formKey = GlobalKey<FormState>();
   final _controller = TextEditingController();
@@ -365,7 +375,11 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               // TODO: show success message
+              // TODO: update user email using setState
               sampleUser.setEmail(_controller.text);
+              // setState(() {
+              //   _AccountPageState._emailEdited = true;
+              // });
               Navigator.of(context).pop();
             }
           },
@@ -375,6 +389,95 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
     );
   }
 }
+
+Future<dynamic> showDialogToEditPassword(BuildContext context) async {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return const CustomAlertDialogToEditPassword();
+    },
+  );
+}
+
+class CustomAlertDialogToEditPassword extends StatefulWidget {
+  const CustomAlertDialogToEditPassword({super.key});
+
+  @override
+  State<CustomAlertDialogToEditPassword> createState() => _CustomAlertDialogToEditPasswordState();
+}
+
+class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEditPassword> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      title: const Text('ویرایش رمز عبور'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'لطفا رمز عبور فعلی را وارد کنید.';
+              } else if (value != sampleUser.password) {
+                return 'رمز عبور فعلی اشتباه است.';
+              }
+              return null;
+            },
+            style: Theme.of(context).textTheme.headlineMedium,
+            showCursor: true,
+            decoration: const InputDecoration(
+              alignLabelWithHint: true,
+              labelText: 'رمز عبور فعلی',
+            ),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'لطفا رمز عبور جدید را وارد کنید.';
+              } else if (value.length < 8) {
+                return 'رمز عبور باید حداقل ۸ کاراکتر باشد.';
+              }
+              return null;
+            },
+            style: Theme.of(context).textTheme.headlineMedium,
+            showCursor: true,
+            decoration: const InputDecoration(
+              alignLabelWithHint: true,
+              labelText: 'رمز عبور جدید',
+            ),
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'لطفا رمز عبور جدید را تکرار کنید.';
+              } else if (value.length < 8) {
+                return 'رمز عبور باید حداقل ۸ کاراکتر باشد.';
+              }
+              return null;
+            },
+            style: Theme.of(context).textTheme.headlineMedium,
+            showCursor: true,
+            decoration: const InputDecoration(
+              alignLabelWithHint: true,
+              labelText: 'تکرار رمز عبور جدید',
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+        onPressed: () => Navigator.of(context).pop(),
+        child: const Text('تایید'),
+        )
+      ]
+    );
+  }
+}
+
+
 
 class GoToTransfersTab extends StatelessWidget {
   const GoToTransfersTab({super.key});

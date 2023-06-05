@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/userinfo.dart';
 
+//TODO: fix sizes and paddings
+
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
@@ -25,9 +27,11 @@ User sampleUser = User(
 class _AccountPageState extends State<AccountPage> {
 
   // static bool _emailEdited = false;
-
   @override
   Widget build(BuildContext context) {
+    var pageHeight = MediaQuery.of(context).size.height;
+    var pageWidth = MediaQuery.of(context).size.width;
+
     return MaterialApp(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -217,6 +221,7 @@ class _AccountPageState extends State<AccountPage> {
                                       children: [
                                         Text(
                                           'ویرایش اطلاعات',
+                                          //TODO: change the widget to form fields
                                           style: Theme.of(context).textTheme.labelMedium,
                                         ),
                                         const Icon(
@@ -285,8 +290,67 @@ class _AccountPageState extends State<AccountPage> {
               const Center(
                 child: Text('تراکنش‌ها'),
               ),
-              const Center(
-                child: Text('سفرها'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  children: [
+                    Card(
+                      margin: const EdgeInsets.all(10.0),
+                      elevation: 2.5,
+                      child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        height: pageHeight * 0.3,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.search),
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'جستجوی سفارش',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ]
+                            ),
+                            const SizedBox(height: 5.0,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.info_outline),
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'برای جستجو در لیست سفرها پرکردن حداقل یک فیلد کافیست.',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ]
+                            ),
+                            const SizedBox(height: 20.0,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  width: pageWidth * 0.8,
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'شماره سفارش',
+                                      alignLabelWithHint: true,
+                                      labelStyle: Theme.of(context).textTheme.labelMedium,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]
+                            ),
+                          ]
+                        )
+                      )
+                    )
+                  ]
+                )
               ),
             ],
           ),
@@ -550,6 +614,7 @@ class GoToTransfersTab extends StatelessWidget {
       },
       child: const Text(
         'افزایش موجودی  >',
+        // TODO: update the balance in the next tab
         style: TextStyle(
           fontFamily: 'kalameh',
           fontSize: 16.0,

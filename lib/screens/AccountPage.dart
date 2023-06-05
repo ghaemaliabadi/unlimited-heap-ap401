@@ -409,6 +409,7 @@ class CustomAlertDialogToEditPassword extends StatefulWidget {
 class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEditPassword> {
 
   final _formKey = GlobalKey<FormState>();
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -439,6 +440,7 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
               ),
             ),
             TextFormField(
+              controller: _controller,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'لطفا رمز عبور را وارد کنید.';
@@ -465,8 +467,8 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'لطفا رمز عبور جدید را تکرار کنید.';
-                } else if (value.length < 8) {
-                  return 'رمز عبور باید حداقل ۸ کاراکتر باشد.';
+                } else if (value.compareTo(_controller.text) != 0) {
+                  return 'تکرار رمز عبور صحیح نمی‌باشد.';
                 }
                 return null;
               },
@@ -484,6 +486,7 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
         TextButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
+            sampleUser.password = _controller.text;
             Navigator.of(context).pop();
           }
         },

@@ -407,6 +407,9 @@ class CustomAlertDialogToEditPassword extends StatefulWidget {
 }
 
 class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEditPassword> {
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -414,70 +417,75 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
         borderRadius: BorderRadius.circular(20.0),
       ),
       title: const Text('ویرایش رمز عبور'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'لطفا رمز عبور فعلی را وارد کنید.';
-              } else if (value != sampleUser.password) {
-                return 'رمز عبور فعلی اشتباه است.';
-              }
-              return null;
-            },
-            style: Theme.of(context).textTheme.headlineMedium,
-            showCursor: true,
-            decoration: const InputDecoration(
-              alignLabelWithHint: true,
-              labelText: 'رمز عبور فعلی',
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'لطفا رمز عبور فعلی را وارد کنید.';
+                } else if (value != sampleUser.password) {
+                  return 'رمز عبور فعلی اشتباه است.';
+                }
+                return null;
+              },
+              style: Theme.of(context).textTheme.headlineMedium,
+              showCursor: true,
+              decoration: const InputDecoration(
+                alignLabelWithHint: true,
+                labelText: 'رمز عبور فعلی',
+              ),
             ),
-          ),
-          TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'لطفا رمز عبور جدید را وارد کنید.';
-              } else if (value.length < 8) {
-                return 'رمز عبور باید حداقل ۸ کاراکتر باشد.';
-              }
-              return null;
-            },
-            style: Theme.of(context).textTheme.headlineMedium,
-            showCursor: true,
-            decoration: const InputDecoration(
-              alignLabelWithHint: true,
-              labelText: 'رمز عبور جدید',
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'لطفا رمز عبور جدید را وارد کنید.';
+                } else if (value.length < 8) {
+                  return 'رمز عبور باید حداقل ۸ کاراکتر باشد.';
+                }
+                return null;
+              },
+              style: Theme.of(context).textTheme.headlineMedium,
+              showCursor: true,
+              decoration: const InputDecoration(
+                alignLabelWithHint: true,
+                labelText: 'رمز عبور جدید',
+              ),
             ),
-          ),
-          TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'لطفا رمز عبور جدید را تکرار کنید.';
-              } else if (value.length < 8) {
-                return 'رمز عبور باید حداقل ۸ کاراکتر باشد.';
-              }
-              return null;
-            },
-            style: Theme.of(context).textTheme.headlineMedium,
-            showCursor: true,
-            decoration: const InputDecoration(
-              alignLabelWithHint: true,
-              labelText: 'تکرار رمز عبور جدید',
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'لطفا رمز عبور جدید را تکرار کنید.';
+                } else if (value.length < 8) {
+                  return 'رمز عبور باید حداقل ۸ کاراکتر باشد.';
+                }
+                return null;
+              },
+              style: Theme.of(context).textTheme.headlineMedium,
+              showCursor: true,
+              decoration: const InputDecoration(
+                alignLabelWithHint: true,
+                labelText: 'تکرار رمز عبور جدید',
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       actions: [
         TextButton(
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            Navigator.of(context).pop();
+          }
+        },
         child: const Text('تایید'),
         )
       ]
     );
   }
 }
-
-
 
 class GoToTransfersTab extends StatelessWidget {
   const GoToTransfersTab({super.key});

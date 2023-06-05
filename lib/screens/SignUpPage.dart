@@ -39,7 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 100.0),
+              const SizedBox(height: 30.0),
               Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
                   child: Text('به علی‌بابا خوش آمدید.',
@@ -53,6 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                     return null;
                   },
+                  style: Theme.of(context).textTheme.displaySmall,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,
                     labelText: 'نام کاربری',
@@ -82,6 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                     return null;
                   },
+                  style: Theme.of(context).textTheme.displaySmall,
                   obscureText: visiblePassword,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,
@@ -115,6 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                     return null;
                   },
+                  style: Theme.of(context).textTheme.displaySmall,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,
                     labelText: 'ایمیل',

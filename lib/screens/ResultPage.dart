@@ -267,7 +267,7 @@ class _ResultPageState extends State<ResultPage> {
                                   },
                                   selected: widget.sort.defaultSort,
                                   title: 'پیش فرض',
-                                  icon: Icons.arrow_downward_rounded,
+                                  // icon: Icons.arrow_downward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
@@ -290,7 +290,7 @@ class _ResultPageState extends State<ResultPage> {
                                   },
                                   selected: widget.sort.byPriceAsc,
                                   title: 'ارزان ترین',
-                                  icon: Icons.arrow_downward_rounded,
+                                  // icon: Icons.arrow_downward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
@@ -313,7 +313,7 @@ class _ResultPageState extends State<ResultPage> {
                                   },
                                   selected: widget.sort.byPriceDesc,
                                   title: 'گران ترین',
-                                  icon: Icons.arrow_upward_rounded,
+                                  // icon: Icons.arrow_upward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
@@ -336,7 +336,7 @@ class _ResultPageState extends State<ResultPage> {
                                   },
                                   selected: widget.sort.byTimeAsc,
                                   title: 'زودترین',
-                                  icon: Icons.arrow_downward_rounded,
+                                  // icon: Icons.arrow_downward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme
@@ -359,7 +359,7 @@ class _ResultPageState extends State<ResultPage> {
                                   },
                                   selected: widget.sort.byTimeDesc,
                                   title: 'دیرترین',
-                                  icon: Icons.arrow_upward_rounded,
+                                  // icon: Icons.arrow_upward_rounded,
                                   itemTheme: PullDownMenuItemTheme(
                                     textStyle: Theme.of(context)
                                         .textTheme

@@ -52,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     return null;
                   },
+                  style: Theme.of(context).textTheme.displaySmall,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,
                     labelText: 'ایمیل',
@@ -72,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     return null;
                   },
+                  style: Theme.of(context).textTheme.displaySmall,
                   obscureText: visiblePassword,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,

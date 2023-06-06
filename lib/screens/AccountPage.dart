@@ -22,6 +22,11 @@ User sampleUser = User(
   nationalID: '0920513',
 );
 
+String startingDateLabel = 'از تاریخ';
+String endingDateLabel = 'تا تاریخ';
+Jalali startingDateSearch = Jalali.now();
+Jalali endingDateSearch = Jalali.now();
+
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
@@ -328,7 +333,14 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                             ),
                             const SizedBox(height: 20.0,),
-                            buildDatePicker(context),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                buildDatePicker(context, 'از'),
+                                buildDatePicker(context, 'تا'),
+                              ]
+                            )
                           ]
                         )
                       )
@@ -337,6 +349,57 @@ class _AccountPageState extends State<AccountPage> {
                 )
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+  GestureDetector buildDatePicker(BuildContext context, String flag) {
+    return GestureDetector(
+      onTap: () {
+        var pickedDate = showPersianDatePicker(
+          context: context,
+          initialDate: Jalali.now(),
+          firstDate: Jalali(1380, 1, 1),
+          lastDate: Jalali.now(),
+        );
+        if (flag.compareTo('از') == 0) {
+          startingDateSearch = pickedDate as Jalali;
+        } else {
+          endingDateSearch = pickedDate as Jalali;
+        }
+        //TODO: setState not working
+        setState() {
+          if (flag.compareTo('از') == 0) {
+            startingDateLabel = convertEnToFa(
+                "${startingDateSearch.formatter.wN} ${startingDateSearch.formatter.dd} ${startingDateSearch.formatter.mN}");
+          } else {
+            endingDateLabel = convertEnToFa(
+                "${endingDateSearch.formatter.wN} ${endingDateSearch.formatter.dd} ${endingDateSearch.formatter.mN}");
+          }
+        }
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.35,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black45),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        height: 50.0,
+        padding: const EdgeInsets.only(left: 10.0, right: 15.0),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.calendar_today_outlined,
+              color: Colors.black45,
+            ),
+            const SizedBox(width: 5.0),
+            Text(
+              (flag.compareTo('از') == 0)
+                  ? startingDateLabel
+                  : endingDateLabel,
+              style: Theme.of(context).textTheme.titleSmall,
+            )
           ],
         ),
       ),
@@ -614,67 +677,4 @@ class GoToTransactionsTab extends StatelessWidget {
       ),
     );
   }
-}
-
-GestureDetector buildDatePicker(BuildContext context) {
-  return GestureDetector(
-    onTap: () async {
-      var fromDate = await showPersianDatePicker(
-        context: context,
-        initialDate: Jalali.now(),
-        firstDate: Jalali(1380, 1, 1),
-        lastDate: Jalali.now(),
-      );
-    },
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 0.35,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black45),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          height: 50.0,
-          padding: const EdgeInsets.only(left: 10.0, right: 15.0),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.calendar_today_outlined,
-                color: Colors.black45,
-              ),
-              const SizedBox(width: 5.0),
-              Text(
-                'از تاریخ',
-                style: Theme.of(context).textTheme.titleSmall,
-              )
-            ],
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.35,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black45),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          height: 50.0,
-          padding: const EdgeInsets.only(left: 10.0, right: 15.0),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.calendar_today_outlined,
-                color: Colors.black45,
-              ),
-              const SizedBox(width: 5.0),
-              Text(
-                'تا تاریخ',
-                style: Theme.of(context).textTheme.titleSmall,
-              )
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
 }

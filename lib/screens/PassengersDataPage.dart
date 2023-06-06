@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/sort.dart';
 import '../models/ticket.dart';
 import '../models/trip.dart';
 
@@ -121,7 +120,14 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   const SizedBox(
                     height: 4.0,
                   ),
-                  buildTicket(widget.tripData.departTicket!, 'بلیط رفت')
+                  buildTicket(widget.tripData.departTicket!, 'بلیط رفت'),
+                    () {
+                      if (widget.tripData.returnTicket != null) {
+                        return buildTicket(widget.tripData.returnTicket!, 'بلیط برگشت');
+                      } else {
+                        return const SizedBox(height: 0);
+                      }
+                  } (),
                 ],
               ),
             ),
@@ -134,14 +140,15 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
   Container buildTicket(Ticket ticket, String title) {
     return Container(
                   height: 140,
+                  margin: const EdgeInsets.symmetric(vertical: 4.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8.0),
                     boxShadow: const [
                       BoxShadow(
-                        color: Colors.black38,
+                        color: Colors.black26,
                         offset: Offset(0, 2),
-                        blurRadius: 4.0,
+                        blurRadius: 2.0,
                       ),
                     ],
                   ),

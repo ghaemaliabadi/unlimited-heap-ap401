@@ -187,7 +187,7 @@ void _showSnackBar(BuildContext context, String message) {
     SnackBar(
       content: Text(
         message,
-        style: Theme.of(context).textTheme.displayLarge,
+        style: Theme.of(context).textTheme.displaySmall,
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,

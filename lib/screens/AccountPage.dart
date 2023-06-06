@@ -23,9 +23,6 @@ User sampleUser = User(
 );
 
 class _AccountPageState extends State<AccountPage> {
-
-  static bool emailEdited = false;
-
   @override
   Widget build(BuildContext context) {
     var pageHeight = MediaQuery.of(context).size.height;
@@ -430,14 +427,12 @@ class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEm
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               sampleUser.setEmail(_controller.text);
-              setState(() {
-                _AccountPageState.emailEdited = true;
-              });
+              setState(() {});
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
                       'ایمیل با موفقیت ویرایش شد.',
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
                     duration: const Duration(seconds: 1),
                     backgroundColor: Theme.of(context).colorScheme.secondary,

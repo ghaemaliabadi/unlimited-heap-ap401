@@ -225,13 +225,32 @@ class _ResultPageState extends State<ResultPage> {
           ),
           () {
             if (widget.tripData.departTicket != null) {
-              return Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
-                  child: Row(
-                    children: [
-                      Text('data'),
-                    ],
-                  )
+              return Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.35,
+                        margin: const EdgeInsets.only(right: 4.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(1000),
+                        ),
+                        child:  Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('بلیط رفت:', style: Theme.of(context).textTheme.bodyLarge),
+                            const SizedBox(width: 4.0),
+                            Text(
+                                '${convertEnToFa(widget.tripData.departTicket!.outboundDate?.day)} ${widget.tripData.departTicket!.outboundDate?.formatter.mN}',
+                                style: Theme.of(context).textTheme.bodyLarge),
+                          ],
+                        ),
+                      ),
+                  ),
+                ],
               );
             } else {
               return const SizedBox();

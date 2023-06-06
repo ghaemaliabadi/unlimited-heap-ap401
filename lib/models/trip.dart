@@ -1,4 +1,5 @@
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:unlimited_heap_ap401/models/ticket.dart';
 
 class Trip {
   Trip({
@@ -17,11 +18,16 @@ class Trip {
   String to;
   Jalali? date;
   JalaliRange? dateRange;
+  List<Ticket> tickets = [];
   Map<String, int> passengers = {
     'adult': 0,
     'child': 0,
     'infant': 0,
   };
+
+  int get sumPassengers {
+    return passengers['adult']! + passengers['child']! + passengers['infant']!;
+  }
 
   String get title => '$from به $to';
 

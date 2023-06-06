@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/sort.dart';
 import '../models/ticket.dart';
 import '../models/trip.dart';
+import 'PassengersDataPage.dart';
 import 'ResultPage.dart';
 
 // ignore: must_be_immutable
@@ -340,7 +341,10 @@ class _ShowTicketDetailsState extends State<ShowTicketDetails> {
                       } else {
                         widget.tripData.departTicket = widget.ticket;
                       }
-                      print('hi');
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PassengersDataPage(
+                            tripData: widget.tripData,
+                          )));
                     }
                     // Navigator.push(
                     //   context,

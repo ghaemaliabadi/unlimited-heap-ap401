@@ -6,6 +6,7 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:unlimited_heap_ap401/models/trip.dart';
 import 'package:unlimited_heap_ap401/models/ticket.dart';
+import 'package:unlimited_heap_ap401/screens/showTicketDetails.dart';
 import '../models/company.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pull_down_button/pull_down_button.dart';
@@ -505,12 +506,12 @@ class _ResultPageState extends State<ResultPage> {
       onTap: () {
         if (ticket.remainingSeats > 0) {
           // print('hi bitch');
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => TicketPage(ticket: ticket),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShowTicketDetails(ticket: ticket),
+            ),
+          );
         }
       },
       child: Container(

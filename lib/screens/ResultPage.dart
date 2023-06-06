@@ -121,7 +121,15 @@ class _ResultPageState extends State<ResultPage> {
         child: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              if (widget.tripData.type == 'رفت و برگشت' && widget.tripData.departTicket != null) {
+                widget.tripData.departTicket = null;
+                widget.tripData.returnTicket = null;
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+              } else {
+                Navigator.pop(context);
+              }
             },
             icon: const Icon(Icons.arrow_back),
             //replace with our own icon data.

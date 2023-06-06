@@ -26,6 +26,12 @@ class _ShowTicketDetailsState extends State<ShowTicketDetails> {
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 1.5,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text('اطلاعات ${widget.ticket.transportBy}',
             style: Theme.of(context).textTheme.displayMedium),
       ),

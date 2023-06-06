@@ -314,25 +314,21 @@ class _AccountPageState extends State<AccountPage> {
                               ]
                             ),
                             const SizedBox(height: 20.0,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(
-                                  width: pageWidth * 0.8,
-                                  child: TextFormField(
-                                    style: Theme.of(context).textTheme.displaySmall,
-                                    decoration: InputDecoration(
-                                      labelText: 'شماره سفارش',
-                                      alignLabelWithHint: true,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                    ),
+                            SizedBox(
+                              width: pageWidth * 0.8,
+                              child: TextFormField(
+                                style: Theme.of(context).textTheme.displaySmall,
+                                decoration: InputDecoration(
+                                  labelText: 'شماره سفارش',
+                                  alignLabelWithHint: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
-                              ]
+                              ),
                             ),
+                            const SizedBox(height: 20.0,),
+                            buildDatePicker(context),
                           ]
                         )
                       )
@@ -429,14 +425,14 @@ class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEm
               sampleUser.setEmail(_controller.text);
               setState(() {});
               ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'ایمیل با موفقیت ویرایش شد.',
-                      style: Theme.of(context).textTheme.displaySmall,
-                    ),
-                    duration: const Duration(seconds: 1),
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                SnackBar(
+                  content: Text(
+                    'ایمیل با موفقیت ویرایش شد.',
+                    style: Theme.of(context).textTheme.displaySmall,
                   ),
+                  duration: const Duration(seconds: 1),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                ),
               );
               Navigator.of(context).pop();
             }
@@ -618,4 +614,39 @@ class GoToTransactionsTab extends StatelessWidget {
       ),
     );
   }
+}
+
+GestureDetector buildDatePicker(BuildContext context) {
+  return GestureDetector(
+    onTap: () async {
+      var fromDate = await showPersianDatePicker(
+        context: context,
+        initialDate: Jalali.now(),
+        firstDate: Jalali(1380, 1, 1),
+        lastDate: Jalali.now(),
+      );
+    },
+    child: Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black45),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      height: 50.0,
+      padding: const EdgeInsets.only(left: 10.0, right: 15.0),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.calendar_today_outlined,
+            color: Colors.black45,
+          ),
+          const SizedBox(width: 5.0),
+          Text(
+            'از تاریخ',
+            style: Theme.of(context).textTheme.titleSmall,
+          )
+        ],
+      ),
+    ),
+  );
 }

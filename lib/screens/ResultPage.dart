@@ -564,240 +564,244 @@ class _ResultPageState extends State<ResultPage> {
           );
         }
       },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        height: 170,
-        decoration: () {
-          if (ticket.remainingSeats > 0) {
-            return BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black38,
-                  offset: Offset(0, 2),
-                  blurRadius: 4.0,
-                ),
-              ],
-            );
-          } else {
-            return BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(8.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black45,
-                  offset: Offset(1, 3),
-                  blurRadius: 4.0,
-                ),
-              ],
-            );
-          }
-        }(),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 12, 16.0, 0),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        ticket.company.logo!,
-                        width: 50.0,
-                        height: 50.0,
-                      ),
-                      const SizedBox(height: 8.0),
-                      Text(
-                        ticket.company.name,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 16.0),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      () {
-                        if (ticket.description != '') {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Text(
-                              ticket.description,
-                              style: Theme.of(context).textTheme.displaySmall,
-                            ),
-                          );
-                        } else {
-                          return const SizedBox(height: 0);
-                        }
-                      }(),
-                      () {
-                        return Row(
-                          children: ticket.tags
-                              .map(
-                                (tag) => Container(
-                                  margin: const EdgeInsets.only(right: 4.0),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 4.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blueAccent.withOpacity(0.15),
-                                    borderRadius: BorderRadius.circular(1000),
-                                  ),
-                                  child: Text(
-                                    tag,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: Colors.black,
-                                        ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        );
-                      }(),
-                      () {
-                        if (ticket.description == '') {
-                          return const SizedBox(height: 12.0);
-                        } else {
-                          return const SizedBox(height: 8.0);
-                        }
-                      }(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Row(
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  ticket.outboundTimeString,
-                                  style:
-                                      Theme.of(context).textTheme.displayLarge,
-                                ),
-                                const SizedBox(height: 4.0),
-                                Text(
-                                  ticket.from,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(width: 8.0),
-                            const Icon(
-                              Icons.arrow_forward_rounded,
-                              size: 32.0,
-                            ),
-                            const SizedBox(width: 4.0),
-                            Column(
-                              children: [
-                                Text(
-                                  ticket.inboundTimeString,
-                                  style:
-                                      Theme.of(context).textTheme.displayLarge,
-                                ),
-                                const SizedBox(height: 4.0),
-                                Text(
-                                  ticket.to,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+      child: ticketContainer(ticket),
+    );
+  }
+
+  Container ticketContainer(Ticket ticket) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      height: 170,
+      decoration: () {
+        if (ticket.remainingSeats > 0) {
+          return BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black38,
+                offset: Offset(0, 2),
+                blurRadius: 4.0,
               ),
-            ),
-            () {
-              if (ticket.description == '') {
-                return const SizedBox(height: 26.0);
-              } else {
-                return const SizedBox(height: 4.0);
-              }
-            }(),
-            const Divider(
-              height: 2.0,
-              color: Colors.black,
-            ),
-            const SizedBox(height: 8.0),
-            Column(
+            ],
+          );
+        } else {
+          return BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black45,
+                offset: Offset(1, 3),
+                blurRadius: 4.0,
+              ),
+            ],
+          );
+        }
+      }(),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 12, 16.0, 0),
+            child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      () {
-                        if (ticket.remainingSeats > 0) {
-                          return Text(
-                            '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: Colors.grey[700],
-                                  fontSize: 16.0,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      ticket.company.logo!,
+                      width: 50.0,
+                      height: 50.0,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      ticket.company.name,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 16.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    () {
+                      if (ticket.description != '') {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            ticket.description,
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                        );
+                      } else {
+                        return const SizedBox(height: 0);
+                      }
+                    }(),
+                    () {
+                      return Row(
+                        children: ticket.tags
+                            .map(
+                              (tag) => Container(
+                                margin: const EdgeInsets.only(right: 4.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 4.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.blueAccent.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(1000),
                                 ),
-                          );
-                        } else {
-                          return Text(
-                            'تکمیل ظرفیت',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: Colors.red[700],
-                                  fontSize: 16.0,
+                                child: Text(
+                                  tag,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Colors.black,
+                                      ),
                                 ),
-                          );
-                        }
-                      }(),
-                      Row(
+                              ),
+                            )
+                            .toList(),
+                      );
+                    }(),
+                    () {
+                      if (ticket.description == '') {
+                        return const SizedBox(height: 12.0);
+                      } else {
+                        return const SizedBox(height: 8.0);
+                      }
+                    }(),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Row(
                         children: [
-                          Text(
-                              '${convertEnToFa(numberFormat.format(ticket.price))}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                    fontSize: 28.0,
-                                    color: (ticket) {
-                                      if (ticket.remainingSeats > 0) {
-                                        return Colors.blueAccent;
-                                      } else {
-                                        return Colors.grey[700];
-                                      }
-                                    }(ticket),
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                          Column(
+                            children: [
+                              Text(
+                                ticket.outboundTimeString,
+                                style:
+                                    Theme.of(context).textTheme.displayLarge,
+                              ),
+                              const SizedBox(height: 4.0),
+                              Text(
+                                ticket.from,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 8.0),
+                          const Icon(
+                            Icons.arrow_forward_rounded,
+                            size: 32.0,
+                          ),
                           const SizedBox(width: 4.0),
                           Column(
                             children: [
+                              Text(
+                                ticket.inboundTimeString,
+                                style:
+                                    Theme.of(context).textTheme.displayLarge,
+                              ),
                               const SizedBox(height: 4.0),
                               Text(
-                                'تومان',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: Colors.grey[700],
-                                      fontSize: 18.0,
-                                    ),
+                                ticket.to,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                )
+                    ),
+                  ],
+                ),
               ],
-            ) // price and remaining seats
-          ],
-        ),
+            ),
+          ),
+          () {
+            if (ticket.description == '') {
+              return const SizedBox(height: 26.0);
+            } else {
+              return const SizedBox(height: 4.0);
+            }
+          }(),
+          const Divider(
+            height: 2.0,
+            color: Colors.black,
+          ),
+          const SizedBox(height: 8.0),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    () {
+                      if (ticket.remainingSeats > 0) {
+                        return Text(
+                          '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: Colors.grey[700],
+                                fontSize: 16.0,
+                              ),
+                        );
+                      } else {
+                        return Text(
+                          'تکمیل ظرفیت',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: Colors.red[700],
+                                fontSize: 16.0,
+                              ),
+                        );
+                      }
+                    }(),
+                    Row(
+                      children: [
+                        Text(
+                            '${convertEnToFa(numberFormat.format(ticket.price))}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                  fontSize: 28.0,
+                                  color: (ticket) {
+                                    if (ticket.remainingSeats > 0) {
+                                      return Colors.blueAccent;
+                                    } else {
+                                      return Colors.grey[700];
+                                    }
+                                  }(ticket),
+                                  fontWeight: FontWeight.bold,
+                                )),
+                        const SizedBox(width: 4.0),
+                        Column(
+                          children: [
+                            const SizedBox(height: 4.0),
+                            Text(
+                              'تومان',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: Colors.grey[700],
+                                    fontSize: 18.0,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ) // price and remaining seats
+        ],
       ),
     );
   }

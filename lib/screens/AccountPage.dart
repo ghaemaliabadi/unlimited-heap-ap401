@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/userinfo.dart';
+
+//TODO: fix sizes and paddings
+
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
   @override
@@ -20,10 +23,14 @@ User sampleUser = User(
 );
 
 class _AccountPageState extends State<AccountPage> {
+
+  static bool emailEdited = false;
+
   @override
   Widget build(BuildContext context) {
     var pageHeight = MediaQuery.of(context).size.height;
     var pageWidth = MediaQuery.of(context).size.width;
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -36,9 +43,7 @@ class _AccountPageState extends State<AccountPage> {
                   Navigator.pop(context);
                 },
                 icon: const Icon(Icons.arrow_back),
-                //replace with our own icon data.
               ),
-              backgroundColor: Theme.of(context).colorScheme.primary,
               elevation: 1.5,
               bottom: TabBar(
                 indicatorColor: Theme.of(context).colorScheme.primary,
@@ -133,11 +138,11 @@ class _AccountPageState extends State<AccountPage> {
                                 InkWell(
                                   onTap: () {
                                     showDialogToEditEmail(context);
-                                    // if (_emailEdited) {
-                                    //   ScaffoldMessenger.of(context).showSnackBar(
-                                    //     const SnackBar(content: Text('hi there')),
-                                    //   );
-                                    // }
+                                    if (emailEdited) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('hi there')),
+                                      );
+                                    }
                                   },
                                   child: Row(
                                     children: [
@@ -344,7 +349,6 @@ class _AccountPageState extends State<AccountPage> {
   }
 }
 
-
 Row buildRowForUserInfo(BuildContext context, String title, String? value) {
   return Row(
     children: [
@@ -424,11 +428,10 @@ class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEm
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               // TODO: show success message
-              // TODO: update user email using setState
               sampleUser.setEmail(_controller.text);
-              // setState(() {
-              //   _AccountPageState._emailEdited = true;
-              // });
+              setState(() {
+                _AccountPageState.emailEdited = true;
+              });
               Navigator.of(context).pop();
             }
           },

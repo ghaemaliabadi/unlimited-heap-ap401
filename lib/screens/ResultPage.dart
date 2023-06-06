@@ -16,8 +16,9 @@ import 'FilterPage.dart';
 class ResultPage extends StatefulWidget {
   Trip tripData;
   Sort sort;
+  String selectTicketFor;
 
-  ResultPage({Key? key, required this.tripData, required this.sort})
+  ResultPage({Key? key, required this.tripData, required this.sort, required this.selectTicketFor})
       : super(key: key);
 
   @override
@@ -135,7 +136,7 @@ class _ResultPageState extends State<ResultPage> {
                   Text('بلیط ${tripData.transportBy} ${tripData.title}',
                       style: Theme.of(context).textTheme.displayMedium),
                   const SizedBox(height: 2.0),
-                  Text(tripData.dateString,
+                  Text(tripData.dateStringWithParam(widget.selectTicketFor),
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.white,
                           )),
@@ -503,6 +504,7 @@ class _ResultPageState extends State<ResultPage> {
     return GestureDetector(
       onTap: () {
         if (ticket.remainingSeats > 0) {
+          // print('hi bitch');
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(
@@ -753,11 +755,18 @@ class _ResultPageState extends State<ResultPage> {
     // Trip tripData = widget.tripData;
     // list of dates
     var nowDate = Jalali.now();
-    // TODO: config with for and navigate scrollbar to selected date
     List<Jalali> dates = [];
     var now = Jalali(nowDate.year, nowDate.month, nowDate.day);
-    var selected = Jalali(widget.tripData.date!.year,
-        widget.tripData.date!.month, widget.tripData.date!.day);
+    var targetDate = widget.tripData.date;
+    if (widget.selectTicketFor == 'return') {
+          targetDate = widget.tripData.dateRange!.end;
+    } else { // departure
+       if (widget.tripData.type == 'رفت و برگشت') {
+         targetDate = widget.tripData.dateRange!.start;
+       }
+    }
+    var selected = Jalali(targetDate!.year,
+        targetDate.month, targetDate.day);
     for (var i = -180; i < 180; i++) {
       var date = selected.addDays(i);
       if (date.isAfter(now) || date.isAtSameMomentAs(now)) {
@@ -783,6 +792,19 @@ class _ResultPageState extends State<ResultPage> {
                 //   widget.tripData.date = dates[index];
                 // });
                 widget.tripData.date = dates[index];
+                if (widget.selectTicketFor == 'return') {
+                  widget.tripData.dateRange = JalaliRange(
+                    start: widget.tripData.dateRange!.start,
+                    end: dates[index],
+                  );
+                } else { // departure
+                  if (widget.tripData.type == 'رفت و برگشت') {
+                    widget.tripData.dateRange = JalaliRange(
+                      start: dates[index],
+                      end: widget.tripData.dateRange!.end,
+                    );
+                  }
+                }
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
@@ -790,6 +812,7 @@ class _ResultPageState extends State<ResultPage> {
                           ResultPage(
                             tripData: widget.tripData,
                             sort: widget.sort,
+                            selectTicketFor: widget.selectTicketFor,
                           )),
                 );
               },

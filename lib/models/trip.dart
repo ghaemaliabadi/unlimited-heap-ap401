@@ -43,6 +43,19 @@ class Trip {
           "${date?.formatter.wN} ${date?.formatter.dd} ${date?.formatter.mN}");
     }
   }
+  // convert dateString getter to method with a parameter
+  String dateStringWithParam(String selectTicketFor) {
+    if (type == 'رفت و برگشت') {
+      if (selectTicketFor == 'depart') {
+        return 'رفت » $goDate';
+      } else {
+        return 'برگشت » $backDate';
+      }
+    } else {
+      return convertEnToFa(
+          "${date?.formatter.wN} ${date?.formatter.dd} ${date?.formatter.mN}");
+    }
+  }
 }
 
 convertEnToFa(String txt) {

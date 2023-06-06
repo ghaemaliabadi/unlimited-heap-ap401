@@ -267,7 +267,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          ResultPage(tripData: tripData, sort: Sort()),
+                                          ResultPage(tripData: tripData, sort: Sort(), selectTicketFor: 'depart',),
                                     ),
                                   );
                                 },
@@ -581,7 +581,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       },
     );
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ResultPage(tripData: tripData, sort: Sort())));
+        builder: (context) => ResultPage(tripData: tripData, sort: Sort(), selectTicketFor: 'depart',)));
   }
 
   Row buildPassengerCountRow(BuildContext context, StateSetter setModalState,

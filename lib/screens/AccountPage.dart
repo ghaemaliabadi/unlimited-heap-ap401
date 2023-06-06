@@ -315,7 +315,7 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             const SizedBox(height: 20.0,),
                             SizedBox(
-                              width: pageWidth * 0.8,
+                              width: pageWidth * 0.78,
                               child: TextFormField(
                                 style: Theme.of(context).textTheme.displaySmall,
                                 decoration: InputDecoration(
@@ -626,27 +626,55 @@ GestureDetector buildDatePicker(BuildContext context) {
         lastDate: Jalali.now(),
       );
     },
-    child: Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black45),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      height: 50.0,
-      padding: const EdgeInsets.only(left: 10.0, right: 15.0),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.calendar_today_outlined,
-            color: Colors.black45,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.35,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black45),
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          const SizedBox(width: 5.0),
-          Text(
-            'از تاریخ',
-            style: Theme.of(context).textTheme.titleSmall,
-          )
-        ],
-      ),
+          height: 50.0,
+          padding: const EdgeInsets.only(left: 10.0, right: 15.0),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.calendar_today_outlined,
+                color: Colors.black45,
+              ),
+              const SizedBox(width: 5.0),
+              Text(
+                'از تاریخ',
+                style: Theme.of(context).textTheme.titleSmall,
+              )
+            ],
+          ),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.35,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black45),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          height: 50.0,
+          padding: const EdgeInsets.only(left: 10.0, right: 15.0),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.calendar_today_outlined,
+                color: Colors.black45,
+              ),
+              const SizedBox(width: 5.0),
+              Text(
+                'تا تاریخ',
+                style: Theme.of(context).textTheme.titleSmall,
+              )
+            ],
+          ),
+        ),
+      ],
     ),
   );
 }

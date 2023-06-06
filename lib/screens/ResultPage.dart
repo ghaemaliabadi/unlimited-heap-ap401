@@ -509,7 +509,7 @@ class _ResultPageState extends State<ResultPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ShowTicketDetails(ticket: ticket),
+              builder: (context) => ShowTicketDetails(ticket: ticket, tripData: widget.tripData),
             ),
           );
         }

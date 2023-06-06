@@ -292,7 +292,7 @@ class _AccountPageState extends State<AccountPage> {
                       elevation: 2.5,
                       child: Container(
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.3,
+                        height: pageHeight * 0.34,
                         child: Column(
                           children: [
                             Row(
@@ -320,7 +320,7 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             const SizedBox(height: 20.0,),
                             SizedBox(
-                              width: pageWidth * 0.78,
+                              width: pageWidth * 0.82,
                               child: TextFormField(
                                 style: Theme.of(context).textTheme.displaySmall,
                                 decoration: InputDecoration(
@@ -340,10 +340,20 @@ class _AccountPageState extends State<AccountPage> {
                                 buildDatePicker(context, 'از'),
                                 buildDatePicker(context, 'تا'),
                               ]
+                            ),
+                            const SizedBox(height: 10.0,),
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: const Text(
+                                'جستجو',
+                              ),
                             )
                           ]
                         )
                       )
+                    ),
+                    Expanded(
+                      child: ListView()
                     )
                   ]
                 )
@@ -356,20 +366,19 @@ class _AccountPageState extends State<AccountPage> {
   }
   GestureDetector buildDatePicker(BuildContext context, String flag) {
     return GestureDetector(
-      onTap: () {
-        var pickedDate = showPersianDatePicker(
+      onTap: () async {
+        var pickedDate = await showPersianDatePicker(
           context: context,
           initialDate: Jalali.now(),
           firstDate: Jalali(1380, 1, 1),
           lastDate: Jalali.now(),
         );
         if (flag.compareTo('از') == 0) {
-          startingDateSearch = pickedDate as Jalali;
+          startingDateSearch = pickedDate!;
         } else {
-          endingDateSearch = pickedDate as Jalali;
+          endingDateSearch = pickedDate!;
         }
-        //TODO: setState not working
-        setState() {
+        setState(() {
           if (flag.compareTo('از') == 0) {
             startingDateLabel = convertEnToFa(
                 "${startingDateSearch.formatter.wN} ${startingDateSearch.formatter.dd} ${startingDateSearch.formatter.mN}");
@@ -377,10 +386,10 @@ class _AccountPageState extends State<AccountPage> {
             endingDateLabel = convertEnToFa(
                 "${endingDateSearch.formatter.wN} ${endingDateSearch.formatter.dd} ${endingDateSearch.formatter.mN}");
           }
-        }
+        });
       },
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.35,
+        width: MediaQuery.of(context).size.width * 0.4,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black45),
           borderRadius: BorderRadius.circular(10.0),

@@ -264,6 +264,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                   // childPassengers = trips[index].passengers['child']!;
                                   // infantPassengers = trips[index].passengers['infant']!;
                                   // setState(() {});
+                                  tripData.departTicket = null;
+                                  tripData.returnTicket = null;
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => ResultPage(
@@ -583,6 +585,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         'infant': infantPassengers,
       },
     );
+    tripData.departTicket = null;
+    tripData.returnTicket = null;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ResultPage(
               tripData: tripData,

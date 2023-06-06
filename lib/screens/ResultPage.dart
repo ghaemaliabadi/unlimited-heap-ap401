@@ -19,7 +19,11 @@ class ResultPage extends StatefulWidget {
   Sort sort;
   String selectTicketFor;
 
-  ResultPage({Key? key, required this.tripData, required this.sort, required this.selectTicketFor})
+  ResultPage(
+      {Key? key,
+      required this.tripData,
+      required this.sort,
+      required this.selectTicketFor})
       : super(key: key);
 
   @override
@@ -98,7 +102,11 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
     _scrollController = AutoScrollController();
-    _scrollController.scrollToIndex((widget.tripData.date!.day + widget.tripData.date!.month * 31) - (Jalali.now().day + Jalali.now().month * 31), preferPosition: AutoScrollPosition.begin, duration: const Duration(milliseconds: 1));
+    _scrollController.scrollToIndex(
+        (widget.tripData.date!.day + widget.tripData.date!.month * 31) -
+            (Jalali.now().day + Jalali.now().month * 31),
+        preferPosition: AutoScrollPosition.begin,
+        duration: const Duration(milliseconds: 1));
     super.initState();
   }
 
@@ -121,7 +129,8 @@ class _ResultPageState extends State<ResultPage> {
         child: AppBar(
           leading: IconButton(
             onPressed: () {
-              if (widget.tripData.type == 'رفت و برگشت' && widget.tripData.departTicket != null) {
+              if (widget.tripData.type == 'رفت و برگشت' &&
+                  widget.tripData.departTicket != null) {
                 widget.tripData.departTicket = null;
                 widget.tripData.returnTicket = null;
                 Navigator.pop(context);
@@ -214,6 +223,20 @@ class _ResultPageState extends State<ResultPage> {
               ],
             ),
           ),
+          () {
+            if (widget.tripData.departTicket != null) {
+              return Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
+                  child: Row(
+                    children: [
+                      Text('data'),
+                    ],
+                  )
+              );
+            } else {
+              return const SizedBox();
+            }
+          }(),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 16.0, 14.0, 8.0),
             child: Column(
@@ -429,7 +452,6 @@ class _ResultPageState extends State<ResultPage> {
                       color: Colors.grey,
                     ),
                     const SizedBox(width: 8.0),
-                    // TODO: add filter menu and sort dropdown
                     Text(
                       'قیمت‌ها برای یک بزرگسال محاسبه شده است.',
                       style: Theme.of(context).textTheme.bodyLarge,
@@ -517,7 +539,8 @@ class _ResultPageState extends State<ResultPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ShowTicketDetails(ticket: ticket, tripData: widget.tripData),
+              builder: (context) =>
+                  ShowTicketDetails(ticket: ticket, tripData: widget.tripData),
             ),
           );
         }
@@ -768,14 +791,14 @@ class _ResultPageState extends State<ResultPage> {
     var now = Jalali(nowDate.year, nowDate.month, nowDate.day);
     var targetDate = widget.tripData.date;
     if (widget.selectTicketFor == 'return') {
-          targetDate = widget.tripData.dateRange!.end;
-    } else { // departure
-       if (widget.tripData.type == 'رفت و برگشت') {
-         targetDate = widget.tripData.dateRange!.start;
-       }
+      targetDate = widget.tripData.dateRange!.end;
+    } else {
+      // departure
+      if (widget.tripData.type == 'رفت و برگشت') {
+        targetDate = widget.tripData.dateRange!.start;
+      }
     }
-    var selected = Jalali(targetDate!.year,
-        targetDate.month, targetDate.day);
+    var selected = Jalali(targetDate!.year, targetDate.month, targetDate.day);
     for (var i = -180; i < 180; i++) {
       var date = selected.addDays(i);
       if (date.isAfter(now) || date.isAtSameMomentAs(now)) {
@@ -806,7 +829,8 @@ class _ResultPageState extends State<ResultPage> {
                     start: widget.tripData.dateRange!.start,
                     end: dates[index],
                   );
-                } else { // departure
+                } else {
+                  // departure
                   if (widget.tripData.type == 'رفت و برگشت') {
                     widget.tripData.dateRange = JalaliRange(
                       start: dates[index],

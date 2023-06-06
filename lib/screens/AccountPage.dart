@@ -429,11 +429,20 @@ class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEm
         TextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              // TODO: show success message
               sampleUser.setEmail(_controller.text);
               setState(() {
                 _AccountPageState.emailEdited = true;
               });
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'ایمیل با موفقیت ویرایش شد.',
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                    duration: const Duration(seconds: 1),
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                  ),
+              );
               Navigator.of(context).pop();
             }
           },

@@ -18,7 +18,8 @@ class Trip {
   String to;
   Jalali? date;
   JalaliRange? dateRange;
-  List<Ticket> tickets = [];
+  Ticket? departTicket;
+  Ticket? returnTicket;
   Map<String, int> passengers = {
     'adult': 0,
     'child': 0,

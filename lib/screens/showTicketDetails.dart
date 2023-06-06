@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../models/sort.dart';
 import '../models/ticket.dart';
 import '../models/trip.dart';
+import 'ResultPage.dart';
 
 // ignore: must_be_immutable
 class ShowTicketDetails extends StatefulWidget {
@@ -318,6 +320,22 @@ class _ShowTicketDetailsState extends State<ShowTicketDetails> {
                 height: 54.0,
                 child: TextButton(
                   onPressed: () {
+                    if (widget.tripData.type == 'رفت و برگشت' && widget.tripData.departTicket == null) {
+                      widget.tripData.departTicket = widget.ticket;
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ResultPage(
+                            tripData: widget.tripData,
+                            sort: Sort(),
+                            selectTicketFor: 'return',
+                          )));
+                    } else {
+                      if (widget.tripData.type == 'رفت و برگشت') {
+                        widget.tripData.returnTicket = widget.ticket;
+                      } else {
+                        widget.tripData.departTicket = widget.ticket;
+                      }
+                      print('hi');
+                    }
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(

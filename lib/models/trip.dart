@@ -1,4 +1,5 @@
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:unlimited_heap_ap401/models/passenger.dart';
 import 'package:unlimited_heap_ap401/models/ticket.dart';
 
 class Trip {
@@ -25,6 +26,7 @@ class Trip {
     'child': 0,
     'infant': 0,
   };
+  List<Passenger> passengerList = [];
 
   int get sumPassengers {
     return passengers['adult']! + passengers['child']! + passengers['infant']!;

@@ -137,7 +137,21 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   ),
                   const SizedBox(height: 8.0),
                   // create text form fields for passengers data
-                  ExpansionWidget(
+                  buildExpansionFor('مسافر اول', 'بزرگسال', 0),
+                  buildExpansionFor('مسافر دوم', 'بزرگسال', 1),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding buildExpansionFor(String passengerName, String passengerType, int saveToIndex) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: ExpansionWidget(
                     initiallyExpanded: false,
                     titleBuilder: (double animationValue, _, bool isExpaned,
                         toggleFunction) {
@@ -188,7 +202,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(right: 8.0),
-                                            child: Text('مسافر اول',
+                                            child: Text(passengerName,
                                                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                                   color: Colors.black87,
                                                   fontSize: 20,
@@ -201,12 +215,15 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                               padding: const EdgeInsets.symmetric(
                                                   horizontal: 8.0, vertical: 4.0),
                                               decoration: BoxDecoration(
-                                                color: Colors.grey.withOpacity(0.25),
+                                                border: Border.all(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  width: 1,
+                                                ),
                                                 borderRadius: BorderRadius.circular(1000),
                                               ),
                                               child: Padding(
                                                 padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                                                child: Text('بزرگسال',
+                                                child: Text(passengerType,
                                                     style: Theme.of(context).textTheme.bodyLarge),
                                               ),
                                             ),
@@ -214,7 +231,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                         ],
                                       )),
                                   Transform.rotate(
-                                    angle: 3.14 * animationValue,
+                                    angle: 3.1415 * animationValue,
                                     alignment: Alignment.center,
                                     child: const Icon(
                                         Icons.keyboard_arrow_up_outlined,
@@ -254,6 +271,11 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                     }
                                     return null;
                                   },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.tripData.passengerList[saveToIndex].firstName = value;
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                     labelText: 'نام',
                                     hintStyle:
@@ -274,6 +296,11 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                       return 'لطفا نام خانوادگی مسافر را وارد کنید';
                                     }
                                     return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.tripData.passengerList[saveToIndex].lastName = value;
+                                    });
                                   },
                                   decoration: InputDecoration(
                                     labelText: 'نام خانوادگی',
@@ -299,6 +326,11 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                       return 'لطفا کد ملی مسافر را وارد کنید';
                                     }
                                     return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.tripData.passengerList[saveToIndex].id = value;
+                                    });
                                   },
                                   decoration: InputDecoration(
                                     labelText: 'کد ملی',
@@ -342,7 +374,11 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                       ),
                                     ),
                                   ],
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.tripData.passengerList[saveToIndex].gender = value;
+                                    });
+                                  },
                                 ),
                               ),
                             ],
@@ -352,12 +388,6 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

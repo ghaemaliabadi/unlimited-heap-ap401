@@ -1,6 +1,7 @@
 import 'package:expansion_widget/expansion_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../models/passenger.dart';
 import '../models/ticket.dart';
 import '../models/trip.dart';
 
@@ -17,6 +18,14 @@ class PassengersDataPage extends StatefulWidget {
 var numberFormat = NumberFormat("###,###", "en_US");
 
 class _PassengersDataPageState extends State<PassengersDataPage> {
+
+  // init
+  @override
+  void initState() {
+    widget.tripData.passengerList = [];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +54,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                     children: [
                       Icon(
                         () {
-                          if (widget.tripData.transportBy == 'هواپیما') {
+                          if (widget.tripData.transportBy.contains('پرواز')) {
                             return Icons.airplanemode_active_rounded;
                           } else if (widget.tripData.transportBy == 'اتوبوس') {
                             return Icons.directions_bus_rounded;
@@ -130,15 +139,38 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   }(),
                   // fields for passengers data
                   const SizedBox(height: 8.0),
-                  const Text(
-                    'مشخصات مسافران',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black54),
-                  ),
-                  const SizedBox(height: 8.0),
+                  // const Text(
+                  //   'مشخصات مسافران',
+                  //   style: TextStyle(
+                  //       fontWeight: FontWeight.bold, color: Colors.black54),
+                  // ),
+                  // const SizedBox(height: 8.0),
                   // create text form fields for passengers data
-                  buildExpansionFor('مسافر اول', 'بزرگسال', 0),
-                  buildExpansionFor('مسافر دوم', 'بزرگسال', 1),
+                  for (int i = 0; i < widget.tripData.passengers['adult']!; i++)
+                    () {
+                      widget.tripData.passengerList.add(Passenger());
+                     return buildExpansionFor(
+                         'اطلاعات مسافر',
+                         'بزرگسال',
+                         i);
+                    } (),
+                  for (int i = widget.tripData.passengers['adult']!; i < widget.tripData.passengers['adult']! + widget.tripData.passengers['child']!; i++)
+                    () {
+                      widget.tripData.passengerList.add(Passenger());
+                      return buildExpansionFor(
+                          'اطلاعات مسافر',
+                          'کودک',
+                          i);
+                    } (),
+                  for (int i = widget.tripData.passengers['adult']! + widget.tripData.passengers['child']!; i < widget.tripData.passengers['adult']! + widget.tripData.passengers['child']! + widget.tripData.passengers['infant']!; i++)
+                    () {
+                      widget.tripData.passengerList.add(Passenger());
+                      return buildExpansionFor(
+                          'اطلاعات مسافر',
+                          'نوزاد',
+                          i);
+                    } (),
+
                 ],
               ),
             ),
@@ -148,246 +180,250 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
     );
   }
 
-  Padding buildExpansionFor(String passengerName, String passengerType, int saveToIndex) {
+  Padding buildExpansionFor(
+      String passengerName, String passengerType, int saveToIndex) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: ExpansionWidget(
-                    initiallyExpanded: false,
-                    titleBuilder: (double animationValue, _, bool isExpaned,
-                        toggleFunction) {
-                      return InkWell(
-                          onTap: () => toggleFunction(animated: true),
-                          child: Container(
-                            decoration: () {
-                                if (isExpaned) {
-                                  return BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border(
-                                      left: BorderSide(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        width: 1,
-                                      ),
-                                      // top border
-                                      top: BorderSide(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        width: 1,
-                                      ),
-                                      // right border
-                                      right: BorderSide(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        width: 1,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  return BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    // border all
-                                    border: Border.all(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      width: 1,
-                                    ),
-                                  );
-                                }
-                            }(),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 8.0),
-                                            child: Text(passengerName,
-                                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                                  color: Colors.black87,
-                                                  fontSize: 20,
-                                                )),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 12.0),
-                                            child: Container(
-                                              margin: const EdgeInsets.only(right: 4.0),
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 8.0, vertical: 4.0),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: Colors.grey.withOpacity(0.5),
-                                                  width: 1,
-                                                ),
-                                                borderRadius: BorderRadius.circular(1000),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                                                child: Text(passengerType,
-                                                    style: Theme.of(context).textTheme.bodyLarge),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                  Transform.rotate(
-                                    angle: 3.1415 * animationValue,
-                                    alignment: Alignment.center,
-                                    child: const Icon(
-                                        Icons.keyboard_arrow_up_outlined,
-                                        color: Colors.black54,
-                                        size: 30),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ));
-                    },
-                    content: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(16),
-                          bottomRight: Radius.circular(16),
+        initiallyExpanded: false,
+        titleBuilder:
+            (double animationValue, _, bool isExpaned, toggleFunction) {
+          return InkWell(
+              onTap: () => toggleFunction(animated: true),
+              child: Container(
+                decoration: () {
+                  if (isExpaned) {
+                    return BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                        left: BorderSide(
+                          color: Colors.grey.withOpacity(0.5),
+                          width: 1,
                         ),
-                        color: Colors.white,
-                        // border all
-                        border: Border.all(
+                        // top border
+                        top: BorderSide(
+                          color: Colors.grey.withOpacity(0.5),
+                          width: 1,
+                        ),
+                        // right border
+                        right: BorderSide(
                           color: Colors.grey.withOpacity(0.5),
                           width: 1,
                         ),
                       ),
-                      child: Column(
+                    );
+                  } else {
+                    return BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      // border all
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 1,
+                      ),
+                    );
+                  }
+                }(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const SizedBox(height: 16.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.45,
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'لطفا نام مسافر را وارد کنید';
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    setState(() {
-                                      widget.tripData.passengerList[saveToIndex].firstName = value;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    labelText: 'نام',
-                                    hintStyle:
-                                        const TextStyle(color: Colors.black54),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8.0),
-                              // last name
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.45,
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'لطفا نام خانوادگی مسافر را وارد کنید';
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    setState(() {
-                                      widget.tripData.passengerList[saveToIndex].lastName = value;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    labelText: 'نام خانوادگی',
-                                    hintStyle:
-                                        const TextStyle(color: Colors.black54),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text(passengerName,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      color: Colors.black87,
+                                      fontSize: 20,
+                                    )),
                           ),
-                          const SizedBox(height: 8.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.45,
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'لطفا کد ملی مسافر را وارد کنید';
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    setState(() {
-                                      widget.tripData.passengerList[saveToIndex].id = value;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    labelText: 'کد ملی',
-                                    hintStyle:
-                                        const TextStyle(color: Colors.black54),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 4.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  width: 1,
                                 ),
+                                borderRadius: BorderRadius.circular(1000),
                               ),
-                              const SizedBox(width: 8.0),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.45,
-                                child: DropdownButtonFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'لطفا جنسیت مسافر را انتخاب کنید';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    labelText: 'جنسیت',
-                                    hintStyle:
-                                        const TextStyle(color: Colors.black54),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: 'مرد',
-                                      child: Text('مرد'
-                                      , style: TextStyle(color: Colors.black54),
-                                      ),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 'زن',
-                                      child: Text('زن',
-                                      style: TextStyle(color: Colors.black54),
-                                      ),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      widget.tripData.passengerList[saveToIndex].gender = value;
-                                    });
-                                  },
-                                ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                                child: Text(passengerType,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge),
                               ),
-                            ],
+                            ),
                           ),
-                          const SizedBox(height: 16.0),
                         ],
+                      )),
+                      Transform.rotate(
+                        angle: 3.1415 * animationValue,
+                        alignment: Alignment.center,
+                        child: const Icon(Icons.keyboard_arrow_up_outlined,
+                            color: Colors.black54, size: 30),
+                      )
+                    ],
+                  ),
+                ),
+              ));
+        },
+        content: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(16),
+            ),
+            color: Colors.white,
+            // border all
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.5),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'لطفا نام مسافر را وارد کنید';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          widget.tripData.passengerList[saveToIndex].firstName =
+                              value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'نام',
+                        hintStyle: const TextStyle(color: Colors.black54),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
                     ),
                   ),
+                  const SizedBox(width: 8.0),
+                  // last name
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'لطفا نام خانوادگی مسافر را وارد کنید';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          widget.tripData.passengerList[saveToIndex].lastName =
+                              value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'نام خانوادگی',
+                        hintStyle: const TextStyle(color: Colors.black54),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'لطفا کد ملی مسافر را وارد کنید';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          widget.tripData.passengerList[saveToIndex].id = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'کد ملی',
+                        hintStyle: const TextStyle(color: Colors.black54),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8.0),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    child: DropdownButtonFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'لطفا جنسیت مسافر را انتخاب کنید';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'جنسیت',
+                        hintStyle: const TextStyle(color: Colors.black54),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'مرد',
+                          child: Text(
+                            'مرد',
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                        ),
+                        DropdownMenuItem(
+                          value: 'زن',
+                          child: Text(
+                            'زن',
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          widget.tripData.passengerList[saveToIndex].gender =
+                              value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16.0),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

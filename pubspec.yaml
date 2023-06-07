@@ -45,6 +45,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   pull_down_button: ^0.9.1
   scroll_to_index: ^3.0.1
+  expansion_widget: ^0.0.3
 
 dev_dependencies:
   flutter_test:

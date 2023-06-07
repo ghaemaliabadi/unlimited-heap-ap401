@@ -184,13 +184,33 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                 children: [
                                   Expanded(
                                       child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const SizedBox(width: 4.0),
-                                          Text('مسافر اول',
-                                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                                color: Colors.black87,
-                                                fontSize: 20,
-                                              )),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 8.0),
+                                            child: Text('مسافر اول',
+                                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                                  color: Colors.black87,
+                                                  fontSize: 20,
+                                                )),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 12.0),
+                                            child: Container(
+                                              margin: const EdgeInsets.only(right: 4.0),
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 8.0, vertical: 4.0),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey.withOpacity(0.25),
+                                                borderRadius: BorderRadius.circular(1000),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                                                child: Text('بزرگسال',
+                                                    style: Theme.of(context).textTheme.bodyLarge),
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       )),
                                   Transform.rotate(
@@ -327,7 +347,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8.0),
+                          const SizedBox(height: 16.0),
                         ],
                       ),
                     ),

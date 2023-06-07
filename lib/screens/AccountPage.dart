@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/userinfo.dart';
+
+//TODO: fix sizes and paddings
+
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
   @override
@@ -19,55 +22,59 @@ User sampleUser = User(
   nationalID: '0920513',
 );
 
+String startingDateLabel = 'از تاریخ';
+String endingDateLabel = 'تا تاریخ';
+Jalali startingDateSearch = Jalali.now();
+Jalali endingDateSearch = Jalali.now();
+
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     var pageHeight = MediaQuery.of(context).size.height;
     var pageWidth = MediaQuery.of(context).size.width;
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(100.0),
-            child: AppBar(
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
-                //replace with our own icon data.
-              ),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              elevation: 1.5,
-              bottom: TabBar(
-                indicatorColor: Theme.of(context).colorScheme.primary,
-                splashFactory: NoSplash.splashFactory,
-                tabs: [
-                  Tab(
-                    icon: const Icon(Icons.person),
-                    child: Text(
-                      'حساب کاربری',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+          preferredSize: const Size.fromHeight(100.0),
+          child: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back),
+            ),
+            elevation: 1.5,
+            bottom: TabBar(
+              indicatorColor: Theme.of(context).colorScheme.primary,
+              splashFactory: NoSplash.splashFactory,
+              tabs: [
+                Tab(
+                  icon: const Icon(Icons.person),
+                  child: Text(
+                    'حساب کاربری',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Tab(
-                    icon: const Icon(Icons.credit_card),
-                    child: Text(
-                      'تراکنش‌ها',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                ),
+                Tab(
+                  icon: const Icon(Icons.credit_card),
+                  child: Text(
+                    'تراکنش‌ها',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Tab(
-                    icon: const Icon(Icons.luggage),
-                    child: Text(
-                      'سفرها',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                ),
+                Tab(
+                  icon: const Icon(Icons.luggage),
+                  child: Text(
+                    'سفرها',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                ],
-              ),
-            )
+                ),
+              ],
+            ),
+          )
         ),
         body: TabBarView(
           children: [
@@ -95,176 +102,171 @@ class _AccountPageState extends State<AccountPage> {
                     thickness: 1.5,
                   ),
                   Card(
-                      margin: const EdgeInsets.all(10.0),
-                      elevation: 2.5,
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(10.0),
-                        height: 140.0,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.person_pin),
-                                const SizedBox(width: 5.0,),
-                                Text(
-                                  'اطلاعات حساب کاربری',
-                                  style: Theme.of(context).textTheme.titleLarge,
+                    margin: const EdgeInsets.all(10.0),
+                    elevation: 2.5,
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10.0),
+                      height: 140.0,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.person_pin),
+                              const SizedBox(width: 5.0,),
+                              Text(
+                                'اطلاعات حساب کاربری',
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.email, size: 16.0,),
+                              const SizedBox(width: 5.0,),
+                              Text(
+                                'ایمیل',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              const SizedBox(width: 50.0,),
+                              Text(
+                                sampleUser.email,
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              const SizedBox(width: 30.0,),
+                              InkWell(
+                                onTap: () {
+                                  showDialogToEditEmail(context);
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'ویرایش',
+                                      style: Theme.of(context).textTheme.labelMedium,
+                                    ),
+                                    const Icon(
+                                      Icons.edit_rounded,
+                                      size: 16.0,
+                                      color: Colors.blueAccent,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 20.0,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.email, size: 16.0,),
-                                const SizedBox(width: 5.0,),
-                                Text(
-                                  'ایمیل',
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                                const SizedBox(width: 50.0,),
-                                Text(
-                                  sampleUser.email,
-                                  style: Theme.of(context).textTheme.headlineMedium,
-                                ),
-                                const SizedBox(width: 30.0,),
-                                InkWell(
-                                  onTap: () {
-                                    showDialogToEditEmail(context);
-                                    // if (_emailEdited) {
-                                    //   ScaffoldMessenger.of(context).showSnackBar(
-                                    //     const SnackBar(content: Text('hi there')),
-                                    //   );
-                                    // }
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'ویرایش',
-                                        style: Theme.of(context).textTheme.labelMedium,
-                                      ),
-                                      const Icon(
-                                        Icons.edit_rounded,
-                                        size: 16.0,
-                                        color: Colors.blueAccent,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20.0,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.money, size: 16.0,),
-                                const SizedBox(width: 5.0,),
-                                Text(
-                                  'موجودی حساب',
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                                const SizedBox(width: 50.0,),
-                                Text(
-                                  '${sampleUser.balance} ریال',
-                                  style: Theme.of(context).textTheme.headlineMedium,
-                                ),
-                                const SizedBox(width: 30.0),
-                                const GoToTransfersTab(),
-                              ],
-                            )
-                          ],
-                        ),
-                      )
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.money, size: 16.0,),
+                              const SizedBox(width: 5.0,),
+                              Text(
+                                'موجودی حساب',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              const SizedBox(width: 50.0,),
+                              Text(
+                                '${sampleUser.balance} ریال',
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              const SizedBox(width: 30.0),
+                              const GoToTransactionsTab(),
+                            ],
+                          )
+                        ],
+                      ),
+                    )
                   ),
                   Card(
-                      margin: const EdgeInsets.all(10.0),
-                      elevation: 2.5,
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding : const EdgeInsets.all(10.0),
-                        height: 210.0,
-                        child: Column(
+                    margin: const EdgeInsets.all(10.0),
+                    elevation: 2.5,
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding : const EdgeInsets.all(10.0),
+                      height: 210.0,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Icon(Icons.person_sharp),
-                                  const SizedBox(width: 5.0,),
-                                  Text(
-                                    'اطلاعات شخصی',
-                                    style: Theme.of(context).textTheme.titleLarge,
-                                  ),
-                                  const SizedBox(width: 80.0,),
-                                  InkWell(
-                                    onTap: () {},
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          'ویرایش اطلاعات',
-                                          //TODO: change the widget to form fields
-                                          style: Theme.of(context).textTheme.labelMedium,
-                                        ),
-                                        const Icon(
-                                          Icons.edit_rounded,
-                                          size: 16.0,
-                                          color: Colors.blueAccent,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                              const Icon(Icons.person_sharp),
+                              const SizedBox(width: 5.0,),
+                              Text(
+                                'اطلاعات شخصی',
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
-                              const SizedBox(height: 20.0,),
-                              buildRowForUserInfo(context, 'نام و نام خانوادگی',
-                                  sampleUser.getFullName()),
-                              const SizedBox(height: 20.0,),
-                              buildRowForUserInfo(context, 'کد ملی',
-                                  (sampleUser.getNationalID())),
-                              const SizedBox(height: 20.0,),
-                              buildRowForUserInfo(context, 'شماره تماس',
-                                  (sampleUser.getPhoneNumber())),
-                              const SizedBox(height: 20.0,),
-                              buildRowForUserInfo(context, 'تاریخ تولد',
-                                  (sampleUser.getBirthDateString())),
-                            ]
-                        ),
-                      )
+                              const SizedBox(width: 80.0,),
+                              InkWell(
+                                onTap: () {},
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      'ویرایش اطلاعات',
+                                      //TODO: change the widget to form fields
+                                      style: Theme.of(context).textTheme.labelMedium,
+                                    ),
+                                    const Icon(
+                                      Icons.edit_rounded,
+                                      size: 16.0,
+                                      color: Colors.blueAccent,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0,),
+                          buildRowForUserInfo(context, 'نام و نام خانوادگی',
+                              sampleUser.getFullName()),
+                          const SizedBox(height: 20.0,),
+                          buildRowForUserInfo(context, 'کد ملی',
+                              (sampleUser.getNationalID())),
+                          const SizedBox(height: 20.0,),
+                          buildRowForUserInfo(context, 'شماره تماس',
+                              (sampleUser.getPhoneNumber())),
+                          const SizedBox(height: 20.0,),
+                          buildRowForUserInfo(context, 'تاریخ تولد',
+                              (sampleUser.getBirthDateString())),
+                        ]
+                      ),
+                    )
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0.0),
                     child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            side: BorderSide(
-                              width: 2.0,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            )
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        side: BorderSide(
+                          width: 2.0,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.key,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            const SizedBox(width: 5.0,),
-                            TextButton(
-                              onPressed: () => showDialogToEditPassword(context),
-                              child: Text(
-                                'ویرایش رمز عبور',
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                            )
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
                         )
+                      ),
+                      child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.key,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 5.0,),
+                          TextButton(
+                            onPressed: () => showDialogToEditPassword(context),
+                            child: Text(
+                              'ویرایش رمز عبور',
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          )
+                        ],
+                      )
                     ),
                   ),
                 ],
@@ -273,77 +275,146 @@ class _AccountPageState extends State<AccountPage> {
             const Center(
               child: Text('تراکنش‌ها'),
             ),
-            Padding(
+            InkWell(
+              splashFactory: NoSplash.splashFactory,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
-                    children: [
-                      Card(
-                          margin: const EdgeInsets.all(10.0),
-                          elevation: 2.5,
-                          child: Container(
-                              padding: const EdgeInsets.all(10.0),
-                              height: pageHeight * 0.3,
-                              child: Column(
-                                  children: [
-                                    Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          const Icon(Icons.search),
-                                          const SizedBox(width: 5.0,),
-                                          Text(
-                                            'جستجوی سفارش',
-                                            style: Theme.of(context).textTheme.titleLarge,
-                                          ),
-                                        ]
-                                    ),
-                                    const SizedBox(height: 5.0,),
-                                    Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          const Icon(Icons.info_outline),
-                                          const SizedBox(width: 5.0,),
-                                          Text(
-                                            'برای جستجو در لیست سفرها پرکردن حداقل یک فیلد کافیست.',
-                                            style: Theme.of(context).textTheme.bodyMedium,
-                                          ),
-                                        ]
-                                    ),
-                                    const SizedBox(height: 20.0,),
-                                    Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                            width: pageWidth * 0.8,
-                                            child: TextFormField(
-                                              decoration: InputDecoration(
-                                                labelText: 'شماره سفارش',
-                                                alignLabelWithHint: true,
-                                                labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                                  color: Theme.of(context).colorScheme.primary,
-                                                ),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ]
-                                    ),
-                                  ]
-                              )
-                          )
+                  children: [
+                    Card(
+                      margin: const EdgeInsets.all(10.0),
+                      elevation: 2.5,
+                      child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        height: pageHeight * 0.34,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.search),
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'جستجوی سفارش',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ]
+                            ),
+                            const SizedBox(height: 5.0,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.info_outline),
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'برای جستجو در لیست سفرها پرکردن حداقل یک فیلد کافیست.',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ]
+                            ),
+                            const SizedBox(height: 20.0,),
+                            SizedBox(
+                              width: pageWidth * 0.82,
+                              child: TextFormField(
+                                style: Theme.of(context).textTheme.displaySmall,
+                                decoration: InputDecoration(
+                                  labelText: 'شماره سفارش',
+                                  alignLabelWithHint: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20.0,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                buildDatePicker(context, 'از'),
+                                buildDatePicker(context, 'تا'),
+                              ]
+                            ),
+                            const SizedBox(height: 10.0,),
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: const Text(
+                                'جستجو',
+                              ),
+                            )
+                          ]
+                        )
                       )
-                    ]
+                    ),
+                    Expanded(
+                      child: ListView()
+                    )
+                  ]
                 )
+              ),
             ),
           ],
         ),
       ),
     );
   }
+  GestureDetector buildDatePicker(BuildContext context, String flag) {
+    return GestureDetector(
+      onTap: () async {
+        var pickedDate = await showPersianDatePicker(
+          context: context,
+          initialDate: Jalali.now(),
+          firstDate: Jalali(1380, 1, 1),
+          lastDate: Jalali.now(),
+        );
+        if (flag.compareTo('از') == 0) {
+          startingDateSearch = pickedDate!;
+        } else {
+          endingDateSearch = pickedDate!;
+        }
+        setState(() {
+          if (flag.compareTo('از') == 0) {
+            startingDateLabel = convertEnToFa(
+                "${startingDateSearch.formatter.wN} ${startingDateSearch.formatter.dd} ${startingDateSearch.formatter.mN}");
+          } else {
+            endingDateLabel = convertEnToFa(
+                "${endingDateSearch.formatter.wN} ${endingDateSearch.formatter.dd} ${endingDateSearch.formatter.mN}");
+          }
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.4,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black45),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        height: 50.0,
+        padding: const EdgeInsets.only(left: 10.0, right: 15.0),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.calendar_today_outlined,
+              color: Colors.black45,
+            ),
+            const SizedBox(width: 5.0),
+            Text(
+              (flag.compareTo('از') == 0)
+                  ? startingDateLabel
+                  : endingDateLabel,
+              style: Theme.of(context).textTheme.titleSmall,
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
-
 
 Row buildRowForUserInfo(BuildContext context, String title, String? value) {
   return Row(
@@ -423,12 +494,18 @@ class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEm
         TextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              // TODO: show success message
-              // TODO: update user email using setState
               sampleUser.setEmail(_controller.text);
-              // setState(() {
-              //   _AccountPageState._emailEdited = true;
-              // });
+              setState(() {});
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'ایمیل با موفقیت ویرایش شد.',
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  duration: const Duration(seconds: 1),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                ),
+              );
               Navigator.of(context).pop();
             }
           },
@@ -588,8 +665,8 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
   }
 }
 
-class GoToTransfersTab extends StatelessWidget {
-  const GoToTransfersTab({super.key});
+class GoToTransactionsTab extends StatelessWidget {
+  const GoToTransactionsTab({super.key});
 
   @override
   Widget build(BuildContext context) {

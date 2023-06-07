@@ -25,6 +25,10 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
     for (var i = 0; i < widget.tripData.sumPassengers; i++) {
       widget.tripData.passengerList.add(Passenger());
     }
+    widget.tripData.passengerList[0].firstName = 'محمد';
+    widget.tripData.passengerList[0].lastName = 'محمدی';
+    widget.tripData.passengerList[0].gender = 'مرد';
+    widget.tripData.passengerList[0].id = '1234567890';
     super.initState();
   }
 

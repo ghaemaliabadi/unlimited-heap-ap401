@@ -145,6 +145,9 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                         decoration: InputDecoration(
                           labelText: 'نام',
                           hintText: 'نام مسافر',
+                          errorText: 'لطفا نام مسافر را وارد کنید',
+                          errorStyle: const TextStyle(color: Colors.red),
+                          hintStyle: const TextStyle(color: Colors.black54),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
@@ -156,6 +159,9 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                         decoration: InputDecoration(
                           labelText: 'نام خانوادگی',
                           hintText: 'نام خانوادگی مسافر',
+                          errorText: 'لطفا نام خانوادگی مسافر را وارد کنید',
+                          errorStyle: const TextStyle(color: Colors.red),
+                          hintStyle: const TextStyle(color: Colors.black54),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
@@ -167,6 +173,9 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                         decoration: InputDecoration(
                           labelText: 'کد ملی',
                           hintText: 'کد ملی مسافر',
+                          errorText: 'لطفا کد ملی مسافر را وارد کنید',
+                          errorStyle: const TextStyle(color: Colors.red),
+                          hintStyle: const TextStyle(color: Colors.black54),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
@@ -178,6 +187,9 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                         decoration: InputDecoration(
                           labelText: 'شماره تلفن',
                           hintText: 'شماره تلفن مسافر',
+                          errorText: 'لطفا شماره تلفن مسافر را وارد کنید',
+                          errorStyle: const TextStyle(color: Colors.red),
+                          hintStyle: const TextStyle(color: Colors.black54),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
@@ -189,6 +201,9 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                         decoration: InputDecoration(
                           labelText: 'جنسیت',
                           hintText: 'جنسیت مسافر',
+                          errorText: 'لطفا جنسیت مسافر را انتخاب کنید',
+                          errorStyle: const TextStyle(color: Colors.red),
+                          hintStyle: const TextStyle(color: Colors.black54),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),

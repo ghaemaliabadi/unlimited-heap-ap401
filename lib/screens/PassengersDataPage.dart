@@ -32,7 +32,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
             style: Theme.of(context).textTheme.displayMedium),
       ),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             Padding(
@@ -128,6 +128,85 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                         return const SizedBox(height: 0);
                       }
                   } (),
+                  // fields for passengers data
+                  const SizedBox(height: 8.0),
+                  const Text(
+                    'مشخصات مسافران',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54),
+                  ),
+                  const SizedBox(height: 8.0),
+                  // create text form fields for passengers data
+                  // first name
+                  Column(
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'نام',
+                          hintText: 'نام مسافر',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      // last name
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'نام خانوادگی',
+                          hintText: 'نام خانوادگی مسافر',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      // national code
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'کد ملی',
+                          hintText: 'کد ملی مسافر',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      // phone number
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'شماره تلفن',
+                          hintText: 'شماره تلفن مسافر',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      // drop down for gender
+                      DropdownButtonFormField(
+                        decoration: InputDecoration(
+                          labelText: 'جنسیت',
+                          hintText: 'جنسیت مسافر',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        items: const [
+                          DropdownMenuItem(
+                            child: Text('مرد'),
+                            value: 'مرد',
+                          ),
+                          DropdownMenuItem(
+                            child: Text('زن'),
+                            value: 'زن',
+                          ),
+                        ],
+                        onChanged: (value) {},
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

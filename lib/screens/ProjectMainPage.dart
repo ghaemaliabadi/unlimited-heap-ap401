@@ -635,19 +635,23 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 ),
                 onPressed: () {
                   setModalState(() {
-                    if (passengerType == 'بزرگسال') {
-                      adultPassengers++;
-                      show = adultPassengers;
-                    }
-                    if (passengerType == 'کودک') {
-                      childPassengers++;
-                      show = adultPassengers;
-                    }
-                    if (passengerType == 'نوزاد') {
-                      infantPassengers++;
-                      show = adultPassengers;
-                      Text('$show',
-                          style: Theme.of(context).textTheme.displaySmall);
+                    if (adultPassengers + childPassengers + infantPassengers  == 9) {
+                      // err
+                    } else {
+                      if (passengerType == 'بزرگسال') {
+                        adultPassengers++;
+                        show = adultPassengers;
+                      }
+                      if (passengerType == 'کودک') {
+                        childPassengers++;
+                        show = adultPassengers;
+                      }
+                      if (passengerType == 'نوزاد') {
+                        infantPassengers++;
+                        show = adultPassengers;
+                        Text('$show',
+                            style: Theme.of(context).textTheme.displaySmall);
+                      }
                     }
                   });
                   setState(() {});
@@ -664,18 +668,18 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 ),
                 onPressed: () {
                   setModalState(() {
-                    if (getSumOfPassengers() != 1) {
-                      if (passengerType == 'بزرگسال') {
-                        if (adultPassengers > 0) adultPassengers--;
-                        show = adultPassengers;
-                      }
-                      if (passengerType == 'کودک') {
-                        if (childPassengers > 0) childPassengers--;
-                        show = adultPassengers;
-                      }
-                      if (passengerType == 'نوزاد') {
-                        if (infantPassengers > 0) infantPassengers--;
-                        show = adultPassengers;
+                      if (getSumOfPassengers() != 1) {
+                        if (passengerType == 'بزرگسال') {
+                          if (adultPassengers > 0) adultPassengers--;
+                          show = adultPassengers;
+                        }
+                        if (passengerType == 'کودک') {
+                          if (childPassengers > 0) childPassengers--;
+                          show = adultPassengers;
+                        }
+                        if (passengerType == 'نوزاد') {
+                          if (infantPassengers > 0) infantPassengers--;
+                          show = adultPassengers;
                       }
                     }
                   });

@@ -43,171 +43,177 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
         title: Text('تکمیل خرید',
             style: Theme.of(context).textTheme.displayMedium),
       ),
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 86.0),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              () {
+                                if (widget.tripData.transportBy.contains('پرواز')) {
+                                  return Icons.airplanemode_active_rounded;
+                                } else if (widget.tripData.transportBy == 'اتوبوس') {
+                                  return Icons.directions_bus_rounded;
+                                } else if (widget.tripData.transportBy == 'قطار') {
+                                  return Icons.train_rounded;
+                                } else {
+                                  return Icons.more_horiz_rounded;
+                                }
+                              }(),
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            const SizedBox(width: 4),
+                            // arrow icon
+                            Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.account_box_sharp,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              'مشخصات مسافران',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            const SizedBox(width: 4),
+                            // arrow icon
+                            Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.newspaper_sharp,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(width: 4),
+                            const Text('تایید اطلاعات',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, color: Colors.grey)),
+                            const SizedBox(width: 4),
+                            // arrow icon
+                            Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.payment_rounded,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(width: 4),
+                            const Text('پرداخت',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, color: Colors.grey)),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 4.0,
+                        ),
+                        SizedBox(
+                          height: 1.0,
+                          child: Container(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 4.0,
+                        ),
+                        buildTicket(widget.tripData.departTicket!, 'بلیط رفت'),
                         () {
-                          if (widget.tripData.transportBy.contains('پرواز')) {
-                            return Icons.airplanemode_active_rounded;
-                          } else if (widget.tripData.transportBy == 'اتوبوس') {
-                            return Icons.directions_bus_rounded;
-                          } else if (widget.tripData.transportBy == 'قطار') {
-                            return Icons.train_rounded;
+                          if (widget.tripData.returnTicket != null) {
+                            return buildTicket(
+                                widget.tripData.returnTicket!, 'بلیط برگشت');
                           } else {
-                            return Icons.more_horiz_rounded;
+                            return const SizedBox(height: 0);
                           }
                         }(),
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 4),
-                      // arrow icon
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(
-                        Icons.account_box_sharp,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'مشخصات مسافران',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                      const SizedBox(width: 4),
-                      // arrow icon
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(
-                        Icons.newspaper_sharp,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      const SizedBox(width: 4),
-                      const Text('تایید اطلاعات',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.grey)),
-                      const SizedBox(width: 4),
-                      // arrow icon
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(
-                        Icons.payment_rounded,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      const SizedBox(width: 4),
-                      const Text('پرداخت',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.grey)),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 4.0,
-                  ),
-                  SizedBox(
-                    height: 1.0,
-                    child: Container(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 4.0,
-                  ),
-                  buildTicket(widget.tripData.departTicket!, 'بلیط رفت'),
-                  () {
-                    if (widget.tripData.returnTicket != null) {
-                      return buildTicket(
-                          widget.tripData.returnTicket!, 'بلیط برگشت');
-                    } else {
-                      return const SizedBox(height: 0);
-                    }
-                  }(),
-                  // fields for passengers data
-                  const SizedBox(height: 8.0),
-                  // const Text(
-                  //   'مشخصات مسافران',
-                  //   style: TextStyle(
-                  //       fontWeight: FontWeight.bold, color: Colors.black54),
-                  // ),
-                  // const SizedBox(height: 8.0),
-                  // create text form fields for passengers data
-                  for (int i = 0; i < widget.tripData.passengers['adult']!; i++)
-                    () {
-                      return buildExpansionFor('اطلاعات مسافر', 'بزرگسال', i);
-                    }(),
-                  for (int i = widget.tripData.passengers['adult']!;
-                      i <
-                          widget.tripData.passengers['adult']! +
-                              widget.tripData.passengers['child']!;
-                      i++)
-                    () {
-                      return buildExpansionFor('اطلاعات مسافر', 'کودک', i);
-                    }(),
-                  for (int i = widget.tripData.passengers['adult']! +
-                          widget.tripData.passengers['child']!;
-                      i <
-                          widget.tripData.passengers['adult']! +
-                              widget.tripData.passengers['child']! +
-                              widget.tripData.passengers['infant']!;
-                      i++)
-                    () {
-                      return buildExpansionFor('اطلاعات مسافر', 'نوزاد', i);
-                    }(),
-                  const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 54.0,
-                      child: TextButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const PaymentPage(),
-                          //   ),
-                          // );
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            Theme.of(context).colorScheme.primary,
-                          ),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'تایید اطلاعات',
-    style: Theme.of(context).textTheme.displayMedium,
-                        ),
-                      ),
+                        // fields for passengers data
+                        const SizedBox(height: 8.0),
+                        // const Text(
+                        //   'مشخصات مسافران',
+                        //   style: TextStyle(
+                        //       fontWeight: FontWeight.bold, color: Colors.black54),
+                        // ),
+                        // const SizedBox(height: 8.0),
+                        // create text form fields for passengers data
+                        for (int i = 0; i < widget.tripData.passengers['adult']!; i++)
+                          () {
+                            return buildExpansionFor('اطلاعات مسافر', 'بزرگسال', i);
+                          }(),
+                        for (int i = widget.tripData.passengers['adult']!;
+                            i <
+                                widget.tripData.passengers['adult']! +
+                                    widget.tripData.passengers['child']!;
+                            i++)
+                          () {
+                            return buildExpansionFor('اطلاعات مسافر', 'کودک', i);
+                          }(),
+                        for (int i = widget.tripData.passengers['adult']! +
+                                widget.tripData.passengers['child']!;
+                            i <
+                                widget.tripData.passengers['adult']! +
+                                    widget.tripData.passengers['child']! +
+                                    widget.tripData.passengers['infant']!;
+                            i++)
+                          () {
+                            return buildExpansionFor('اطلاعات مسافر', 'نوزاد', i);
+                          }(),
+                        const SizedBox(height: 8.0),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 8.0),
-          ],
-        ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).size.height * 0.79, 16, 24),
+            child: SizedBox(
+              width: double.infinity,
+              height: 54.0,
+              child: TextButton(
+                onPressed: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const PaymentPage(),
+                  //   ),
+                  // );
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).colorScheme.primary,
+                  ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'تایید اطلاعات',
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

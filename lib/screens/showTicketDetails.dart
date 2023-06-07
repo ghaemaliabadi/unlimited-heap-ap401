@@ -346,15 +346,6 @@ class _ShowTicketDetailsState extends State<ShowTicketDetails> {
                             tripData: widget.tripData,
                           )));
                     }
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => BuyTicketPage(
-                    //       ticket: widget.ticket,
-                    //       tripData: widget.tripData,
-                    //     ),
-                    //   ),
-                    // );
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(

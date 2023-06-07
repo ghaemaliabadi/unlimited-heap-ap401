@@ -23,6 +23,9 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
   @override
   void initState() {
     widget.tripData.passengerList = [];
+    for (var i = 0; i < widget.tripData.sumPassengers; i++) {
+      widget.tripData.passengerList.add(Passenger());
+    }
     super.initState();
   }
 
@@ -148,7 +151,6 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   // create text form fields for passengers data
                   for (int i = 0; i < widget.tripData.passengers['adult']!; i++)
                     () {
-                      widget.tripData.passengerList.add(Passenger());
                      return buildExpansionFor(
                          'اطلاعات مسافر',
                          'بزرگسال',
@@ -156,7 +158,6 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                     } (),
                   for (int i = widget.tripData.passengers['adult']!; i < widget.tripData.passengers['adult']! + widget.tripData.passengers['child']!; i++)
                     () {
-                      widget.tripData.passengerList.add(Passenger());
                       return buildExpansionFor(
                           'اطلاعات مسافر',
                           'کودک',
@@ -164,13 +165,14 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                     } (),
                   for (int i = widget.tripData.passengers['adult']! + widget.tripData.passengers['child']!; i < widget.tripData.passengers['adult']! + widget.tripData.passengers['child']! + widget.tripData.passengers['infant']!; i++)
                     () {
-                      widget.tripData.passengerList.add(Passenger());
                       return buildExpansionFor(
                           'اطلاعات مسافر',
                           'نوزاد',
                           i);
                     } (),
-
+                  () {
+                    return const SizedBox(height: 8.0);
+                  }(),
                 ],
               ),
             ),

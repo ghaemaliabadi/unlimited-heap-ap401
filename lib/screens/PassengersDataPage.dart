@@ -138,58 +138,68 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   const SizedBox(height: 8.0),
                   // create text form fields for passengers data
                   ExpansionWidget(
-                    initiallyExpanded: true,
+                    initiallyExpanded: false,
                     titleBuilder: (double animationValue, _, bool isExpaned,
-                        toogleFunction) {
+                        toggleFunction) {
                       return InkWell(
-                          onTap: () => toogleFunction(animated: true),
+                          onTap: () => toggleFunction(animated: true),
                           child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.white,
-                              // border all
-                              // check if expanded or not
-                              border: () {
+                            decoration: () {
                                 if (isExpaned) {
-                                  return Border(
-                                    top: BorderSide(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      width: 1,
-                                    ),
-                                    left: BorderSide(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      width: 1,
-                                    ),
-                                    right: BorderSide(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      width: 1,
+                                  return BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border(
+                                      left: BorderSide(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        width: 1,
+                                      ),
+                                      // top border
+                                      top: BorderSide(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        width: 1,
+                                      ),
+                                      // right border
+                                      right: BorderSide(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        width: 1,
+                                      ),
                                     ),
                                   );
                                 } else {
-                                  return Border.all(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    width: 1,
+                                  return BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    // border all
+                                    border: Border.all(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      width: 1,
+                                    ),
                                   );
                                 }
-                              }(),
-                            ),
+                            }(),
                             child: Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Expanded(
-                                      child: Text('مسافر اول',
-                                          style: TextStyle(
-                                              color: Colors.black54,
-                                              fontSize: 20))),
+                                      child: Row(
+                                        children: [
+                                          const SizedBox(width: 4.0),
+                                          Text('مسافر اول',
+                                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                                color: Colors.black87,
+                                                fontSize: 20,
+                                              )),
+                                        ],
+                                      )),
                                   Transform.rotate(
                                     angle: 3.14 * animationValue,
-                                    child: Icon(
+                                    alignment: Alignment.center,
+                                    child: const Icon(
                                         Icons.keyboard_arrow_up_outlined,
                                         color: Colors.black54,
                                         size: 30),
-                                    alignment: Alignment.center,
                                   )
                                 ],
                               ),
@@ -198,9 +208,9 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                     },
                     content: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(16),
                         ),
                         color: Colors.white,
                         // border all
@@ -211,19 +221,21 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                       ),
                       child: Column(
                         children: [
-                          SizedBox(height: 16.0),
+                          const SizedBox(height: 16.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.45,
                                 child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'لطفا نام مسافر را وارد کنید';
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                     labelText: 'نام',
-                                    hintText: 'نام مسافر',
-                                    errorText: 'لطفا نام مسافر را وارد کنید',
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
                                     hintStyle:
                                         const TextStyle(color: Colors.black54),
                                     border: OutlineInputBorder(
@@ -237,13 +249,14 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.45,
                                 child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'لطفا نام خانوادگی مسافر را وارد کنید';
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                     labelText: 'نام خانوادگی',
-                                    hintText: 'نام خانوادگی مسافر',
-                                    errorText:
-                                        'لطفا نام خانوادگی مسافر را وارد کنید',
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
                                     hintStyle:
                                         const TextStyle(color: Colors.black54),
                                     border: OutlineInputBorder(
@@ -261,12 +274,14 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.45,
                                 child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'لطفا کد ملی مسافر را وارد کنید';
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                     labelText: 'کد ملی',
-                                    hintText: 'کد ملی مسافر',
-                                    errorText: 'لطفا کد ملی مسافر را وارد کنید',
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
                                     hintStyle:
                                         const TextStyle(color: Colors.black54),
                                     border: OutlineInputBorder(
@@ -279,13 +294,14 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.45,
                                 child: DropdownButtonFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'لطفا جنسیت مسافر را انتخاب کنید';
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                     labelText: 'جنسیت',
-                                    hintText: 'جنسیت مسافر',
-                                    errorText:
-                                        'لطفا جنسیت مسافر را انتخاب کنید',
-                                    errorStyle:
-                                        const TextStyle(color: Colors.red),
                                     hintStyle:
                                         const TextStyle(color: Colors.black54),
                                     border: OutlineInputBorder(
@@ -294,12 +310,16 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                                   ),
                                   items: const [
                                     DropdownMenuItem(
-                                      child: Text('مرد'),
                                       value: 'مرد',
+                                      child: Text('مرد'
+                                      , style: TextStyle(color: Colors.black54),
+                                      ),
                                     ),
                                     DropdownMenuItem(
-                                      child: Text('زن'),
                                       value: 'زن',
+                                      child: Text('زن',
+                                      style: TextStyle(color: Colors.black54),
+                                      ),
                                     ),
                                   ],
                                   onChanged: (value) {},

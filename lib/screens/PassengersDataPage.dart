@@ -189,12 +189,22 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
               height: 54.0,
               child: TextButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const PaymentPage(),
-                  //   ),
-                  // );
+                  bool flag = false;
+                    for (int i = 0; i < widget.tripData.passengerList.length; i++) {
+                      if (widget.tripData.passengerList[i].firstName == null || widget.tripData.passengerList[i].lastName == null || widget.tripData.passengerList[i].id == null || widget.tripData.passengerList[i].gender == null) {
+                        flag = true;
+                      }
+                    }
+                    if (flag) {
+                      _showSnackBar(context, 'لطفا اطلاعات مسافران را کامل کنید');
+                    } else {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const submitDetailsPage(),
+                      //   ),
+                      // );
+                    }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
@@ -649,4 +659,17 @@ convertEnToFa(String txt) {
       .replaceAll('7', '۷')
       .replaceAll('8', '۸')
       .replaceAll('9', '۹');
+}
+
+void _showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: Theme.of(context).textTheme.displaySmall,
+      ),
+      duration: const Duration(seconds: 1),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+    ),
+  );
 }

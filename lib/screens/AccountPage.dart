@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/userinfo.dart';
+import '../models/tripsTaken.dart';
 
 //TODO: fix sizes and paddings
 
@@ -21,6 +22,72 @@ User sampleUser = User(
   lastName: 'محمدی',
   nationalID: '0920513',
 );
+
+List<TakenTrip> takenTrips = [
+  TakenTrip(
+    id: '12564',
+    transportType: 'اتوبوس',
+    date: Jalali(1399, 1, 1),
+    price: '۱۰۰۰۰',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '25646',
+    transportType: 'قطار',
+    date: Jalali(1399, 1, 2),
+    price: '۲۰۰۰۰',
+    status: Status.canceled,
+  ),
+  TakenTrip(
+    id: '13548',
+    transportType: 'پرواز داخلی',
+    date: Jalali(1399, 1, 3),
+    price: '۳۰۰۰۰',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '84686',
+    transportType: 'پرواز خارجی',
+    date: Jalali(1399, 1, 4),
+    price: '۴۰۰۰۰',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '12546',
+    transportType: 'قطار',
+    date: Jalali(1399, 1, 5),
+    price: '۵۰۰۰۰',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '75896',
+    transportType: 'پرواز داخلی',
+    date: Jalali(1399, 1, 6),
+    price: '۶۰۰۰۰',
+    status: Status.ongoing,
+  ),
+  TakenTrip(
+    id: '13546',
+    transportType: 'اتوبوس',
+    date: Jalali(1399, 1, 7),
+    price: '۷۰۰۰۰',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '91536',
+    transportType: 'قطار',
+    date: Jalali(1399, 1, 8),
+    price: '۸۰۰۰۰',
+    status: Status.canceled,
+  ),
+  TakenTrip(
+    id: '14864',
+    transportType: 'قطار',
+    date: Jalali(1399, 1, 9),
+    price: '۹۰۰۰۰',
+    status: Status.done,
+  ),
+];
 
 String startingDateLabel = 'از تاریخ';
 String endingDateLabel = 'تا تاریخ';
@@ -352,9 +419,46 @@ class _AccountPageState extends State<AccountPage> {
                         )
                       )
                     ),
+                    SizedBox(
+                      height: pageHeight * 0.05,
+                      width: pageWidth * 0.9,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                        const SizedBox(width: 5.0,),
+                        Expanded(child: Text('شماره سفارش', style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('نوع سفارش', style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('تاریخ', style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('مبلغ کل(ریال)', style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('وضعیت', style: Theme.of(context).textTheme.headlineMedium)),
+                        ],
+                      )
+                    ),
                     Expanded(
-                      child: ListView()
-                    )
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: takenTrips.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            height: pageHeight * 0.05,
+                            margin: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const SizedBox(width: 5.0,),
+                                Expanded(child: Text(takenTrips[index].id, style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].transportType, style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text('تاریخ  ', style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].price, style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text('وضعیت', style: Theme.of(context).textTheme.headlineMedium)),
+                              ],
+                            )
+                          );
+                        }
+                      ),
+                    ),
                   ]
                 )
               ),
@@ -407,7 +511,7 @@ class _AccountPageState extends State<AccountPage> {
               (flag.compareTo('از') == 0)
                   ? startingDateLabel
                   : endingDateLabel,
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context).textTheme.headlineMedium,
             )
           ],
         ),

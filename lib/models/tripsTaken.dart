@@ -14,10 +14,52 @@ class TakenTrip {
   Jalali date;
   String price;
   Status status;
+
+  String getDate() {
+    return "${date.year}/${date.month}/${date.day}";
+  }
+
+  String getID() {
+    return convertEnToFa(
+        "${(id)} "
+    );
+  }
+
+  String getPrice() {
+    return convertEnToFa(
+        "${(price)} "
+    );
+  }
+
+  String getStatus() {
+    switch (status) {
+      case Status.done:
+        return 'انجام شده';
+      case Status.canceled:
+        return 'لغو شده';
+      case Status.ongoing:
+        return 'در حال انجام';
+    }
+  }
+
 }
 
 enum Status {
   done,
   canceled,
   ongoing,
+}
+
+convertEnToFa(String txt) {
+  return txt
+      .replaceAll('0', '۰')
+      .replaceAll('1', '۱')
+      .replaceAll('2', '۲')
+      .replaceAll('3', '۳')
+      .replaceAll('4', '۴')
+      .replaceAll('5', '۵')
+      .replaceAll('6', '۶')
+      .replaceAll('7', '۷')
+      .replaceAll('8', '۸')
+      .replaceAll('9', '۹');
 }

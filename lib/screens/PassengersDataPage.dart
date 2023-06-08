@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/passenger.dart';
 import '../models/ticket.dart';
 import '../models/trip.dart';
+import 'submitDetailsPage.dart';
 
 // ignore: must_be_immutable
 class PassengersDataPage extends StatefulWidget {
@@ -202,12 +203,12 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                     if (flag) {
                       _showSnackBar(context, 'لطفا اطلاعات مسافران را کامل کنید');
                     } else {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const submitDetailsPage(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SubmitDetailsPage(tripData: widget.tripData),
+                        ),
+                      );
                     }
                 },
                 style: ButtonStyle(
@@ -352,6 +353,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: TextFormField(
+                      style: const TextStyle(color: Colors.black54),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'لطفا نام مسافر را وارد کنید';
@@ -378,6 +380,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: TextFormField(
+                      style: const TextStyle(color: Colors.black54),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'لطفا نام خانوادگی مسافر را وارد کنید';
@@ -408,6 +411,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: TextFormField(
+                      style: const TextStyle(color: Colors.black54),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'لطفا کد ملی مسافر را وارد کنید';

@@ -359,7 +359,7 @@ class _AccountPageState extends State<AccountPage> {
                       elevation: 2.5,
                       child: Container(
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.34,
+                        height: pageHeight * 0.31,
                         child: Column(
                           children: [
                             Row(
@@ -388,8 +388,10 @@ class _AccountPageState extends State<AccountPage> {
                             const SizedBox(height: 20.0,),
                             SizedBox(
                               width: pageWidth * 0.82,
+                              height: pageHeight * 0.05,
                               child: TextFormField(
-                                style: Theme.of(context).textTheme.displaySmall,
+                                keyboardType: TextInputType.number,
+                                style: Theme.of(context).textTheme.headlineMedium,
                                 decoration: InputDecoration(
                                   labelText: 'شماره سفارش',
                                   alignLabelWithHint: true,
@@ -419,18 +421,31 @@ class _AccountPageState extends State<AccountPage> {
                         )
                       )
                     ),
-                    SizedBox(
-                      height: pageHeight * 0.05,
-                      width: pageWidth * 0.9,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black54,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                      height: pageHeight * 0.09,
+                      // width: pageWidth * 0.9,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                        const SizedBox(width: 5.0,),
-                        Expanded(child: Text('شماره سفارش', style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('نوع سفارش', style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('    تاریخ', style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('مبلغ کل(تومان)', style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('وضعیت', style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('شماره سفارش', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('نوع سفارش', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('تاریخ', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        // Expanded(child: Text('مبلغ کل(تومان)', textAlign: TextAlign.center,
+                        //     style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('وضعیت', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        // Expanded(child: Text('مشاهده', textAlign: TextAlign.center,
+                        //     style: TextStyle))
                         ],
                       )
                     ),
@@ -441,24 +456,52 @@ class _AccountPageState extends State<AccountPage> {
                         itemCount: takenTrips.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
-                            height: pageHeight * 0.05,
-                            margin: const EdgeInsets.all(10.0),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.black26,
+                                ),
+                                right: BorderSide(
+                                  color: Colors.black26,
+                                ),
+                                left: BorderSide(
+                                  color: Colors.black26,
+                                ),
+                              )
+                            ),
+                            height: pageHeight * 0.08,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const SizedBox(width: 5.0,),
-                                Expanded(child: Text(takenTrips[index].getID(), style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text(takenTrips[index].transportType, style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text(takenTrips[index].getDate(), style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text(takenTrips[index].getPrice(), style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text(takenTrips[index].getStatus(), style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getID(),
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].transportType,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getDate(),
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineMedium)),
+                                // Expanded(child: Text(takenTrips[index].getPrice(),
+                                //     textAlign: TextAlign.center,
+                                //     style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getStatus(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    )
+                                  )
+                                ),
                               ],
                             )
                           );
                         }
                       ),
                     ),
+                    SizedBox(height: pageHeight * 0.01,)
                   ]
                 )
               ),

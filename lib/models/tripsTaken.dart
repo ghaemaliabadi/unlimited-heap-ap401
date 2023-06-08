@@ -1,4 +1,5 @@
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:unlimited_heap_ap401/screens/PassengersDataPage.dart';
 
 class TakenTrip {
   TakenTrip({
@@ -16,7 +17,7 @@ class TakenTrip {
   Status status;
 
   String getDate() {
-    return "${date.year}/${date.month}/${date.day}";
+    return convertEnToFa("${date.year}/${date.month}/${date.day}");
   }
 
   String getID() {
@@ -27,7 +28,7 @@ class TakenTrip {
 
   String getPrice() {
     return convertEnToFa(
-        "${(price)} "
+        numberFormat.format(int.parse(price))
     );
   }
 

@@ -444,8 +444,7 @@ class _AccountPageState extends State<AccountPage> {
                         //     style: Theme.of(context).textTheme.headlineMedium)),
                         Expanded(child: Text('وضعیت', textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.headlineMedium)),
-                        // Expanded(child: Text('مشاهده', textAlign: TextAlign.center,
-                        //     style: TextStyle))
+                        const Expanded(child: Text('')),
                         ],
                       )
                     ),
@@ -495,6 +494,31 @@ class _AccountPageState extends State<AccountPage> {
                                     )
                                   )
                                 ),
+                                Expanded(
+                                  child: InkWell(
+                                    splashFactory: NoSplash.splashFactory,
+                                    onTap: () {},
+                                    child: const Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'مشاهده',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blueAccent,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 16.0,
+                                          color: Colors.blueAccent,
+                                        )
+                                      ],
+                                    )
+                                  )
+                                )
                               ],
                             )
                           );

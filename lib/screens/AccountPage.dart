@@ -28,63 +28,63 @@ List<TakenTrip> takenTrips = [
     id: '12564',
     transportType: 'اتوبوس',
     date: Jalali(1399, 1, 1),
-    price: '۱۰۰۰۰',
+    price: '200000',
     status: Status.done,
   ),
   TakenTrip(
     id: '25646',
     transportType: 'قطار',
     date: Jalali(1399, 1, 2),
-    price: '۲۰۰۰۰',
+    price: '500000',
     status: Status.canceled,
   ),
   TakenTrip(
     id: '13548',
     transportType: 'پرواز داخلی',
     date: Jalali(1399, 1, 3),
-    price: '۳۰۰۰۰',
+    price: '1590000',
     status: Status.done,
   ),
   TakenTrip(
     id: '84686',
     transportType: 'پرواز خارجی',
     date: Jalali(1399, 1, 4),
-    price: '۴۰۰۰۰',
+    price: '30000000',
     status: Status.done,
   ),
   TakenTrip(
     id: '12546',
     transportType: 'قطار',
     date: Jalali(1399, 1, 5),
-    price: '۵۰۰۰۰',
+    price: '400000',
     status: Status.done,
   ),
   TakenTrip(
     id: '75896',
     transportType: 'پرواز داخلی',
     date: Jalali(1399, 1, 6),
-    price: '۶۰۰۰۰',
+    price: '1200000',
     status: Status.ongoing,
   ),
   TakenTrip(
     id: '13546',
     transportType: 'اتوبوس',
     date: Jalali(1399, 1, 7),
-    price: '۷۰۰۰۰',
+    price: '350000',
     status: Status.done,
   ),
   TakenTrip(
     id: '91536',
     transportType: 'قطار',
     date: Jalali(1399, 1, 8),
-    price: '۸۰۰۰۰',
+    price: '600000',
     status: Status.canceled,
   ),
   TakenTrip(
     id: '14864',
     transportType: 'قطار',
     date: Jalali(1399, 1, 9),
-    price: '۹۰۰۰۰',
+    price: '700000',
     status: Status.done,
   ),
 ];
@@ -428,8 +428,8 @@ class _AccountPageState extends State<AccountPage> {
                         const SizedBox(width: 5.0,),
                         Expanded(child: Text('شماره سفارش', style: Theme.of(context).textTheme.headlineMedium)),
                         Expanded(child: Text('نوع سفارش', style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('تاریخ', style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('مبلغ کل(ریال)', style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('    تاریخ', style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('مبلغ کل(تومان)', style: Theme.of(context).textTheme.headlineMedium)),
                         Expanded(child: Text('وضعیت', style: Theme.of(context).textTheme.headlineMedium)),
                         ],
                       )
@@ -448,11 +448,11 @@ class _AccountPageState extends State<AccountPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const SizedBox(width: 5.0,),
-                                Expanded(child: Text(takenTrips[index].id, style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getID(), style: Theme.of(context).textTheme.headlineMedium)),
                                 Expanded(child: Text(takenTrips[index].transportType, style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text('تاریخ  ', style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text(takenTrips[index].price, style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text('وضعیت', style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getDate(), style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getPrice(), style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getStatus(), style: Theme.of(context).textTheme.headlineMedium)),
                               ],
                             )
                           );
@@ -778,16 +778,11 @@ class GoToTransactionsTab extends StatelessWidget {
       onTap: () {
         DefaultTabController.of(context).animateTo(1);
       },
-      child: const Text(
+      child: Text(
         'افزایش موجودی  >',
         // TODO: update the balance in the next tab
-        style: TextStyle(
-          fontFamily: 'kalameh',
-          fontSize: 16.0,
-          fontWeight: FontWeight.w600,
-          color: Colors.blueAccent,
+        style: Theme.of(context).textTheme.labelMedium,
         ),
-      ),
-    );
+      );
   }
 }

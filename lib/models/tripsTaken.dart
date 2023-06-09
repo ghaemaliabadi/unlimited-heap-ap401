@@ -1,6 +1,8 @@
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/screens/PassengersDataPage.dart';
 
+import 'company.dart';
+
 class TakenTrip {
   TakenTrip({
     required this.id,
@@ -8,6 +10,10 @@ class TakenTrip {
     required this.date,
     required this.price,
     required this.status,
+    required this.company,
+    required this.reservationNumber,
+    required this.from,
+    required this.to,
   });
 
   String id;
@@ -15,6 +21,10 @@ class TakenTrip {
   Jalali date;
   String price;
   Status status;
+  Company company;
+  String reservationNumber;
+  String from;
+  String to;
 
   String getDate() {
     return convertEnToFa("${date.year}/${date.month}/${date.day}");
@@ -43,6 +53,25 @@ class TakenTrip {
     }
   }
 
+  String getReservationNumber() {
+    return convertEnToFa(
+        reservationNumber
+    );
+  }
+
+  Company getCompany() {
+    return company;
+  }
+
+  String getRoute() {
+    return "$from - $to";
+  }
+
+  String getHour() {
+    return convertEnToFa(
+        "${date.hour}:${date.minute}"
+    );
+  }
 }
 
 enum Status {

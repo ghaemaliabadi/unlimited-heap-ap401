@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/userinfo.dart';
+import '../models/tripsTaken.dart';
 
 //TODO: fix sizes and paddings
 
@@ -21,6 +22,72 @@ User sampleUser = User(
   lastName: 'محمدی',
   nationalID: '0920513',
 );
+
+List<TakenTrip> takenTrips = [
+  TakenTrip(
+    id: '12564',
+    transportType: 'اتوبوس',
+    date: Jalali(1399, 1, 1),
+    price: '200000',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '25646',
+    transportType: 'قطار',
+    date: Jalali(1399, 1, 2),
+    price: '500000',
+    status: Status.canceled,
+  ),
+  TakenTrip(
+    id: '13548',
+    transportType: 'پرواز داخلی',
+    date: Jalali(1399, 1, 3),
+    price: '1590000',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '84686',
+    transportType: 'پرواز خارجی',
+    date: Jalali(1399, 1, 4),
+    price: '30000000',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '12546',
+    transportType: 'قطار',
+    date: Jalali(1399, 1, 5),
+    price: '400000',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '75896',
+    transportType: 'پرواز داخلی',
+    date: Jalali(1399, 1, 6),
+    price: '1200000',
+    status: Status.ongoing,
+  ),
+  TakenTrip(
+    id: '13546',
+    transportType: 'اتوبوس',
+    date: Jalali(1399, 1, 7),
+    price: '350000',
+    status: Status.done,
+  ),
+  TakenTrip(
+    id: '91536',
+    transportType: 'قطار',
+    date: Jalali(1399, 1, 8),
+    price: '600000',
+    status: Status.canceled,
+  ),
+  TakenTrip(
+    id: '14864',
+    transportType: 'قطار',
+    date: Jalali(1399, 1, 9),
+    price: '700000',
+    status: Status.done,
+  ),
+];
 
 String startingDateLabel = 'از تاریخ';
 String endingDateLabel = 'تا تاریخ';
@@ -272,8 +339,109 @@ class _AccountPageState extends State<AccountPage> {
                 ],
               ),
             ),
-            const Center(
-              child: Text('تراکنش‌ها'),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Card(
+                    margin: const EdgeInsets.all(10.0),
+                    elevation: 2.5,
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10.0),
+                      height: pageHeight * 0.26,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.credit_score),
+                              const SizedBox(width: 5.0,),
+                              Text(
+                                'موجودی حساب کاربری',
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 5.0,),
+                              Text(
+                                'موجودی حساب',
+                                style: Theme.of(context).textTheme.headlineLarge,
+                              ),
+                              const SizedBox(width: 50.0,),
+                              Text(
+                                '${sampleUser.balance} ریال',
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            height: 30.0,
+                            color: Theme.of(context).colorScheme.secondary,
+                            thickness: 1.5,
+                            indent: 20.0,
+                            endIndent: 20.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.attach_money),
+                              const SizedBox(width: 5.0,),
+                              Text(
+                                'افزایش موجودی',
+                                style: Theme.of(context).textTheme.displaySmall,
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 20.0,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const SizedBox(width: 5.0),
+                                  SizedBox(
+                                    width: pageWidth * 0.5,
+                                    height: pageHeight * 0.06,
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.number,
+                                      style: Theme.of(context).textTheme.headlineMedium,
+                                      decoration: InputDecoration(
+                                        suffixText: 'ریال',
+                                        labelText: 'مبلغ مورد نظر',
+                                        alignLabelWithHint: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: pageWidth * 0.08),
+                                  ElevatedButton(
+                                    onPressed: () {
+
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
+                                    ),
+                                    child: const Text(
+                                      'پرداخت',
+                                    )
+                                  )
+                                ],
+                              )
+                            ]
+                          )
+                        ],
+                      ),
+                    )
+                  ),
+                ],
+              )
             ),
             InkWell(
               splashFactory: NoSplash.splashFactory,
@@ -292,7 +460,7 @@ class _AccountPageState extends State<AccountPage> {
                       elevation: 2.5,
                       child: Container(
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.34,
+                        height: pageHeight * 0.31,
                         child: Column(
                           children: [
                             Row(
@@ -321,8 +489,10 @@ class _AccountPageState extends State<AccountPage> {
                             const SizedBox(height: 20.0,),
                             SizedBox(
                               width: pageWidth * 0.82,
+                              height: pageHeight * 0.05,
                               child: TextFormField(
-                                style: Theme.of(context).textTheme.displaySmall,
+                                keyboardType: TextInputType.number,
+                                style: Theme.of(context).textTheme.headlineMedium,
                                 decoration: InputDecoration(
                                   labelText: 'شماره سفارش',
                                   alignLabelWithHint: true,
@@ -352,9 +522,111 @@ class _AccountPageState extends State<AccountPage> {
                         )
                       )
                     ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black54,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                      height: pageHeight * 0.09,
+                      // width: pageWidth * 0.9,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                        Expanded(child: Text('شماره سفارش', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('نوع سفارش', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('تاریخ', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        // Expanded(child: Text('مبلغ کل(تومان)', textAlign: TextAlign.center,
+                        //     style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text('وضعیت', textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        const Expanded(child: Text('')),
+                        ],
+                      )
+                    ),
                     Expanded(
-                      child: ListView()
-                    )
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: takenTrips.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.black26,
+                                ),
+                                right: BorderSide(
+                                  color: Colors.black26,
+                                ),
+                                left: BorderSide(
+                                  color: Colors.black26,
+                                ),
+                              )
+                            ),
+                            height: pageHeight * 0.08,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(child: Text(takenTrips[index].getID(),
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].transportType,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getDate(),
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headlineMedium)),
+                                // Expanded(child: Text(takenTrips[index].getPrice(),
+                                //     textAlign: TextAlign.center,
+                                //     style: Theme.of(context).textTheme.headlineMedium)),
+                                Expanded(child: Text(takenTrips[index].getStatus(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    )
+                                  )
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    splashFactory: NoSplash.splashFactory,
+                                    onTap: () {},
+                                    child: const Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'مشاهده',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blueAccent,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 16.0,
+                                          color: Colors.blueAccent,
+                                        )
+                                      ],
+                                    )
+                                  )
+                                )
+                              ],
+                            )
+                          );
+                        }
+                      ),
+                    ),
+                    SizedBox(height: pageHeight * 0.01,)
                   ]
                 )
               ),
@@ -407,7 +679,7 @@ class _AccountPageState extends State<AccountPage> {
               (flag.compareTo('از') == 0)
                   ? startingDateLabel
                   : endingDateLabel,
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context).textTheme.headlineMedium,
             )
           ],
         ),
@@ -674,16 +946,11 @@ class GoToTransactionsTab extends StatelessWidget {
       onTap: () {
         DefaultTabController.of(context).animateTo(1);
       },
-      child: const Text(
+      child: Text(
         'افزایش موجودی  >',
         // TODO: update the balance in the next tab
-        style: TextStyle(
-          fontFamily: 'kalameh',
-          fontSize: 16.0,
-          fontWeight: FontWeight.w600,
-          color: Colors.blueAccent,
+        style: Theme.of(context).textTheme.labelMedium,
         ),
-      ),
-    );
+      );
   }
 }

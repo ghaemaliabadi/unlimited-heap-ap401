@@ -35,7 +35,7 @@ class TakenTrip {
   String getStatus() {
     switch (status) {
       case Status.done:
-        return 'انجام شده';
+        return 'نهایی شده';
       case Status.canceled:
         return 'لغو شده';
       case Status.ongoing:

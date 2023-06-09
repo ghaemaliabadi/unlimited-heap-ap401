@@ -584,7 +584,7 @@ class _AccountPageState extends State<AccountPage> {
                       )
                     ),
                     ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 70),
+                      constraints: const BoxConstraints(maxHeight: 320),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: TabContainer(
@@ -865,7 +865,8 @@ class _AccountPageState extends State<AccountPage> {
 
   Container buildListView(BuildContext context) {
     return Container(
-      // color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      color: Colors.white,
       child: Column(
         children: [
           Padding(

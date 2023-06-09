@@ -62,6 +62,16 @@ class User {
     balance = convertFaToEn(balance ?? '0');
     balance = (int.parse(balance ?? '0') + int.parse(amount)).toString();
   }
+
+  void withdrawBalance(String amount) {
+    balance = convertFaToEn(balance ?? '0');
+    balance = (int.parse(balance ?? '0') - int.parse(amount)).toString();
+  }
+
+  bool checkEnoughBalance(String amount) {
+    balance = convertFaToEn(balance ?? '0');
+    return int.parse(balance ?? '0') >= int.parse(amount);
+  }
 }
 
 convertFaToEn(String text) {

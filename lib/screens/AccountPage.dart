@@ -584,7 +584,7 @@ class _AccountPageState extends State<AccountPage> {
                       )
                     ),
                     ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 320),
+                      constraints: BoxConstraints(maxHeight: pageHeight * 0.39),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: TabContainer(
@@ -604,8 +604,8 @@ class _AccountPageState extends State<AccountPage> {
                           ],
                           controller: _tabController,
                           children: [
-                            buildListView(context),
-                            buildListView(context),
+                            buildListView(context, 'انتقال موجودی'),
+                            buildListView(context, 'تراکنش‌ها'),
                           ],
                         ),
                       ),
@@ -863,14 +863,31 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Container buildListView(BuildContext context) {
+  Container buildListView(BuildContext context, String title) {
+    var pageHeight = MediaQuery.of(context).size.height;
+    var list = transactions;
+    if (title.compareTo('انتقال موجودی') == 0) {
+      list = transactions;
+    } else {
+
+    }
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
       color: Colors.white,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black38,
+                width: 2.0,
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(4.0),
+                topRight: Radius.circular(4.0),
+              ),
+            ),
+            padding: const EdgeInsets.all(5.0),
+            height: pageHeight * 0.06,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -889,39 +906,36 @@ class _AccountPageState extends State<AccountPage> {
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: transactions.length,
+              itemCount: list.length,
               itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(5.0),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.black26,),
-                        right: BorderSide(color: Colors.black26,),
-                        left: BorderSide(color: Colors.black26,),
-                      ),
+                return Container(
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.black26,),
+                      right: BorderSide(color: Colors.black26,),
+                      left: BorderSide(color: Colors.black26,),
                     ),
-                    // height: 25.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(child: Text(transactions[index].getDate(),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text(transactions[index].getAmount(),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text(transactions[index].getType(),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text(transactions[index].getDescription(),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium)),
-                      ],
-                    )
                   ),
+                  height: pageHeight * 0.07,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(child: Text(list[index].getDate(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headlineMedium)),
+                      Expanded(child: Text(list[index].getAmount(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headlineMedium)),
+                      Expanded(child: Text(list[index].getType(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headlineMedium)),
+                      Expanded(child: Text(list[index].getDescription(),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headlineMedium)),
+                    ],
+                  )
                 );
               }
             ),

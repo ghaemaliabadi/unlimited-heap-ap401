@@ -4,6 +4,7 @@ import 'package:tab_container/tab_container.dart';
 import '../models/transaction.dart';
 import '../models/userinfo.dart';
 import '../models/tripsTaken.dart';
+import '../models/transfer.dart';
 
 //TODO: fix sizes and paddings
 
@@ -94,27 +95,45 @@ List<TakenTrip> takenTrips = [
 List<Transaction> transactions = [
   Transaction(
     date: Jalali(1399, 1, 1),
-    amount: '200000',
+    amount: '2000000',
     type: TransactionType.increase,
     description: 'افزایش موجودی',
   ),
   Transaction(
     date: Jalali(1399, 1, 1),
-    amount: '200000',
+    amount: '2000000',
     type: TransactionType.decrease,
     description: 'خرید بلیط',
   ),
   Transaction(
     date: Jalali(1399, 1, 3),
-    amount: '1590000',
+    amount: '15900000',
     type: TransactionType.increase,
     description: 'افزایش موجودی',
   ),
   Transaction(
     date: Jalali(1399, 1, 3),
-    amount: '1590000',
+    amount: '15900000',
     type: TransactionType.decrease,
     description: 'خرید بلیط',
+  ),
+];
+
+List<Transfer> transfers = [
+  Transfer(
+      date: Jalali(1400, 1, 1),
+      amount: "1000000",
+      id: "123456789",
+  ),
+  Transfer(
+      date: Jalali(1400, 1, 2),
+      amount: "2000000",
+      id: "654886321",
+  ),
+  Transfer(
+      date: Jalali(1400, 1, 3),
+      amount: "3000000",
+      id: "987654321",
   ),
 ];
 
@@ -604,8 +623,8 @@ class _AccountPageState extends State<AccountPage> {
                           ],
                           controller: _tabController,
                           children: [
-                            buildListView(context, 'انتقال موجودی'),
                             buildListView(context, 'تراکنش‌ها'),
+                            buildListView(context, 'انتقال موجودی'),
                           ],
                         ),
                       ),
@@ -865,11 +884,14 @@ class _AccountPageState extends State<AccountPage> {
 
   Container buildListView(BuildContext context, String title) {
     var pageHeight = MediaQuery.of(context).size.height;
-    var list = transactions;
+    late var list;
+    bool flag = true;
+
     if (title.compareTo('انتقال موجودی') == 0) {
       list = transactions;
     } else {
-
+      list = transfers;
+      flag = false;
     }
     return Container(
       color: Colors.white,
@@ -895,10 +917,21 @@ class _AccountPageState extends State<AccountPage> {
                     style: Theme.of(context).textTheme.headlineMedium)),
                 Expanded(child: Text('مبلغ(ریال)', textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium)),
-                Expanded(child: Text('نوع تراکنش', textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineMedium)),
-                Expanded(child: Text('توضیحات', textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineMedium)),
+                () {
+                  if (flag) {
+                    return Expanded(child: Text('نوع تراکنش', textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headlineMedium));
+                  }
+                  return Expanded(child: Text('کد رهگیری', textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineMedium));
+                }(),
+                () {
+                  if (flag) {
+                    return Expanded(child: Text('توضیحات', textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headlineMedium));
+                  }
+                  return const SizedBox(width: 0.0);
+                }(),
               ],
             ),
           ),
@@ -928,12 +961,24 @@ class _AccountPageState extends State<AccountPage> {
                       Expanded(child: Text(list[index].getAmount(),
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineMedium)),
-                      Expanded(child: Text(list[index].getType(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headlineMedium)),
-                      Expanded(child: Text(list[index].getDescription(),
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headlineMedium)),
+                      () {
+                        if (flag) {
+                          return Expanded(child: Text(list[index].getType(),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineMedium));
+                        }
+                          return Expanded(child: Text(list[index].getID(),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineMedium));
+                      }(),
+                      () {
+                        if (flag) {
+                          return Expanded(child: Text(list[index].getDescription(),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineMedium));
+                        }
+                        return const SizedBox(width: 0.0);
+                      }(),
                     ],
                   )
                 );

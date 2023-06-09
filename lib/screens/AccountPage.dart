@@ -96,11 +96,13 @@ Jalali endingDateSearch = Jalali.now();
 
 class _AccountPageState extends State<AccountPage> {
 
-  final _controller = TextEditingController();
+  final _addBalanceController = TextEditingController();
+  final _withdrawBalanceController = TextEditingController();
 
   @override
   void dispose() {
-    _controller.dispose();
+    _addBalanceController.dispose();
+    _withdrawBalanceController.dispose();
     super.dispose();
   }
 
@@ -366,7 +368,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.26,
+                        height: pageHeight * 0.39,
                         child: Column(
                           children: [
                             Row(
@@ -380,7 +382,7 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 20.0,),
+                            const SizedBox(height: 15.0,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -400,8 +402,8 @@ class _AccountPageState extends State<AccountPage> {
                               height: 30.0,
                               color: Theme.of(context).colorScheme.secondary,
                               thickness: 1.5,
-                              indent: 20.0,
-                              endIndent: 20.0,
+                              indent: 30.0,
+                              endIndent: 30.0,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -414,7 +416,7 @@ class _AccountPageState extends State<AccountPage> {
                                 )
                               ],
                             ),
-                            const SizedBox(height: 20.0,),
+                            const SizedBox(height: 15.0,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -425,7 +427,7 @@ class _AccountPageState extends State<AccountPage> {
                                       width: pageWidth * 0.5,
                                       height: pageHeight * 0.06,
                                       child: TextFormField(
-                                        controller: _controller,
+                                        controller: _addBalanceController,
                                         keyboardType: TextInputType.number,
                                         style: Theme.of(context).textTheme.headlineMedium,
                                         decoration: InputDecoration(
@@ -441,7 +443,7 @@ class _AccountPageState extends State<AccountPage> {
                                     SizedBox(width: pageWidth * 0.08),
                                     ElevatedButton(
                                       onPressed: () {
-                                        sampleUser.addBalance(_controller.text);
+                                        sampleUser.addBalance(_addBalanceController.text);
                                         setState(() {});
                                         FocusManager.instance.primaryFocus?.unfocus();
                                         ScaffoldMessenger.of(context).showSnackBar(
@@ -465,11 +467,82 @@ class _AccountPageState extends State<AccountPage> {
                                   ],
                                 )
                               ]
-                            )
+                            ),
+                            Divider(
+                              height: 30.0,
+                              color: Theme.of(context).colorScheme.secondary,
+                              thickness: 1.5,
+                              indent: 30.0,
+                              endIndent: 30.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.money_off),
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'انتقال موجودی به حساب بانکی',
+                                  style: Theme.of(context).textTheme.displaySmall,
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 15.0,),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const SizedBox(width: 5.0),
+                                      SizedBox(
+                                        width: pageWidth * 0.5,
+                                        height: pageHeight * 0.06,
+                                        child: TextFormField(
+                                          controller: _withdrawBalanceController,
+                                          keyboardType: TextInputType.number,
+                                          style: Theme.of(context).textTheme.headlineMedium,
+                                          decoration: InputDecoration(
+                                            suffixText: 'ریال',
+                                            labelText: 'مبلغ مورد نظر',
+                                            alignLabelWithHint: true,
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: pageWidth * 0.08),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            sampleUser.withdrawBalance(_withdrawBalanceController.text);
+                                            setState(() {});
+                                            FocusManager.instance.primaryFocus?.unfocus();
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'موجودی حساب شما با موفقیت به حساب بانکی واریز شد.',
+                                                  style: Theme.of(context).textTheme.displaySmall,
+                                                ),
+                                                duration: const Duration(seconds: 1),
+                                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
+                                          ),
+                                          child: const Text(
+                                            'ثبت',
+                                          )
+                                      )
+                                    ],
+                                  )
+                                ]
+                            ),
                           ],
                         ),
                       )
                     ),
+
                   ],
                 )
               ),

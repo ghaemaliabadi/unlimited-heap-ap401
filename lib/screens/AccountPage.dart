@@ -98,6 +98,7 @@ class _AccountPageState extends State<AccountPage> {
 
   final _addBalanceController = TextEditingController();
   final _withdrawBalanceController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -496,16 +497,28 @@ class _AccountPageState extends State<AccountPage> {
                                       SizedBox(
                                         width: pageWidth * 0.5,
                                         height: pageHeight * 0.06,
-                                        child: TextFormField(
-                                          controller: _withdrawBalanceController,
-                                          keyboardType: TextInputType.number,
-                                          style: Theme.of(context).textTheme.headlineMedium,
-                                          decoration: InputDecoration(
-                                            suffixText: 'ریال',
-                                            labelText: 'مبلغ مورد نظر',
-                                            alignLabelWithHint: true,
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10.0),
+                                        child: Form(
+                                          key: _formKey,
+                                          child: TextFormField(
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return 'لطفا مبلغ مورد نظر را وارد کنید.';
+                                              } else if (!sampleUser.checkEnoughBalance(value)) {
+                                                _withdrawBalanceController.clear();
+                                                return 'موجودی حساب شما کافی نیست.';
+                                              }
+                                              return null;
+                                            },
+                                            controller: _withdrawBalanceController,
+                                            keyboardType: TextInputType.number,
+                                            style: Theme.of(context).textTheme.headlineMedium,
+                                            decoration: InputDecoration(
+                                              suffixText: 'ریال',
+                                              labelText: 'مبلغ مورد نظر',
+                                              alignLabelWithHint: true,
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -513,19 +526,32 @@ class _AccountPageState extends State<AccountPage> {
                                       SizedBox(width: pageWidth * 0.08),
                                       ElevatedButton(
                                           onPressed: () {
-                                            sampleUser.withdrawBalance(_withdrawBalanceController.text);
-                                            setState(() {});
-                                            FocusManager.instance.primaryFocus?.unfocus();
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  'موجودی حساب شما با موفقیت به حساب بانکی واریز شد.',
-                                                  style: Theme.of(context).textTheme.displaySmall,
+                                            if (_formKey.currentState!.validate()) {
+                                              sampleUser.withdrawBalance(
+                                                  _withdrawBalanceController
+                                                      .text);
+                                              setState(() {});
+                                              FocusManager.instance
+                                                  .primaryFocus?.unfocus();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'موجودی حساب شما با موفقیت به حساب بانکی واریز شد.',
+                                                    style: Theme
+                                                        .of(context)
+                                                        .textTheme
+                                                        .displaySmall,
+                                                  ),
+                                                  duration: const Duration(
+                                                      seconds: 1),
+                                                  backgroundColor: Theme
+                                                      .of(context)
+                                                      .colorScheme
+                                                      .secondary,
                                                 ),
-                                                duration: const Duration(seconds: 1),
-                                                backgroundColor: Theme.of(context).colorScheme.secondary,
-                                              ),
-                                            );
+                                              );
+                                            }
                                           },
                                           style: ElevatedButton.styleFrom(
                                             fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),

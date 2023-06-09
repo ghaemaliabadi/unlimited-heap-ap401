@@ -322,12 +322,12 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               if(lastTrips.isNotEmpty) {
                 return Container(
                   color: Colors.white,
-                  height: MediaQuery.of(context).size.height * 0.15,
+                  height: MediaQuery.of(context).size.height * 0.25,
                 );
               } else {
                 return Container(
                   color: Colors.white,
-                  height: MediaQuery.of(context).size.height * 0.33,
+                  height: MediaQuery.of(context).size.height * 0.4,
                 );
               }
             } (),

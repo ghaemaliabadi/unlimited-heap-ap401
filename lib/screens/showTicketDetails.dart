@@ -196,170 +196,176 @@ class _ShowTicketDetailsState extends State<ShowTicketDetails> {
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0, top: 8.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.person_rounded,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 4.0),
-                      Text(
-                        'جزئیات مسافران:',
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                    ],
+            SizedBox(
+              height: 145,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0, top: 8.0),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.person_rounded,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 4.0),
+                        Text(
+                          'جزئیات مسافران:',
+                          style: Theme.of(context).textTheme.displaySmall,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 4, 42, 8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            '- بزرگسال:',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Text(
-                            convertEnToFa(
-                                '${convertEnToFa(numberFormat.format(widget.tripData.passengers['adult']))} نفر'),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            '- کودک:',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Text(
-                            convertEnToFa(
-                                '${convertEnToFa(numberFormat.format(widget.tripData.passengers['child']))} نفر'),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            '- نوزاد:',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const SizedBox(width: 4.0),
-                          Text(
-                            convertEnToFa(
-                                '${convertEnToFa(numberFormat.format(widget.tripData.passengers['infant']))} نفر'),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 1.0,
-                  child: Container(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 16, 4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.attach_money_rounded,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          const SizedBox(width: 2.0),
-                          Text(
-                            'مجموع قیمت:',
-                            style: Theme.of(context).textTheme.displaySmall,
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Row(
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 4, 42, 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
                             Text(
-                              // price with number format and convert to fa
-                                convertEnToFa(
-                                    '${convertEnToFa(numberFormat.format(widget.ticket.price * widget.tripData.sumPassengers))}'),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayLarge
-                                    ?.copyWith(
-                                  color: Colors.blueAccent,
-                                  fontSize: 32.0,
-                                )),
-                            const SizedBox(width: 6.0),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Text(
-                                'تومان',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
+                              '- بزرگسال:',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const SizedBox(width: 4.0),
+                            Text(
+                              convertEnToFa(
+                                  '${convertEnToFa(numberFormat.format(widget.tripData.passengers['adult']))} نفر'),
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        Row(
+                          children: [
+                            Text(
+                              '- کودک:',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const SizedBox(width: 4.0),
+                            Text(
+                              convertEnToFa(
+                                  '${convertEnToFa(numberFormat.format(widget.tripData.passengers['child']))} نفر'),
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              '- نوزاد:',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const SizedBox(width: 4.0),
+                            Text(
+                              convertEnToFa(
+                                  '${convertEnToFa(numberFormat.format(widget.tripData.passengers['infant']))} نفر'),
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 1.0,
+                    child: Container(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 16, 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.attach_money_rounded,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            const SizedBox(width: 2.0),
+                            Text(
+                              'مجموع قیمت:',
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                // price with number format and convert to fa
+                                  convertEnToFa(
+                                      '${convertEnToFa(numberFormat.format(widget.ticket.price * widget.tripData.sumPassengers))}'),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.copyWith(
+                                    color: Colors.blueAccent,
+                                    fontSize: 32.0,
+                                  )),
+                              const SizedBox(width: 6.0),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Text(
+                                  'تومان',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             // text button for buy ticket
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-              child: SizedBox(
-                width: double.infinity,
-                height: 54.0,
-                child: TextButton(
-                  onPressed: () {
-                    if (widget.tripData.type == 'رفت و برگشت' && widget.tripData.departTicket == null) {
-                      widget.tripData.departTicket = widget.ticket;
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ResultPage(
-                            tripData: widget.tripData,
-                            sort: Sort(),
-                            selectTicketFor: 'return',
-                          )));
-                    } else {
-                      if (widget.tripData.type == 'رفت و برگشت') {
-                        widget.tripData.returnTicket = widget.ticket;
-                      } else {
+            SizedBox(
+              height: 90,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 54.0,
+                  child: TextButton(
+                    onPressed: () {
+                      if (widget.tripData.type == 'رفت و برگشت' && widget.tripData.departTicket == null) {
                         widget.tripData.departTicket = widget.ticket;
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ResultPage(
+                              tripData: widget.tripData,
+                              sort: Sort(),
+                              selectTicketFor: 'return',
+                            )));
+                      } else {
+                        if (widget.tripData.type == 'رفت و برگشت') {
+                          widget.tripData.returnTicket = widget.ticket;
+                        } else {
+                          widget.tripData.departTicket = widget.ticket;
+                        }
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PassengersDataPage(
+                              tripData: widget.tripData,
+                            )));
                       }
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => PassengersDataPage(
-                            tripData: widget.tripData,
-                          )));
-                    }
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primary,
-                    ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.primary,
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    'خرید بلیط',
-                    style: Theme.of(context).textTheme.displayMedium,
+                    child: Text(
+                      'خرید بلیط',
+                      style: Theme.of(context).textTheme.displayMedium,
+                    ),
                   ),
                 ),
               ),

@@ -36,6 +36,12 @@ class User {
     );
   }
 
+  String getBalance() {
+    return convertEnToFa(
+        "${(balance ?? '۰')} "
+    );
+  }
+
   String getPhoneNumber() {
     return convertEnToFa(
         "${(phoneNumber ?? '-')} "
@@ -51,4 +57,23 @@ class User {
   void setEmail(String text) {
     email = text;
   }
+
+  void addBalance(String amount) {
+    balance = convertFaToEn(balance ?? '0');
+    balance = (int.parse(balance ?? '0') + int.parse(amount)).toString();
+  }
+}
+
+convertFaToEn(String text) {
+  return text
+      .replaceAll('۰', '0')
+      .replaceAll('۱', '1')
+      .replaceAll('۲', '2')
+      .replaceAll('۳', '3')
+      .replaceAll('۴', '4')
+      .replaceAll('۵', '5')
+      .replaceAll('۶', '6')
+      .replaceAll('۷', '7')
+      .replaceAll('۸', '8')
+      .replaceAll('۹', '9');
 }

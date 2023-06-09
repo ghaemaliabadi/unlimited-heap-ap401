@@ -95,6 +95,15 @@ Jalali startingDateSearch = Jalali.now();
 Jalali endingDateSearch = Jalali.now();
 
 class _AccountPageState extends State<AccountPage> {
+
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var pageHeight = MediaQuery.of(context).size.height;
@@ -234,9 +243,9 @@ class _AccountPageState extends State<AccountPage> {
                                 'موجودی حساب',
                                 style: Theme.of(context).textTheme.titleSmall,
                               ),
-                              const SizedBox(width: 50.0,),
+                              SizedBox(width: pageWidth * 0.05,),
                               Text(
-                                '${sampleUser.balance} ریال',
+                                '${sampleUser.getBalance()} ریال',
                                 style: Theme.of(context).textTheme.headlineMedium,
                               ),
                               const SizedBox(width: 30.0),
@@ -382,7 +391,7 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                                 const SizedBox(width: 50.0,),
                                 Text(
-                                  '${sampleUser.balance} ریال',
+                                  '${sampleUser.getBalance()} ریال',
                                   style: Theme.of(context).textTheme.labelMedium,
                                 ),
                               ],
@@ -416,6 +425,7 @@ class _AccountPageState extends State<AccountPage> {
                                       width: pageWidth * 0.5,
                                       height: pageHeight * 0.06,
                                       child: TextFormField(
+                                        controller: _controller,
                                         keyboardType: TextInputType.number,
                                         style: Theme.of(context).textTheme.headlineMedium,
                                         decoration: InputDecoration(
@@ -431,7 +441,19 @@ class _AccountPageState extends State<AccountPage> {
                                     SizedBox(width: pageWidth * 0.08),
                                     ElevatedButton(
                                       onPressed: () {
-
+                                        sampleUser.addBalance(_controller.text);
+                                        setState(() {});
+                                        FocusManager.instance.primaryFocus?.unfocus();
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'موجودی حساب شما با موفقیت افزایش یافت.',
+                                              style: Theme.of(context).textTheme.displaySmall,
+                                            ),
+                                            duration: const Duration(seconds: 1),
+                                            backgroundColor: Theme.of(context).colorScheme.secondary,
+                                          ),
+                                        );
                                       },
                                       style: ElevatedButton.styleFrom(
                                         fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
@@ -821,6 +843,11 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
   bool visibleNewPassword = false;
   bool visibleConfirmNewPassword = false;
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

@@ -505,7 +505,7 @@ class _ResultPageState extends State<ResultPage> {
                             ))
                   ],
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 Row(
                   children: [
                     const Icon(
@@ -568,7 +568,18 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
-  ListView buildListViewForCards() {
+  Widget buildListViewForCards() {
+    if (tickets.isEmpty) {
+      return Column(
+        children: [
+          const SizedBox(height: 200.0),
+          Text(
+            'هیچ بلیطی یافت نشد.',
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+        ],
+      );
+    } else {
     tickets = divideByRemainingSeats(tickets);
     return ListView.builder(
       itemCount: tickets.length,
@@ -576,6 +587,7 @@ class _ResultPageState extends State<ResultPage> {
         return ticketCard(ticket: tickets[index]);
       },
     );
+    }
   }
 
   List<Ticket> divideByRemainingSeats(List<Ticket> tickets) {

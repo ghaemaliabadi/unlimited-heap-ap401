@@ -175,7 +175,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                               padding: const EdgeInsets.only(left: 15),
                               child: GestureDetector(
                                 onTap: () {
-                                  // do something
+                                  setState(() {
+                                    lastTrips.clear();
+                                  });
                                 },
                                 child: Text(
                                   'پاک کردن',
@@ -228,32 +230,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                         ),
                                       ),
                                     );
-                                    if (lastTrips.isNotEmpty) {
-                                      for (var lastTrip in lastTrips) {
-                                        if (lastTrip.from == tripData.from &&
-                                            lastTrip.to == tripData.to &&
-                                            lastTrip.date == tripData.date &&
-                                            lastTrip.dateRange ==
-                                                tripData.dateRange &&
-                                            lastTrip.passengers['adult'] ==
-                                                tripData.passengers['adult'] &&
-                                            lastTrip.passengers['child'] ==
-                                                tripData.passengers['child'] &&
-                                            lastTrip.passengers['infant'] ==
-                                                tripData.passengers['infant'] &&
-                                            lastTrip.transportBy ==
-                                                tripData.transportBy &&
-                                            lastTrip.type == tripData.type) {
-                                        } else {
-                                          lastTrips.add(tripData);
-                                          setState(() {});
-                                          break;
-                                        }
-                                      }
-                                    } else {
-                                      lastTrips.add(tripData);
-                                      setState(() {});
-                                    }
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.only(left: 10),
@@ -599,13 +575,13 @@ class _ProjectMainPage extends State<ProjectMainPage> {
             lastTrip.transportBy == tripData.transportBy &&
             lastTrip.type == tripData.type) {
         } else {
-          lastTrips.add(tripData);
+          lastTrips.insert(0, tripData);
           setState(() {});
           break;
         }
       }
     } else {
-      lastTrips.add(tripData);
+      lastTrips.insert(0, tripData);
       setState(() {});
     }
   }

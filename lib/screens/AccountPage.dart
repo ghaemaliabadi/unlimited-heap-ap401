@@ -553,32 +553,39 @@ class _AccountPageState extends State<AccountPage> {
                         )
                       )
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black54,
-                          width: 2.0,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black38,
+                            width: 2.0,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(2.0),
+                        height: pageHeight * 0.06,
+                        // width: pageWidth * 0.9,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                          Expanded(child: Text('شماره سفارش', textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineMedium)),
+                          Expanded(child: Text('نوع سفارش', textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineMedium)),
+                          Expanded(child: Text('تاریخ', textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineMedium)),
+                          // Expanded(child: Text('مبلغ کل(تومان)', textAlign: TextAlign.center,
+                          //     style: Theme.of(context).textTheme.headlineMedium)),
+                          Expanded(child: Text('وضعیت', textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headlineMedium)),
+                          const Expanded(child: Text('')),
+                          ],
+                        )
                       ),
-                      height: pageHeight * 0.09,
-                      // width: pageWidth * 0.9,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                        Expanded(child: Text('شماره سفارش', textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('نوع سفارش', textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('تاریخ', textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium)),
-                        // Expanded(child: Text('مبلغ کل(تومان)', textAlign: TextAlign.center,
-                        //     style: Theme.of(context).textTheme.headlineMedium)),
-                        Expanded(child: Text('وضعیت', textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineMedium)),
-                        const Expanded(child: Text('')),
-                        ],
-                      )
                     ),
                     Expanded(
                       child: ListView.builder(
@@ -586,73 +593,77 @@ class _AccountPageState extends State<AccountPage> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemCount: takenTrips.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.black26,
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(5.0),
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.black26,
+                                  ),
+                                  right: BorderSide(
+                                    color: Colors.black26,
+                                  ),
+                                  left: BorderSide(
+                                    color: Colors.black26,
+                                  ),
                                 ),
-                                right: BorderSide(
-                                  color: Colors.black26,
-                                ),
-                                left: BorderSide(
-                                  color: Colors.black26,
-                                ),
+                              ),
+                              height: pageHeight * 0.07,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Expanded(child: Text(takenTrips[index].getID(),
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context).textTheme.headlineMedium)),
+                                  Expanded(child: Text(takenTrips[index].transportType,
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context).textTheme.headlineMedium)),
+                                  Expanded(child: Text(takenTrips[index].getDate(),
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context).textTheme.headlineMedium)),
+                                  // Expanded(child: Text(takenTrips[index].getPrice(),
+                                  //     textAlign: TextAlign.center,
+                                  //     style: Theme.of(context).textTheme.headlineMedium)),
+                                  Expanded(child: Text(takenTrips[index].getStatus(),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      )
+                                    )
+                                  ),
+                                  Expanded(
+                                    child: InkWell(
+                                      splashFactory: NoSplash.splashFactory,
+                                      onTap: () {},
+                                      child: const Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'مشاهده',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.blueAccent,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.keyboard_arrow_down,
+                                            size: 16.0,
+                                            color: Colors.blueAccent,
+                                          )
+                                        ],
+                                      )
+                                    )
+                                  )
+                                ],
                               )
                             ),
-                            height: pageHeight * 0.08,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Expanded(child: Text(takenTrips[index].getID(),
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text(takenTrips[index].transportType,
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text(takenTrips[index].getDate(),
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.headlineMedium)),
-                                // Expanded(child: Text(takenTrips[index].getPrice(),
-                                //     textAlign: TextAlign.center,
-                                //     style: Theme.of(context).textTheme.headlineMedium)),
-                                Expanded(child: Text(takenTrips[index].getStatus(),
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    )
-                                  )
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    splashFactory: NoSplash.splashFactory,
-                                    onTap: () {},
-                                    child: const Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'مشاهده',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.blueAccent,
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.keyboard_arrow_down,
-                                          size: 16.0,
-                                          color: Colors.blueAccent,
-                                        )
-                                      ],
-                                    )
-                                  )
-                                )
-                              ],
-                            )
                           );
                         }
                       ),

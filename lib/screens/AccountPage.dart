@@ -339,109 +339,118 @@ class _AccountPageState extends State<AccountPage> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Card(
-                    margin: const EdgeInsets.all(10.0),
-                    elevation: 2.5,
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10.0),
-                      height: pageHeight * 0.26,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.credit_score),
-                              const SizedBox(width: 5.0,),
-                              Text(
-                                'موجودی حساب کاربری',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20.0,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const SizedBox(width: 5.0,),
-                              Text(
-                                'موجودی حساب',
-                                style: Theme.of(context).textTheme.headlineLarge,
-                              ),
-                              const SizedBox(width: 50.0,),
-                              Text(
-                                '${sampleUser.balance} ریال',
-                                style: Theme.of(context).textTheme.labelMedium,
-                              ),
-                            ],
-                          ),
-                          Divider(
-                            height: 30.0,
-                            color: Theme.of(context).colorScheme.secondary,
-                            thickness: 1.5,
-                            indent: 20.0,
-                            endIndent: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.attach_money),
-                              const SizedBox(width: 5.0,),
-                              Text(
-                                'افزایش موجودی',
-                                style: Theme.of(context).textTheme.displaySmall,
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 20.0,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const SizedBox(width: 5.0),
-                                  SizedBox(
-                                    width: pageWidth * 0.5,
-                                    height: pageHeight * 0.06,
-                                    child: TextFormField(
-                                      keyboardType: TextInputType.number,
-                                      style: Theme.of(context).textTheme.headlineMedium,
-                                      decoration: InputDecoration(
-                                        suffixText: 'ریال',
-                                        labelText: 'مبلغ مورد نظر',
-                                        alignLabelWithHint: true,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10.0),
+            InkWell(
+              splashFactory: NoSplash.splashFactory,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Card(
+                      margin: const EdgeInsets.all(10.0),
+                      elevation: 2.5,
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10.0),
+                        height: pageHeight * 0.26,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.credit_score),
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'موجودی حساب کاربری',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20.0,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'موجودی حساب',
+                                  style: Theme.of(context).textTheme.headlineLarge,
+                                ),
+                                const SizedBox(width: 50.0,),
+                                Text(
+                                  '${sampleUser.balance} ریال',
+                                  style: Theme.of(context).textTheme.labelMedium,
+                                ),
+                              ],
+                            ),
+                            Divider(
+                              height: 30.0,
+                              color: Theme.of(context).colorScheme.secondary,
+                              thickness: 1.5,
+                              indent: 20.0,
+                              endIndent: 20.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.attach_money),
+                                const SizedBox(width: 5.0,),
+                                Text(
+                                  'افزایش موجودی',
+                                  style: Theme.of(context).textTheme.displaySmall,
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 20.0,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const SizedBox(width: 5.0),
+                                    SizedBox(
+                                      width: pageWidth * 0.5,
+                                      height: pageHeight * 0.06,
+                                      child: TextFormField(
+                                        keyboardType: TextInputType.number,
+                                        style: Theme.of(context).textTheme.headlineMedium,
+                                        decoration: InputDecoration(
+                                          suffixText: 'ریال',
+                                          labelText: 'مبلغ مورد نظر',
+                                          alignLabelWithHint: true,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(width: pageWidth * 0.08),
-                                  ElevatedButton(
-                                    onPressed: () {
+                                    SizedBox(width: pageWidth * 0.08),
+                                    ElevatedButton(
+                                      onPressed: () {
 
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
-                                    ),
-                                    child: const Text(
-                                      'پرداخت',
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
+                                      ),
+                                      child: const Text(
+                                        'پرداخت',
+                                      )
                                     )
-                                  )
-                                ],
-                              )
-                            ]
-                          )
-                        ],
-                      ),
-                    )
-                  ),
-                ],
-              )
+                                  ],
+                                )
+                              ]
+                            )
+                          ],
+                        ),
+                      )
+                    ),
+                  ],
+                )
+              ),
             ),
             InkWell(
               splashFactory: NoSplash.splashFactory,

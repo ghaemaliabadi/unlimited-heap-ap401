@@ -18,12 +18,21 @@ class ResultPage extends StatefulWidget {
   Trip tripData;
   Sort sort;
   String selectTicketFor;
+  List<bool>? selectedCompanies;
+  List<bool>? selectedTags;
+  double? startValue;
+  double? endValue;
 
   ResultPage(
       {Key? key,
       required this.tripData,
       required this.sort,
-      required this.selectTicketFor})
+      required this.selectTicketFor,
+      this.selectedCompanies,
+      this.selectedTags,
+      this.startValue,
+      this.endValue,
+      })
       : super(key: key);
 
   @override
@@ -32,68 +41,8 @@ class ResultPage extends StatefulWidget {
 
 var numberFormat = NumberFormat("###,###", "en_US");
 
-List<Ticket> tickets = [
-  Ticket(
-    transportBy: 'هواپیما',
-    from: 'تهران',
-    to: 'مشهد',
-    outboundDate: Jalali(1401, 3, 15, 12, 30),
-    inboundDate: Jalali(1400, 3, 15, 13, 35),
-    company: Company('زاگرس'),
-    price: 920000,
-    remainingSeats: 68,
-    description: 'توضیحات تستی نام واسه قطار',
-    tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
-  ),
-  Ticket(
-    transportBy: 'هواپیما',
-    from: 'تهران',
-    to: 'مشهد',
-    outboundDate: Jalali(1401, 3, 15, 14, 20),
-    inboundDate: Jalali(1400, 3, 15, 15, 25),
-    company: Company('ماهان'),
-    price: 1210000,
-    remainingSeats: 55,
-    description: '',
-    tags: ['CF8', 'اکونومی', 'سیستمی'],
-  ),
-  Ticket(
-    transportBy: 'هواپیما',
-    from: 'تهران',
-    to: 'مشهد',
-    outboundDate: Jalali(1401, 3, 15, 15, 30),
-    inboundDate: Jalali(1400, 3, 15, 16, 35),
-    company: Company('زاگرس'),
-    price: 1590000,
-    remainingSeats: 12,
-    description: '',
-    tags: ['Fokker 100', 'بیزنس', 'سیستمی'],
-  ),
-  Ticket(
-    transportBy: 'هواپیما',
-    from: 'تهران',
-    to: 'مشهد',
-    outboundDate: Jalali(1401, 3, 15, 18, 20),
-    inboundDate: Jalali(1400, 3, 15, 18, 25),
-    company: Company('ماهان'),
-    price: 990000,
-    remainingSeats: 0,
-    description: '',
-    tags: ['CF8', 'اکونومی', 'سیستمی'],
-  ),
-  Ticket(
-    transportBy: 'هواپیما',
-    from: 'تهران',
-    to: 'مشهد',
-    outboundDate: Jalali(1401, 3, 15, 18, 20),
-    inboundDate: Jalali(1400, 3, 15, 18, 25),
-    company: Company('وارش'),
-    price: 1120000,
-    remainingSeats: 15,
-    description: '',
-    tags: ['CF8', 'اکونومی', 'سیستمی'],
-  ),
-];
+List<Ticket> orgTickets = [];
+List<Ticket> tickets = [];
 HashSet<String>? allTags = HashSet();
 HashSet<String>? allCompanies = HashSet();
 AutoScrollController _scrollController = AutoScrollController();
@@ -101,6 +50,90 @@ AutoScrollController _scrollController = AutoScrollController();
 class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
+    orgTickets = tickets = [
+      Ticket(
+        transportBy: 'هواپیما',
+        from: 'تهران',
+        to: 'مشهد',
+        outboundDate: Jalali(1401, 3, 15, 12, 30),
+        inboundDate: Jalali(1400, 3, 15, 13, 35),
+        company: Company('زاگرس'),
+        price: 920000,
+        remainingSeats: 68,
+        description: 'توضیحات تستی نام واسه قطار',
+        tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
+      ),
+      Ticket(
+        transportBy: 'هواپیما',
+        from: 'تهران',
+        to: 'مشهد',
+        outboundDate: Jalali(1401, 3, 15, 14, 20),
+        inboundDate: Jalali(1400, 3, 15, 15, 25),
+        company: Company('ماهان'),
+        price: 1210000,
+        remainingSeats: 55,
+        description: '',
+        tags: ['CF8', 'اکونومی', 'سیستمی'],
+      ),
+      Ticket(
+        transportBy: 'هواپیما',
+        from: 'تهران',
+        to: 'مشهد',
+        outboundDate: Jalali(1401, 3, 15, 15, 30),
+        inboundDate: Jalali(1400, 3, 15, 16, 35),
+        company: Company('زاگرس'),
+        price: 1590000,
+        remainingSeats: 12,
+        description: '',
+        tags: ['Fokker 100', 'بیزنس', 'سیستمی'],
+      ),
+      Ticket(
+        transportBy: 'هواپیما',
+        from: 'تهران',
+        to: 'مشهد',
+        outboundDate: Jalali(1401, 3, 15, 18, 20),
+        inboundDate: Jalali(1400, 3, 15, 18, 25),
+        company: Company('ماهان'),
+        price: 990000,
+        remainingSeats: 0,
+        description: '',
+        tags: ['CF8', 'اکونومی', 'سیستمی'],
+      ),
+      Ticket(
+        transportBy: 'هواپیما',
+        from: 'تهران',
+        to: 'مشهد',
+        outboundDate: Jalali(1401, 3, 15, 18, 20),
+        inboundDate: Jalali(1400, 3, 15, 18, 25),
+        company: Company('وارش'),
+        price: 1120000,
+        remainingSeats: 15,
+        description: '',
+        tags: ['CF8', 'اکونومی', 'سیستمی'],
+      ),
+    ];
+    if (widget.selectedCompanies != null) {
+      for (var i = 0; i < widget.selectedCompanies!.length; i++) {
+        if (!widget.selectedCompanies![i]) {
+          tickets.removeWhere((element) =>
+              element.company.name == allCompanies!.elementAt(i));
+        }
+      }
+    }
+    if (widget.selectedTags != null) {
+      for (var i = 0; i < widget.selectedTags!.length; i++) {
+        if (!widget.selectedTags![i]) {
+          tickets.removeWhere((element) =>
+              element.tags.contains(allTags!.elementAt(i)));
+        }
+      }
+    }
+    if (widget.startValue != null) {
+      tickets.removeWhere((element) => element.outboundDate!.hour < widget.startValue!);
+    }
+    if (widget.endValue != null) {
+      tickets.removeWhere((element) => element.outboundDate!.hour > widget.endValue!);
+    }
     _scrollController = AutoScrollController();
     _scrollController.scrollToIndex(
         (widget.tripData.date!.day + widget.tripData.date!.month * 31) -
@@ -117,7 +150,7 @@ class _ResultPageState extends State<ResultPage> {
   // trip data
   @override
   Widget build(BuildContext context) {
-    for (var ticket in tickets) {
+    for (var ticket in orgTickets) {
       allTags?.addAll(ticket.tags);
       allCompanies?.add(ticket.company.name);
     }
@@ -228,27 +261,28 @@ class _ResultPageState extends State<ResultPage> {
               return Row(
                 children: [
                   Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        margin: const EdgeInsets.only(right: 4.0),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4.0),
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(1000),
-                        ),
-                        child:  Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('بلیط رفت:', style: Theme.of(context).textTheme.bodyLarge),
-                            const SizedBox(width: 4.0),
-                            Text(
-                                '${convertEnToFa(widget.tripData.departTicket!.outboundDate?.day)} ${widget.tripData.departTicket!.outboundDate?.formatter.mN}',
-                                style: Theme.of(context).textTheme.bodyLarge),
-                          ],
-                        ),
+                    padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      margin: const EdgeInsets.only(right: 4.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(1000),
                       ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('بلیط رفت:',
+                              style: Theme.of(context).textTheme.bodyLarge),
+                          const SizedBox(width: 4.0),
+                          Text(
+                              '${convertEnToFa(widget.tripData.departTicket!.outboundDate?.day)} ${widget.tripData.departTicket!.outboundDate?.formatter.mN}',
+                              style: Theme.of(context).textTheme.bodyLarge),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               );
@@ -264,12 +298,20 @@ class _ResultPageState extends State<ResultPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        var selectedCompanies = List<bool>.filled(allCompanies!.length, true);
+                        var selectedTags = List<bool>.filled(allTags!.length, true);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => FilterPage(
+                              tripData: widget.tripData,
+                              selectTicketFor: widget.selectTicketFor,
                               tags: allTags,
                               companies: allCompanies,
+                              selectedCompanies: (widget.selectedCompanies == null) ? selectedCompanies : widget.selectedCompanies!,
+                              selectedTags: (widget.selectedTags == null) ? selectedTags : widget.selectedTags!,
+                              startValue: (widget.startValue == null) ? 4.5 : widget.startValue!,
+                              endValue: (widget.endValue == null) ? 23.5 : widget.endValue!,
                             ),
                           ),
                         );
@@ -678,8 +720,7 @@ class _ResultPageState extends State<ResultPage> {
                             children: [
                               Text(
                                 ticket.outboundTimeString,
-                                style:
-                                    Theme.of(context).textTheme.displayLarge,
+                                style: Theme.of(context).textTheme.displayLarge,
                               ),
                               const SizedBox(height: 4.0),
                               Text(
@@ -698,8 +739,7 @@ class _ResultPageState extends State<ResultPage> {
                             children: [
                               Text(
                                 ticket.inboundTimeString,
-                                style:
-                                    Theme.of(context).textTheme.displayLarge,
+                                style: Theme.of(context).textTheme.displayLarge,
                               ),
                               const SizedBox(height: 4.0),
                               Text(
@@ -739,24 +779,20 @@ class _ResultPageState extends State<ResultPage> {
                       if (ticket.remainingSeats > 0) {
                         return Text(
                           '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                color: Colors.grey[700],
-                                fontSize: 16.0,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.grey[700],
+                                    fontSize: 16.0,
+                                  ),
                         );
                       } else {
                         return Text(
                           'تکمیل ظرفیت',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                color: Colors.red[700],
-                                fontSize: 16.0,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.red[700],
+                                    fontSize: 16.0,
+                                  ),
                         );
                       }
                     }(),
@@ -764,20 +800,18 @@ class _ResultPageState extends State<ResultPage> {
                       children: [
                         Text(
                             '${convertEnToFa(numberFormat.format(ticket.price))}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(
-                                  fontSize: 28.0,
-                                  color: (ticket) {
-                                    if (ticket.remainingSeats > 0) {
-                                      return Colors.blueAccent;
-                                    } else {
-                                      return Colors.grey[700];
-                                    }
-                                  }(ticket),
-                                  fontWeight: FontWeight.bold,
-                                )),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      fontSize: 28.0,
+                                      color: (ticket) {
+                                        if (ticket.remainingSeats > 0) {
+                                          return Colors.blueAccent;
+                                        } else {
+                                          return Colors.grey[700];
+                                        }
+                                      }(ticket),
+                                      fontWeight: FontWeight.bold,
+                                    )),
                         const SizedBox(width: 4.0),
                         Column(
                           children: [

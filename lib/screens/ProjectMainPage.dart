@@ -26,56 +26,7 @@ List<String> items = [
   'تبریز',
   'بوشهر',
 ];
-List<Trip> trips = [
-  Trip(
-    transportBy: 'هواپیما',
-    type: 'یک طرفه',
-    from: 'تهران',
-    to: 'مشهد',
-    date: Jalali.now(),
-    dateRange: JalaliRange(
-      start: Jalali.now(),
-      end: Jalali.now().add(days: 1),
-    ),
-    passengers: {
-      'adult': 1,
-      'child': 0,
-      'infant': 0,
-    },
-  ),
-  Trip(
-    transportBy: 'قطار',
-    type: 'رفت و برگشت',
-    from: 'مشهد',
-    to: 'تبریز',
-    date: Jalali.now().add(days: 2),
-    dateRange: JalaliRange(
-      start: Jalali.now().add(days: 2),
-      end: Jalali.now().add(days: 5),
-    ),
-    passengers: {
-      'adult': 2,
-      'child': 1,
-      'infant': 0,
-    },
-  ),
-  Trip(
-    transportBy: 'اتوبوس',
-    type: 'رفت',
-    from: 'اصفهان',
-    to: 'شیراز',
-    date: Jalali.now().add(days: 1),
-    dateRange: JalaliRange(
-      start: Jalali.now().add(days: 2),
-      end: Jalali.now().add(days: 5),
-    ),
-    passengers: {
-      'adult': 3,
-      'child': 0,
-      'infant': 0,
-    },
-  ),
-];
+List<Trip> lastTrips = [];
 
 String? selectedValue;
 String? lastSelectedValue;
@@ -137,209 +88,251 @@ class _ProjectMainPage extends State<ProjectMainPage> {
         titleSpacing: 0.0,
         // add back icon without leading space
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            // row for back icon
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                // move to right side
-                padding: const EdgeInsets.fromLTRB(0, 12, 12, 0),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-                  // back to previous page
-                  onPressed: () => Navigator.of(context).pop(),
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              // row for back icon
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  // move to right side
+                  padding: const EdgeInsets.fromLTRB(0, 12, 12, 0),
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                    // back to previous page
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
                 ),
-              ),
-            ],
-          ), // Row For Back Icon
-          Column(children: [
-            Container(
-              height: 500,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 0.0),
-                    child: _menuBar(context),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: PageView(
-                      controller: _pageController,
-                      // scroll  view for page view horizontal scroll
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      onPageChanged: (int i) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        setState(() {
-                          activePageIndex = i;
-                        });
-                      },
-                      children: <Widget>[
-                        buildConstrainedBox(context, 'پرواز داخلی'),
-                        buildConstrainedBox(context, 'پرواز خارجی'),
-                        buildConstrainedBox(context, 'قطار'),
-                        buildConstrainedBox(context, 'اتوبوس'),
-                      ],
+              ],
+            ), // Row For Back Icon
+            Column(children: [
+              Container(
+                height: 500,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0.0),
+                      child: _menuBar(context),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              // move to bottom
-              color: Colors.white,
-              child: () {
-                if (trips.isNotEmpty) {
-                  return Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: Row(
-                              children: [
-                                Text('جستجوهای اخیر',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge),
-                                Text(
-                                    " (${convertEnToFa(trips.length.toString())})",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: GestureDetector(
-                              onTap: () {
-                                // do something
-                              },
-                              child: Text(
-                                'پاک کردن',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge
-                                    ?.copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                              ),
-                            ),
-                          ),
+                    Expanded(
+                      flex: 2,
+                      child: PageView(
+                        controller: _pageController,
+                        // scroll  view for page view horizontal scroll
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        onPageChanged: (int i) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            activePageIndex = i;
+                          });
+                        },
+                        children: <Widget>[
+                          buildConstrainedBox(context, 'پرواز داخلی'),
+                          buildConstrainedBox(context, 'پرواز خارجی'),
+                          buildConstrainedBox(context, 'قطار'),
+                          buildConstrainedBox(context, 'اتوبوس'),
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      // list view
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: SizedBox(
-                          height: 100,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: trips.length,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                // move to bottom
+                color: Colors.white,
+                child: () {
+                  if (lastTrips.isNotEmpty) {
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 16, top: 16),
+                              child: Row(
+                                children: [
+                                  Text('جستجوهای اخیر',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge),
+                                  Text(
+                                      " (${convertEnToFa(lastTrips.length.toString())})",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: GestureDetector(
                                 onTap: () {
-                                  Trip tripData = trips[index];
-                                  // transportBy = trips[index].transportBy;
-                                  // travelType = trips[index].type;
-                                  // selectedValueFrom = trips[index].from;
-                                  // selectedValueTo = trips[index].to;
-                                  // selectedDateForDepartureType =
-                                  //     trips[index].date!;
-                                  // selectedDateForReturnType = trips[index].dateRange!;
-                                  // adultPassengers = trips[index].passengers['adult']!;
-                                  // childPassengers = trips[index].passengers['child']!;
-                                  // infantPassengers = trips[index].passengers['infant']!;
-                                  // setState(() {});
-                                  tripData.departTicket = null;
-                                  tripData.returnTicket = null;
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => ResultPage(
-                                        tripData: tripData,
-                                        sort: Sort(),
-                                        selectTicketFor: 'depart',
-                                      ),
-                                    ),
-                                  );
+                                  // do something
                                 },
-                                child: Container(
-                                  margin: const EdgeInsets.only(left: 10),
-                                  width: 180,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey[200],
-                                    border: Border.all(
-                                      color: Colors.grey[400]!,
-                                      width: 1,
+                                child: Text(
+                                  'پاک کردن',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge
+                                      ?.copyWith(
+                                        color:
+                                            Theme.of(context).colorScheme.primary,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        // list view
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: lastTrips.length,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Trip tripData = lastTrips[index];
+                                    // transportBy = lastTrips[index].transportBy;
+                                    // travelType = lastTrips[index].type;
+                                    // selectedValueFrom = lastTrips[index].from;
+                                    // selectedValueTo = lastTrips[index].to;
+                                    // selectedDateForDepartureType =
+                                    //     lastTrips[index].date!;
+                                    // selectedDateForReturnType = lastTrips[index].dateRange!;
+                                    // adultPassengers = lastTrips[index].passengers['adult']!;
+                                    // childPassengers = lastTrips[index].passengers['child']!;
+                                    // infantPassengers = lastTrips[index].passengers['infant']!;
+                                    // setState(() {});
+                                    tripData.departTicket = null;
+                                    tripData.returnTicket = null;
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => ResultPage(
+                                          tripData: tripData,
+                                          sort: Sort(),
+                                          selectTicketFor: 'depart',
+                                        ),
+                                      ),
+                                    );
+                                    if (lastTrips.isNotEmpty) {
+                                      for (var lastTrip in lastTrips) {
+                                        if (lastTrip.from == tripData.from &&
+                                            lastTrip.to == tripData.to &&
+                                            lastTrip.date == tripData.date &&
+                                            lastTrip.dateRange ==
+                                                tripData.dateRange &&
+                                            lastTrip.passengers['adult'] ==
+                                                tripData.passengers['adult'] &&
+                                            lastTrip.passengers['child'] ==
+                                                tripData.passengers['child'] &&
+                                            lastTrip.passengers['infant'] ==
+                                                tripData.passengers['infant'] &&
+                                            lastTrip.transportBy ==
+                                                tripData.transportBy &&
+                                            lastTrip.type == tripData.type) {
+                                        } else {
+                                          lastTrips.add(tripData);
+                                          setState(() {});
+                                          break;
+                                        }
+                                      }
+                                    } else {
+                                      lastTrips.add(tripData);
+                                      setState(() {});
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 10),
+                                    width: 180,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey[200],
+                                      border: Border.all(
+                                        color: Colors.grey[400]!,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          lastTrips[index].title,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          '« ${lastTrips[index].transportBy} »',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          lastTrips[index].dateString,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
+                                              ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        trips[index].title,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall!
-                                            .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        '« ${trips[index].transportBy} »',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        trips[index].dateString,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }
-              }(),
-            ),
-          ])
-        ],
+                      ],
+                    );
+                  }
+                }(),
+              ),
+            ]),
+            () {
+              if(lastTrips.isNotEmpty) {
+                return Container(
+                  color: Colors.white,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                );
+              } else {
+                return Container(
+                  color: Colors.white,
+                  height: MediaQuery.of(context).size.height * 0.33,
+                );
+              }
+            } (),
+          ],
+        ),
       ),
     );
   }
@@ -589,10 +582,32 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     tripData.returnTicket = null;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ResultPage(
-              tripData: tripData,
-              sort: Sort(),
-              selectTicketFor: 'depart',
-            )));
+          tripData: tripData,
+          sort: Sort(),
+          selectTicketFor: 'depart',
+        )));
+    // check if all field are tripData is not equal to another last trip
+    if (lastTrips.isNotEmpty) {
+      for (var lastTrip in lastTrips) {
+        if (lastTrip.from == tripData.from &&
+            lastTrip.to == tripData.to &&
+            lastTrip.date == tripData.date &&
+            lastTrip.dateRange == tripData.dateRange &&
+            lastTrip.passengers['adult'] == tripData.passengers['adult'] &&
+            lastTrip.passengers['child'] == tripData.passengers['child'] &&
+            lastTrip.passengers['infant'] == tripData.passengers['infant'] &&
+            lastTrip.transportBy == tripData.transportBy &&
+            lastTrip.type == tripData.type) {
+        } else {
+          lastTrips.add(tripData);
+          setState(() {});
+          break;
+        }
+      }
+    } else {
+      lastTrips.add(tripData);
+      setState(() {});
+    }
   }
 
   Row buildPassengerCountRow(BuildContext context, StateSetter setModalState,
@@ -635,7 +650,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 ),
                 onPressed: () {
                   setModalState(() {
-                    if (adultPassengers + childPassengers + infantPassengers  == 9) {
+                    if (adultPassengers + childPassengers + infantPassengers ==
+                        9) {
                       // err
                     } else {
                       if (passengerType == 'بزرگسال') {
@@ -668,18 +684,18 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 ),
                 onPressed: () {
                   setModalState(() {
-                      if (getSumOfPassengers() != 1) {
-                        if (passengerType == 'بزرگسال') {
-                          if (adultPassengers > 0) adultPassengers--;
-                          show = adultPassengers;
-                        }
-                        if (passengerType == 'کودک') {
-                          if (childPassengers > 0) childPassengers--;
-                          show = adultPassengers;
-                        }
-                        if (passengerType == 'نوزاد') {
-                          if (infantPassengers > 0) infantPassengers--;
-                          show = adultPassengers;
+                    if (getSumOfPassengers() != 1) {
+                      if (passengerType == 'بزرگسال') {
+                        if (adultPassengers > 0) adultPassengers--;
+                        show = adultPassengers;
+                      }
+                      if (passengerType == 'کودک') {
+                        if (childPassengers > 0) childPassengers--;
+                        show = adultPassengers;
+                      }
+                      if (passengerType == 'نوزاد') {
+                        if (infantPassengers > 0) infantPassengers--;
+                        show = adultPassengers;
                       }
                     }
                   });
@@ -998,7 +1014,7 @@ Future<dynamic> showDialogError(BuildContext context, String errorText) {
           borderRadius: BorderRadius.circular(20.0),
         ),
         title: const Text('خطا'),
-        content: Text(errorText),
+        content: Text(errorText, style: Theme.of(context).textTheme.bodyLarge),
         actions: [
           TextButton(
             onPressed: () {

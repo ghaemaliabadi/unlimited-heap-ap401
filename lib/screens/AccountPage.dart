@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:tab_container/tab_container.dart';
+import '../models/company.dart';
 import '../models/transaction.dart';
 import '../models/userinfo.dart';
 import '../models/tripsTaken.dart';
@@ -30,65 +31,101 @@ List<TakenTrip> takenTrips = [
   TakenTrip(
     id: '12564',
     transportType: 'اتوبوس',
-    date: Jalali(1399, 1, 1),
+    date: Jalali(1399, 1, 1, 12, 30),
     price: '200000',
     status: Status.done,
+    company: Company('زاگرس'),
+    reservationNumber: '2803',
+    from: 'تهران',
+    to: 'اصفهان',
   ),
   TakenTrip(
     id: '25646',
     transportType: 'قطار',
-    date: Jalali(1399, 1, 2),
+    date: Jalali(1399, 1, 2, 8, 30),
     price: '500000',
     status: Status.canceled,
+    company: Company('رجا'),
+    reservationNumber: '1458',
+    from: 'مشهد',
+    to: 'تهران',
   ),
   TakenTrip(
     id: '13548',
     transportType: 'پرواز داخلی',
-    date: Jalali(1399, 1, 3),
+    date: Jalali(1399, 1, 3, 15, 30),
     price: '1590000',
     status: Status.done,
+    company: Company('ماهان'),
+    reservationNumber: '1234',
+    from: 'تهران',
+    to: 'مشهد',
   ),
   TakenTrip(
     id: '84686',
     transportType: 'پرواز خارجی',
-    date: Jalali(1399, 1, 4),
+    date: Jalali(1399, 1, 4, 10, 30),
     price: '30000000',
     status: Status.done,
+    company: Company('ایران ایر'),
+    reservationNumber: '7894',
+    from: 'تهران',
+    to: 'لندن',
   ),
   TakenTrip(
     id: '12546',
     transportType: 'قطار',
-    date: Jalali(1399, 1, 5),
+    date: Jalali(1399, 1, 5, 12, 30),
     price: '400000',
     status: Status.done,
+    company: Company('رجا'),
+    reservationNumber: '1458',
+    from: 'تهران',
+    to: 'مشهد',
   ),
   TakenTrip(
     id: '75896',
     transportType: 'پرواز داخلی',
-    date: Jalali(1399, 1, 6),
+    date: Jalali(1399, 1, 6, 8, 30),
     price: '1200000',
     status: Status.ongoing,
+    company: Company('ماهان'),
+    reservationNumber: '1234',
+    from: 'تهران',
+    to: 'مشهد',
   ),
   TakenTrip(
     id: '13546',
     transportType: 'اتوبوس',
-    date: Jalali(1399, 1, 7),
+    date: Jalali(1399, 1, 7, 15, 30),
     price: '350000',
     status: Status.done,
+    company: Company('زاگرس'),
+    reservationNumber: '2803',
+    from: 'تهران',
+    to: 'اصفهان',
   ),
   TakenTrip(
     id: '91536',
     transportType: 'قطار',
-    date: Jalali(1399, 1, 8),
+    date: Jalali(1399, 1, 8, 10, 30),
     price: '600000',
     status: Status.canceled,
+    company: Company('رجا'),
+    reservationNumber: '1458',
+    from: 'مشهد',
+    to: 'تهران',
   ),
   TakenTrip(
     id: '14864',
     transportType: 'قطار',
-    date: Jalali(1399, 1, 9),
+    date: Jalali(1399, 1, 9, 12, 30),
     price: '700000',
     status: Status.done,
+    company: Company('رجا'),
+    reservationNumber: '1458',
+    from: 'تهران',
+    to: 'مشهد',
   ),
 ];
 
@@ -726,11 +763,12 @@ class _AccountPageState extends State<AccountPage> {
                             topRight: Radius.circular(4.0),
                           ),
                         ),
-                        height: pageHeight * 0.06,
+                        height: pageHeight * 0.07,
                         // width: pageWidth * 0.9,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                          SizedBox(width: pageWidth * 0.04),
                           Expanded(child: Text('شماره سفارش', textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headlineMedium)),
                           Expanded(child: Text('نوع سفارش', textAlign: TextAlign.center,
@@ -753,70 +791,73 @@ class _AccountPageState extends State<AccountPage> {
                         itemCount: takenTrips.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(5.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(color: Colors.black26,),
-                                  right: BorderSide(color: Colors.black26,),
-                                  left: BorderSide(color: Colors.black26,),
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: ExpansionTile(
+                              title: Container(
+                                padding: const EdgeInsets.all(10.0),
+                                // decoration: const BoxDecoration(
+                                //   border: Border(
+                                //     // bottom: BorderSide(color: Colors.black26,),
+                                //     // right: BorderSide(color: Colors.black26,),
+                                //     // left: BorderSide(color: Colors.black26,),
+                                //   ),
+                                // ),
+                                height: pageHeight * 0.08,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Expanded(child: Text(takenTrips[index].getID(),
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context).textTheme.headlineMedium)),
+                                    Expanded(child: Text(takenTrips[index].transportType,
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context).textTheme.headlineMedium)),
+                                    Expanded(child: Text(takenTrips[index].getDate(),
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context).textTheme.headlineMedium)),
+                                    // Expanded(child: Text(takenTrips[index].getPrice(),
+                                    //     textAlign: TextAlign.center,
+                                    //     style: Theme.of(context).textTheme.headlineMedium)),
+                                    Expanded(child: Text(takenTrips[index].getStatus(),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        )
+                                      )
+                                    ),
+                                    // Expanded(
+                                    //   child: InkWell(
+                                    //     splashFactory: NoSplash.splashFactory,
+                                    //     onTap: () {},
+                                    //     child: const Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.center,
+                                    //       children: [
+                                    //         Text(
+                                    //           'مشاهده',
+                                    //           textAlign: TextAlign.center,
+                                    //           style: TextStyle(
+                                    //             fontSize: 16.0,
+                                    //             fontWeight: FontWeight.w600,
+                                    //             color: Colors.blueAccent,
+                                    //           ),
+                                    //         ),
+                                    //         Icon(
+                                    //           Icons.keyboard_arrow_down,
+                                    //           size: 16.0,
+                                    //           color: Colors.blueAccent,
+                                    //         )
+                                    //       ],
+                                    //     )
+                                    //   )
+                                    // )
+                                  ],
                                 ),
                               ),
-                              height: pageHeight * 0.07,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Expanded(child: Text(takenTrips[index].getID(),
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.headlineMedium)),
-                                  Expanded(child: Text(takenTrips[index].transportType,
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.headlineMedium)),
-                                  Expanded(child: Text(takenTrips[index].getDate(),
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.headlineMedium)),
-                                  // Expanded(child: Text(takenTrips[index].getPrice(),
-                                  //     textAlign: TextAlign.center,
-                                  //     style: Theme.of(context).textTheme.headlineMedium)),
-                                  Expanded(child: Text(takenTrips[index].getStatus(),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      )
-                                    )
-                                  ),
-                                  Expanded(
-                                    child: InkWell(
-                                      splashFactory: NoSplash.splashFactory,
-                                      onTap: () {},
-                                      child: const Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'مشاهده',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.blueAccent,
-                                            ),
-                                          ),
-                                          Icon(
-                                            Icons.keyboard_arrow_down,
-                                            size: 16.0,
-                                            color: Colors.blueAccent,
-                                          )
-                                        ],
-                                      )
-                                    )
-                                  )
-                                ],
-                              )
-                            ),
+                              children: [buildExpandedWidget(context, index)],
+                            )
                           );
                         }
                       ),
@@ -831,6 +872,52 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
+  Column buildExpandedWidget(BuildContext context, int index) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(child: Text('شماره رزرو', textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium)),
+            Expanded(child: Text('شرکت هواپیمایی', textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium)),
+            Expanded(child: Text('مسیر', textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium)),
+            Expanded(child: Text('ساعت حرکت', textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium)),
+          ],
+        ),
+        const Divider(
+          height: 5.0,
+          thickness: 1.0,
+          color: Colors.black54,
+          indent: 10.0,
+          endIndent: 10.0,
+        ),
+        SizedBox(
+          height: 45.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(child: Text(takenTrips[index].getReservationNumber(), textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium)),
+              Expanded(child: Text(takenTrips[index].getCompany().name, textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineMedium)),
+              Expanded(child: Text(takenTrips[index].getRoute(), textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineMedium)),
+              Expanded(child: Text(takenTrips[index].getHour(), textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineMedium)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   GestureDetector buildDatePicker(BuildContext context, String flag) {
     return GestureDetector(
       onTap: () async {

@@ -157,6 +157,7 @@ class _AccountPageState extends State<AccountPage> {
         ),
         body: TabBarView(
           children: [
+            // User info
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -351,6 +352,7 @@ class _AccountPageState extends State<AccountPage> {
                 ],
               ),
             ),
+            // Transactions Tab
             InkWell(
               splashFactory: NoSplash.splashFactory,
               highlightColor: Colors.transparent,
@@ -447,16 +449,7 @@ class _AccountPageState extends State<AccountPage> {
                                         sampleUser.addBalance(_addBalanceController.text);
                                         setState(() {});
                                         FocusManager.instance.primaryFocus?.unfocus();
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'موجودی حساب شما با موفقیت افزایش یافت.',
-                                              style: Theme.of(context).textTheme.displaySmall,
-                                            ),
-                                            duration: const Duration(seconds: 1),
-                                            backgroundColor: Theme.of(context).colorScheme.secondary,
-                                          ),
-                                        );
+                                        _showSnackBar(context, 'موجودی با موفقیت افزایش یافت.');
                                       },
                                       style: ElevatedButton.styleFrom(
                                         fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
@@ -489,86 +482,69 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             const SizedBox(height: 15.0,),
                             Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const SizedBox(width: 5.0),
-                                      SizedBox(
-                                        width: pageWidth * 0.5,
-                                        height: pageHeight * 0.06,
-                                        child: Form(
-                                          key: _formKey,
-                                          child: TextFormField(
-                                            validator: (value) {
-                                              if (value == null || value.isEmpty) {
-                                                return 'لطفا مبلغ مورد نظر را وارد کنید.';
-                                              } else if (!sampleUser.checkEnoughBalance(value)) {
-                                                _withdrawBalanceController.clear();
-                                                return 'موجودی حساب شما کافی نیست.';
-                                              }
-                                              return null;
-                                            },
-                                            controller: _withdrawBalanceController,
-                                            keyboardType: TextInputType.number,
-                                            style: Theme.of(context).textTheme.headlineMedium,
-                                            decoration: InputDecoration(
-                                              suffixText: 'ریال',
-                                              labelText: 'مبلغ مورد نظر',
-                                              alignLabelWithHint: true,
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10.0),
-                                              ),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const SizedBox(width: 5.0),
+                                    SizedBox(
+                                      width: pageWidth * 0.5,
+                                      height: pageHeight * 0.06,
+                                      child: Form(
+                                        key: _formKey,
+                                        child: TextFormField(
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return 'لطفا مبلغ مورد نظر را وارد کنید.';
+                                            } else if (!sampleUser.checkEnoughBalance(value)) {
+                                              _withdrawBalanceController.clear();
+                                              return 'موجودی حساب شما کافی نیست.';
+                                            }
+                                            return null;
+                                          },
+                                          controller: _withdrawBalanceController,
+                                          keyboardType: TextInputType.number,
+                                          style: Theme.of(context).textTheme.headlineMedium,
+                                          decoration: InputDecoration(
+                                            suffixText: 'ریال',
+                                            labelText: 'مبلغ مورد نظر',
+                                            alignLabelWithHint: true,
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
                                             ),
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: pageWidth * 0.08),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            if (_formKey.currentState!.validate()) {
-                                              sampleUser.withdrawBalance(
-                                                  _withdrawBalanceController
-                                                      .text);
-                                              setState(() {});
-                                              FocusManager.instance
-                                                  .primaryFocus?.unfocus();
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    'موجودی حساب شما با موفقیت به حساب بانکی واریز شد.',
-                                                    style: Theme
-                                                        .of(context)
-                                                        .textTheme
-                                                        .displaySmall,
-                                                  ),
-                                                  duration: const Duration(
-                                                      seconds: 1),
-                                                  backgroundColor: Theme
-                                                      .of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                ),
-                                              );
-                                            }
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
-                                          ),
-                                          child: const Text(
-                                            'ثبت',
-                                          )
+                                    ),
+                                    SizedBox(width: pageWidth * 0.08),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          sampleUser.withdrawBalance(
+                                              _withdrawBalanceController
+                                                  .text);
+                                          setState(() {});
+                                          FocusManager.instance
+                                              .primaryFocus?.unfocus();
+                                          _showSnackBar(context,
+                                              'موجودی با موفقیت به حساب بانکی شما انتقال یافت.');
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
+                                      ),
+                                      child: const Text(
+                                        'ثبت',
                                       )
-                                    ],
-                                  )
-                                ]
+                                    )
+                                  ],
+                                )
+                              ]
                             ),
                           ],
                         ),
                       )
                     ),
-
                   ],
                 )
               ),
@@ -698,15 +674,9 @@ class _AccountPageState extends State<AccountPage> {
                               padding: const EdgeInsets.all(5.0),
                               decoration: const BoxDecoration(
                                 border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.black26,
-                                  ),
-                                  right: BorderSide(
-                                    color: Colors.black26,
-                                  ),
-                                  left: BorderSide(
-                                    color: Colors.black26,
-                                  ),
+                                  bottom: BorderSide(color: Colors.black26,),
+                                  right: BorderSide(color: Colors.black26,),
+                                  left: BorderSide(color: Colors.black26,),
                                 ),
                               ),
                               height: pageHeight * 0.07,
@@ -909,16 +879,7 @@ class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEm
             if (_formKey.currentState!.validate()) {
               sampleUser.setEmail(_controller.text);
               setState(() {});
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'ایمیل با موفقیت ویرایش شد.',
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                  duration: const Duration(seconds: 1),
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                ),
-              );
+              _showSnackBar(context, 'ایمیل با موفقیت ویرایش شد.');
               Navigator.of(context).pop();
             }
           },
@@ -1099,4 +1060,17 @@ class GoToTransactionsTab extends StatelessWidget {
         ),
       );
   }
+}
+
+void _showSnackBar(BuildContext context, String text) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        text,
+        style: Theme.of(context).textTheme.displaySmall,
+      ),
+      duration: const Duration(seconds: 1),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+    ),
+  );
 }

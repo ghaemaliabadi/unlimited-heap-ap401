@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'company.dart';
 
@@ -28,8 +29,13 @@ class Ticket {
 
   String get outboundTimeString => convertEnToFa("${outboundDate?.hour}:${outboundDate?.minute}");
 
-  // by ##:##
   String get inboundTimeString => convertEnToFa("${inboundDate?.hour}:${inboundDate?.minute}");
+  var numberFormat = NumberFormat("###,###", "en_US");
+  String get priceString => convertEnToFa(numberFormat.format(price));
+  String get dateString {
+    return convertEnToFa(
+          "${outboundDate?.formatter.wN} ${outboundDate?.formatter.dd} ${outboundDate?.formatter.mN}");
+  }
 }
 
 convertEnToFa(String txt) {

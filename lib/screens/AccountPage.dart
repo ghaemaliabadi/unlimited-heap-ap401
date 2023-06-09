@@ -905,8 +905,23 @@ class _AccountPageState extends State<AccountPage> {
             children: [
               Expanded(child: Text(takenTrips[index].getReservationNumber(), textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineMedium)),
-              Expanded(child: Text(takenTrips[index].getCompany().name, textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium)),
+              Expanded(
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 15.0,
+                        // backgroundColor: Colors.white,
+                        backgroundImage: AssetImage(takenTrips[index].getCompany().logo??"assets/images/mahan.png"),
+                      ),
+                      const SizedBox(width: 1.0,),
+                      Text(
+                          takenTrips[index].getCompany().name,
+                          textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineMedium
+                      ),
+                    ],
+                  )
+              ),
               Expanded(child: Text(takenTrips[index].getRoute(), textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium)),
               Expanded(child: Text(takenTrips[index].getHour(), textAlign: TextAlign.center,

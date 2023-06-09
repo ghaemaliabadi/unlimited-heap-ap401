@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:tab_container/tab_container.dart';
+import '../models/transaction.dart';
 import '../models/userinfo.dart';
 import '../models/tripsTaken.dart';
 
@@ -89,6 +91,33 @@ List<TakenTrip> takenTrips = [
   ),
 ];
 
+List<Transaction> transactions = [
+  Transaction(
+    date: Jalali(1399, 1, 1),
+    amount: '200000',
+    type: TransactionType.increase,
+    description: 'افزایش موجودی',
+  ),
+  Transaction(
+    date: Jalali(1399, 1, 1),
+    amount: '200000',
+    type: TransactionType.decrease,
+    description: 'خرید بلیط',
+  ),
+  Transaction(
+    date: Jalali(1399, 1, 3),
+    amount: '1590000',
+    type: TransactionType.increase,
+    description: 'افزایش موجودی',
+  ),
+  Transaction(
+    date: Jalali(1399, 1, 3),
+    amount: '1590000',
+    type: TransactionType.decrease,
+    description: 'خرید بلیط',
+  ),
+];
+
 String startingDateLabel = 'از تاریخ';
 String endingDateLabel = 'تا تاریخ';
 Jalali startingDateSearch = Jalali.now();
@@ -99,12 +128,21 @@ class _AccountPageState extends State<AccountPage> {
   final _addBalanceController = TextEditingController();
   final _withdrawBalanceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late TabContainerController _tabController = TabContainerController(length: 2);
 
   @override
   void dispose() {
     _addBalanceController.dispose();
     _withdrawBalanceController.dispose();
+    _tabController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    _tabController = TabContainerController(length: 2);
+    _tabController.jumpTo(1);
+    super.initState();
   }
 
   @override
@@ -545,6 +583,33 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       )
                     ),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 70),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TabContainer(
+                          selectedTextStyle: Theme.of(context)
+                              .textTheme
+                              .headlineLarge!
+                              .copyWith(color: Theme.of(context).colorScheme.onSurface),
+                          unselectedTextStyle: Theme.of(context)
+                              .textTheme
+                              .headlineLarge!
+                              .copyWith(color: Theme.of(context).colorScheme.onSurface),
+                          color: Theme.of(context).colorScheme.secondary,
+                          tabDuration: const Duration(milliseconds: 300),
+                          tabs: const [
+                            'انتقال موجودی',
+                            'تراکنش‌ها',
+                          ],
+                          controller: _tabController,
+                          children: [
+                            buildListView(context),
+                            buildListView(context),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ),
@@ -794,6 +859,74 @@ class _AccountPageState extends State<AccountPage> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Container buildListView(BuildContext context) {
+    return Container(
+      // color: Colors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(child: Text('تاریخ', textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium)),
+                Expanded(child: Text('مبلغ(ریال)', textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium)),
+                Expanded(child: Text('نوع تراکنش', textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium)),
+                Expanded(child: Text('توضیحات', textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium)),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: transactions.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(5.0),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.black26,),
+                        right: BorderSide(color: Colors.black26,),
+                        left: BorderSide(color: Colors.black26,),
+                      ),
+                    ),
+                    // height: 25.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(child: Text(transactions[index].getDate(),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text(transactions[index].getAmount(),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text(transactions[index].getType(),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                        Expanded(child: Text(transactions[index].getDescription(),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineMedium)),
+                      ],
+                    )
+                  ),
+                );
+              }
+            ),
+          ),
+          // SizedBox(height: 15.0,)
+        ],
       ),
     );
   }
@@ -1055,7 +1188,6 @@ class GoToTransactionsTab extends StatelessWidget {
       },
       child: Text(
         'افزایش موجودی  >',
-        // TODO: update the balance in the next tab
         style: Theme.of(context).textTheme.labelMedium,
         ),
       );

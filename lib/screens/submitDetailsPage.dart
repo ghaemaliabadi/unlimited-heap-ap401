@@ -26,6 +26,94 @@ class SubmitDetailsPageState extends State<SubmitDetailsPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                              () {
+                            if (widget.tripData.transportBy.contains('پرواز')) {
+                              return Icons.airplanemode_active_rounded;
+                            } else if (widget.tripData.transportBy == 'اتوبوس') {
+                              return Icons.directions_bus_rounded;
+                            } else if (widget.tripData.transportBy == 'قطار') {
+                              return Icons.train_rounded;
+                            } else {
+                              return Icons.more_horiz_rounded;
+                            }
+                          }(),
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 4),
+                        // arrow icon
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.account_box_sharp,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'مشخصات مسافران',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        const SizedBox(width: 4),
+                        // arrow icon
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.newspaper_sharp,
+    color: Theme.of(context).colorScheme.primary
+                        ),
+                        const SizedBox(width: 4),
+                        Text('تایید اطلاعات',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary),
+                        ),
+                        const SizedBox(width: 4),
+                        // arrow icon
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.payment_rounded,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(width: 4),
+                        const Text('پرداخت',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, color: Colors.grey)),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 4.0,
+                    ),
+                    SizedBox(
+                      height: 1.0,
+                      child: Container(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 4.0,
+                    ),
+                  ],
+                ),
+              ),
               buildTicketDetails(widget.tripData.departTicket, 'بلیط رفت'),
               () {
                 if (widget.tripData.type == 'رفت و برگشت') {

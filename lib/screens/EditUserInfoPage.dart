@@ -14,6 +14,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
     var pageHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('ویرایش اطلاعات کاربری'),
       ),
@@ -72,6 +73,31 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ButtonStyle(
+                      minimumSize:
+                      MaterialStateProperty.all(const Size(170.0, 50.0)),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(1000.0),
+                        ),
+                      ),
+                    ),
+                    child: Text('تایید اطلاعات',
+                        style: Theme.of(context).textTheme.displayMedium),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
               ),
             ]
           ),

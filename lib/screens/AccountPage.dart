@@ -186,6 +186,8 @@ class _AccountPageState extends State<AccountPage> {
   final _formKey = GlobalKey<FormState>();
   late TabContainerController _tabController = TabContainerController(length: 2);
 
+  List<TakenTrip> _foundTrips = [];
+
   @override
   void dispose() {
     _addBalanceController.dispose();
@@ -198,8 +200,21 @@ class _AccountPageState extends State<AccountPage> {
   void initState() {
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
+    _foundTrips = takenTrips;
     super.initState();
   }
+
+  void _runIdSearch(String enteredID) {
+    setState(() {
+      _foundTrips = takenTrips.where((trip) => trip.id.startsWith(enteredID)).toList();
+    });
+  }
+
+  // void _runDateSearch(Jalali startingDate, Jalali endingDate) {
+  //   setState(() {
+  //     _foundTrips = takenTrips.where((trip) => trip.date.compareTo(startingDate) >= 0 && trip.date.compareTo(endingDate) <= 0).toList();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -718,6 +733,7 @@ class _AccountPageState extends State<AccountPage> {
                               width: pageWidth * 0.82,
                               height: pageHeight * 0.05,
                               child: TextFormField(
+                                onChanged: (value) => _runIdSearch(value),
                                 keyboardType: TextInputType.number,
                                 style: Theme.of(context).textTheme.headlineMedium,
                                 decoration: InputDecoration(
@@ -788,7 +804,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         physics: const AlwaysScrollableScrollPhysics(),
-                        itemCount: takenTrips.length,
+                        itemCount: _foundTrips.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -807,19 +823,19 @@ class _AccountPageState extends State<AccountPage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Expanded(child: Text(takenTrips[index].getID(),
+                                    Expanded(child: Text(_foundTrips[index].getID(),
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context).textTheme.headlineMedium)),
-                                    Expanded(child: Text(takenTrips[index].transportType,
+                                    Expanded(child: Text(_foundTrips[index].transportType,
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context).textTheme.headlineMedium)),
-                                    Expanded(child: Text(takenTrips[index].getDate(),
+                                    Expanded(child: Text(_foundTrips[index].getDate(),
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context).textTheme.headlineMedium)),
-                                    // Expanded(child: Text(takenTrips[index].getPrice(),
+                                    // Expanded(child: Text(_foundTrips[index].getPrice(),
                                     //     textAlign: TextAlign.center,
                                     //     style: Theme.of(context).textTheme.headlineMedium)),
-                                    Expanded(child: Text(takenTrips[index].getStatus(),
+                                    Expanded(child: Text(_foundTrips[index].getStatus(),
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           fontSize: 14.0,
@@ -903,28 +919,28 @@ class _AccountPageState extends State<AccountPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(child: Text(takenTrips[index].getReservationNumber(), textAlign: TextAlign.center,
+              Expanded(child: Text(_foundTrips[index].getReservationNumber(), textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineMedium)),
               Expanded(
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 15.0,
-                        // backgroundColor: Colors.white,
-                        backgroundImage: AssetImage(takenTrips[index].getCompany().logo??"assets/images/mahan.png"),
-                      ),
-                      const SizedBox(width: 1.0,),
-                      Text(
-                          takenTrips[index].getCompany().name,
-                          textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium
-                      ),
-                    ],
-                  )
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 15.0,
+                      // backgroundColor: Colors.white,
+                      backgroundImage: AssetImage(_foundTrips[index].getCompany().logo??"assets/images/mahan.png"),
+                    ),
+                    const SizedBox(width: 5.0,),
+                    Text(
+                        _foundTrips[index].getCompany().name,
+                        textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium
+                    ),
+                  ],
+                )
               ),
-              Expanded(child: Text(takenTrips[index].getRoute(), textAlign: TextAlign.center,
+              Expanded(child: Text(_foundTrips[index].getRoute(), textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium)),
-              Expanded(child: Text(takenTrips[index].getHour(), textAlign: TextAlign.center,
+              Expanded(child: Text(_foundTrips[index].getHour(), textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium)),
             ],
           ),

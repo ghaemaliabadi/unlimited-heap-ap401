@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:tab_container/tab_container.dart';
+import 'EditUserInfoPage.dart';
 import '../models/company.dart';
 import '../models/transaction.dart';
 import '../models/userinfo.dart';
@@ -389,7 +390,13 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                               const SizedBox(width: 80.0,),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => const EditUserInfoPage(),
+                                    ),
+                                  );
+                                },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [

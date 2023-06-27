@@ -6,20 +6,16 @@ import java.net.Socket;
 
 public class Server {
     static boolean isServerUp = true;
-    static int port = 444;
+    static int port = 1234;
 
     public static void main(String[] args) {
         try {
-            try (ServerSocket serverSocket = new ServerSocket(port)) {
-
-//            Connect to database
-
-                while (isServerUp) {
-                    Socket socket = serverSocket.accept();
-                    System.out.println("Connected");
-                    RequestHandler requestHandler = new RequestHandler(socket);
-                    requestHandler.start();
-                }
+            ServerSocket serverSocket = new ServerSocket(port);
+            while (isServerUp) {
+                Socket socket = serverSocket.accept();
+                System.out.println("Connected");
+                RequestHandler requestHandler = new RequestHandler(socket);
+                requestHandler.start();
             }
         } catch (IOException e) {
             System.out.println("Server was not created!");
@@ -71,11 +67,14 @@ class RequestHandler extends Thread {
     public void run() {
         String data = listener();
         System.out.println("data is: " + data);
-        String[] dataArr = data.split(" ");
+        String[] dataArr = data.split("-");
         String response = "";
         switch (dataArr[0]) {
             case "signup":
-                response = "true";
+                if (dataArr[1].equals("client")) {
+                    ClientAccount clientAccount = new ClientAccount();
+                    response = String.valueOf(clientAccount.signup(dataArr[2]));
+                }
                 break;
             default:
                 response = "false";

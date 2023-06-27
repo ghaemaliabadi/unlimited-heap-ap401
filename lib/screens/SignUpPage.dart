@@ -5,15 +5,14 @@ import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({super.key});
+  const SignUpPage({super.key});
 
   final String title = 'ثبت‌نام';
   final String emailRegex =
       "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
       "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
-  static const String ip = "127.0.0.1";
-  static const int port = 444;
-  // final Socket socket = Socket.connect(ip, port) as Socket;
+  static const String ip = "10.0.2.2";
+  static const int port = 1234;
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -23,6 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool visiblePassword = false;
   bool isSeller = false;
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
+                  controller: _usernameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'لطفا نام کاربری را وارد کنید.';
@@ -164,7 +165,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        bool serverResponse = await _checkSignUp();
+                        bool serverResponse = await _checkSignUp(
+                            _usernameController.text);
                         if (serverResponse) {
                           _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
                           FocusManager.instance.primaryFocus?.unfocus();
@@ -227,22 +229,19 @@ void _showSnackBar(BuildContext context, String message) {
   );
 }
 
-Future<bool> _checkSignUp() async {
+Future<bool> _checkSignUp(String username) async {
   bool response = false;
   await Socket.connect(SignUpPage.ip, SignUpPage.port).then((serverSocket) {
-      print("Connected!");
-      serverSocket.write("signup*");
-      serverSocket.flush();
-      print("Sent data!");
-      serverSocket.listen((socket) {
-        String temp = "";
-        // print("Received data: $socket");
-        for (int i = 2; i < socket.length; i++) {
-          temp += String.fromCharCode(socket[i]);
-        }
-        response = temp.compareTo("true") == 0;
-      });
-    }
+    print("Connected!");
+    serverSocket.write("signup-client-$username*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      String temp = String.fromCharCodes(socket).trim().substring(2);
+      response = temp.compareTo("true") == 0;
+      print("$response");
+    });
+  }
   );
-  return response;
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
 }

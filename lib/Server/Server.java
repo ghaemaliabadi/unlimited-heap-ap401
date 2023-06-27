@@ -10,15 +10,16 @@ public class Server {
 
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
 
 //            Connect to database
 
-            while (isServerUp) {
-                Socket socket = serverSocket.accept();
-                System.out.println("Connected");
-                RequestHandler requestHandler = new RequestHandler(socket);
-                requestHandler.start();
+                while (isServerUp) {
+                    Socket socket = serverSocket.accept();
+                    System.out.println("Connected");
+                    RequestHandler requestHandler = new RequestHandler(socket);
+                    requestHandler.start();
+                }
             }
         } catch (IOException e) {
             System.out.println("Server was not created!");
@@ -40,10 +41,35 @@ class RequestHandler extends Thread {
             System.out.println("Request was failed");
         }
     }
+    String listener() {
+        StringBuilder listen = new StringBuilder();
+        char i;
+        try {
+            while (true) {
+                i = (char) dis.read();
+                if (i == '*') {
+                    break;
+                }
+                listen.append(i);
+            }
+        } catch (IOException e) {
+            System.out.println("catch1");
+            try {
+                dis.close();
+                dos.close();
+                socket.close();
+            } catch (IOException ioException) {
+                System.out.println("catch2");
+                ioException.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        return listen.toString();
+    }
 
     @Override
     public void run() {
-        String data = serverSocket.listener();
+        String data = listener();
         System.out.println("data is: " + data);
         String[] dataArr = data.split(" ");
         String response = "";
@@ -54,6 +80,10 @@ class RequestHandler extends Thread {
             default:
                 response = "false";
         }
-        dos.writeUTF(response);
+        try {
+            dos.writeUTF(response);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -11,9 +11,9 @@ class SignUpPage extends StatefulWidget {
   final String emailRegex =
       "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
       "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
-  static const String ip = "192.168.0.1";
+  static const String ip = "127.0.0.1";
   static const int port = 444;
-  final Socket socket = Socket.connect(ip, port) as Socket;
+  // final Socket socket = Socket.connect(ip, port) as Socket;
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -231,12 +231,16 @@ Future<bool> _checkSignUp() async {
   bool response = false;
   await Socket.connect(SignUpPage.ip, SignUpPage.port).then((serverSocket) {
       print("Connected!");
-      serverSocket.write("signup");
+      serverSocket.write("signup*");
       serverSocket.flush();
       print("Sent data!");
       serverSocket.listen((socket) {
-        print("Received data: $socket");
-        response = socket.toString().compareTo("true") == 0;
+        String temp = "";
+        // print("Received data: $socket");
+        for (int i = 2; i < socket.length; i++) {
+          temp += String.fromCharCode(socket[i]);
+        }
+        response = temp.compareTo("true") == 0;
       });
     }
   );

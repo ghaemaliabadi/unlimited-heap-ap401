@@ -14,8 +14,7 @@ public class DataBaseHandler {
             String thisRow;
             while (reader.hasNextLine()) {
                 thisRow = reader.nextLine();
-                if (thisRow.split("-")[0].equals(username)) {
-                    System.out.println("im here");
+                if (thisRow.startsWith(username)) {
                     rows.add(thisRow);
                 }
             }

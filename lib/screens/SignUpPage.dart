@@ -6,7 +6,8 @@ class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   final String title = 'ثبت‌نام';
-  final String emailRegex = "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
+  final String emailRegex =
+      "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -14,6 +15,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   bool visiblePassword = false;
+  bool isSeller = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -129,6 +131,24 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: isSeller,
+                      onChanged: (value) {
+                        isSeller = value!;
+                        setState(() {});
+                      },
+                      activeColor: Theme.of(context).colorScheme.primary,
+                    ),
+                    Text('ثبت‌نام به عنوان فروشنده',
+                        style: Theme.of(context).textTheme.displaySmall),
+                  ],
+                ),
+              ),
               // submit button
               Expanded(
                 flex: 3,
@@ -138,10 +158,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ProjectMainPage()));
+                        // TODO: request to server for repeating username
+                        bool serverResponse = true; // TODO: this is a fake response for test
+                        // TODO: make sure that isSeller set correctly on server
+                        if (serverResponse) {
+                          _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ProjectMainPage()));
+                        } else {
+                          _showSnackBar(context,
+                              'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.');
+                        }
                       }
                     },
                     style: ButtonStyle(

@@ -1,13 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  SignUpPage({super.key});
 
   final String title = 'ثبت‌نام';
   final String emailRegex =
-      "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
+      "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
+      "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
+  static const String ip = "192.168.0.1";
+  static const int port = 444;
+  final Socket socket = Socket.connect(ip, port) as Socket;
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -156,11 +162,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   alignment: Alignment.bottomCenter,
                   // heightFactor: 9,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // TODO: request to server for repeating username
-                        bool serverResponse = true; // TODO: this is a fake response for test
-                        // TODO: make sure that isSeller set correctly on server
+                        bool serverResponse = await _checkSignUp();
                         if (serverResponse) {
                           _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
                           FocusManager.instance.primaryFocus?.unfocus();
@@ -221,4 +225,20 @@ void _showSnackBar(BuildContext context, String message) {
       backgroundColor: Theme.of(context).colorScheme.secondary,
     ),
   );
+}
+
+Future<bool> _checkSignUp() async {
+  bool response = false;
+  await Socket.connect(SignUpPage.ip, SignUpPage.port).then((serverSocket) {
+      print("Connected!");
+      serverSocket.write("signup");
+      serverSocket.flush();
+      print("Sent data!");
+      serverSocket.listen((socket) {
+        print("Received data: $socket");
+        response = socket.toString().compareTo("true") == 0;
+      });
+    }
+  );
+  return response;
 }

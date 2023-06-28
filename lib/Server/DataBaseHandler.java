@@ -59,8 +59,12 @@ public class DataBaseHandler {
             String thisRow;
             while (reader.hasNextLine()) {
                 thisRow = reader.nextLine();
-                if (thisRow.split("-")[14].equals(companyName)) {
-                    rows.add(thisRow);
+                if (companyName != "all") {
+                    if (thisRow.split("-")[14].equals(companyName)) {
+                        rows.add(thisRow);
+                    } else {
+                        rows.add(thisRow);
+                    }
                 }
             }
         } catch (Exception e) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/userinfo.dart';
 import 'AccountPage.dart';
 import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
@@ -41,7 +42,14 @@ class _DemoHomePageState extends State<DemoHomePage> {
             buildElevatedButtonWithRedirect(
                 context, 'حساب کاربری', const AccountPage()),
             buildElevatedButtonWithRedirect(
-                context, 'صفحه فروشندگان', SellerPage()),
+                context, 'صفحه فروشندگان', SellerPage(
+              user: User(
+                username: "some",
+                password: "some",
+                email: "some",
+                firstName: "all"
+              ),
+            )),
           ],
         ),
       ),

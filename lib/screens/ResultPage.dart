@@ -638,9 +638,9 @@ class _ResultPageState extends State<ResultPage> {
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: const [
               BoxShadow(
-                color: Colors.black38,
+                color: Colors.black26,
                 offset: Offset(0, 2),
-                blurRadius: 4.0,
+                blurRadius: 2.0,
               ),
             ],
           );

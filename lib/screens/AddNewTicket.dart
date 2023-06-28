@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:unlimited_heap_ap401/screens/SellerPage.dart';
 import '../models/company.dart';
 import '../models/ticket.dart';
+import '../models/userinfo.dart';
 
 // ignore: must_be_immutable
 class AddNewTicket extends StatefulWidget {
@@ -11,10 +13,12 @@ class AddNewTicket extends StatefulWidget {
     Key? key,
     required this.title,
     this.ticket,
+    this.user,
   }) : super(key: key);
 
   final String title;
   Ticket? ticket;
+  User? user;
 
   @override
   State<AddNewTicket> createState() => _AddNewTicketState();
@@ -93,7 +97,8 @@ class _AddNewTicketState extends State<AddNewTicket> {
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: DropdownButtonFormField(
                       validator: (value) {
-                        if ((value == null || value.isEmpty) && !widget.title.contains('ویرایش')) {
+                        if ((value == null || value.isEmpty) &&
+                            !widget.title.contains('ویرایش')) {
                           return 'لطفا نوع بلیط را انتخاب کنید';
                         }
                         return null;
@@ -587,6 +592,9 @@ class _AddNewTicketState extends State<AddNewTicket> {
                       },
                       onChanged: (value) {
                         setState(() {
+                          value = value.replaceAll('،', ',');
+                          value = value.replaceAll(', ', '');
+                          value = value.replaceAll(' ,', '');
                           var splitByComma = value.split(',');
                           widget.ticket?.tags = splitByComma;
                         });
@@ -616,7 +624,13 @@ class _AddNewTicketState extends State<AddNewTicket> {
                     } else {
                       // TODO: check repeat ticket on server and add it
                     }
-                    Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              SellerPage(user: widget.user,)),
+                    );
                     print('validate success');
                   } else {
                     print('validate failed');

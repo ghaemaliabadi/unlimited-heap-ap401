@@ -8,6 +8,7 @@ import '../models/ticket.dart';
 import '../models/userinfo.dart';
 import 'AddNewTicket.dart';
 
+// ignore: must_be_immutable
 class SellerPage extends StatefulWidget {
   User? user;
 
@@ -114,7 +115,7 @@ class _SellerPageState extends State<SellerPage> {
           },
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height * 0.75,
                 child: FutureBuilder(
                   future: Future.delayed(const Duration(seconds: 2))
@@ -147,13 +148,14 @@ class _SellerPageState extends State<SellerPage> {
                         MaterialPageRoute(
                           builder: (context) => AddNewTicket(
                             title: 'ثبت بلیط جدید',
+                            user: widget.user,
                           ),
                         ),
                       );
                     },
                     child: buildButton('ثبت بلیط جدید'),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   GestureDetector(
                     onTap: () {
                       _showSnackBar(context, 'مشاهده تحلیل فروش');
@@ -171,7 +173,7 @@ class _SellerPageState extends State<SellerPage> {
     return Container(
       height: 50,
       width: 180,
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(1000),
         color: Theme.of(context).colorScheme.primary,
@@ -254,9 +256,9 @@ class _SellerPageState extends State<SellerPage> {
             borderRadius: BorderRadius.circular(8.0),
             boxShadow: const [
               BoxShadow(
-                color: Colors.black38,
+                color: Colors.black26,
                 offset: Offset(0, 2),
-                blurRadius: 4.0,
+                blurRadius: 2.0,
               ),
             ],
           );
@@ -291,6 +293,7 @@ class _SellerPageState extends State<SellerPage> {
                             builder: (context) => AddNewTicket(
                               title: 'ویرایش بلیط شماره  ${ticket.ticketID}',
                               ticket: ticket,
+                              user: widget.user,
                             ),
                           ),
                         );
@@ -316,7 +319,7 @@ class _SellerPageState extends State<SellerPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     GestureDetector(
                       onTap: () {
                         // show dialog for submit delete

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:unlimited_heap_ap401/screens/SellerPage.dart';
+import '../models/userinfo.dart';
 import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
 
@@ -176,13 +177,18 @@ class _SignUpPageState extends State<SignUpPage> {
                             _emailController.text,
                             isSeller);
                         if (serverResponse == "true") {
+                          User user = User(
+                            username: _usernameController.text,
+                            password: _passwordController.text,
+                            email: _emailController.text,
+                          );
                           _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.', false);
                           FocusManager.instance.primaryFocus?.unfocus();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => (
                                   isSeller
                                   ? const SellerPage()
-                                  : const ProjectMainPage()
+                                  : ProjectMainPage(user: user)
                               )
                             )
                           );

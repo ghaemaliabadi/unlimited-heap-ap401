@@ -34,6 +34,7 @@ class _SellerPageState extends State<SellerPage> {
 
   @override
   void initState() {
+    _getUserTickets(widget.user?.firstName);
     super.initState();
   }
 
@@ -65,8 +66,8 @@ class _SellerPageState extends State<SellerPage> {
                     .size
                     .height * 0.75,
                 child: FutureBuilder(
-                  // future: Future.delayed(const Duration(seconds: 2))
-                  future: _getUserTickets(widget.user?.firstName)
+                  future: Future.delayed(const Duration(seconds: 2))
+                  // future: _getUserTickets(widget.user?.firstName)
                       .then((value) => tickets),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {

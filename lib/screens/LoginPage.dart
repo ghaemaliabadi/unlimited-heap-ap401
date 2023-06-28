@@ -10,7 +10,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   final String title = 'ورود';
-  static const String ip = "10.0.2.2";
+  static const String ip = "127.0.0.1";
   static const int port = 1234;
 
   @override
@@ -136,8 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                         String serverResponse = await _checkLogin(
                             _emailController.text,
                             _passwordController.text,
-                            isSeller
-                        );
+                            isSeller);
                         if (context.mounted) {
                           if (serverResponse != "false") {
                             User user = User(
@@ -148,15 +147,12 @@ class _LoginPageState extends State<LoginPage> {
                             _showSnackBar(
                                 context, 'ورود با موفقیت انجام شد.', false);
                             FocusManager.instance.primaryFocus?.unfocus();
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                (
-                                    isSeller
-                                    ? SellerPage(user: user)
-                                    : ProjectMainPage(user: user)
-                                )
-                              )
-                            );
+                            Future.delayed(const Duration(milliseconds: 200), () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => (isSeller
+                                      ? SellerPage(user: user)
+                                      : ProjectMainPage(user: user))));
+                            });
                           } else {
                             _showSnackBar(
                                 context, 'ایمیل یا رمز عبور اشتباه است.', true);
@@ -208,9 +204,11 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
       content: Text(
         message,
         style: (isError
-            ? Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.red)
-            : Theme.of(context).textTheme.displaySmall
-        ),
+            ? Theme.of(context)
+                .textTheme
+                .displaySmall
+                ?.copyWith(color: Colors.red)
+            : Theme.of(context).textTheme.displaySmall),
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -229,7 +227,6 @@ Future<String> _checkLogin(String email, String password, bool isSeller) async {
       response = utf8.decode(socket);
       print(response);
     });
-  }
-  );
+  });
   return Future.delayed(const Duration(milliseconds: 100), () => response);
 }

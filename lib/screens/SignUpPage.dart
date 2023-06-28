@@ -175,16 +175,16 @@ class _SignUpPageState extends State<SignUpPage> {
                             _emailController.text,
                             isSeller);
                         if (serverResponse == "true") {
-                          _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
+                          _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.', false);
                           FocusManager.instance.primaryFocus?.unfocus();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const ProjectMainPage()));
                         } else if (serverResponse == "email"){
                           _showSnackBar(context,
-                              'ایمیل وارد شده تکراری است. لطفا ایمیل دیگری انتخاب کنید.');
+                              'ایمیل وارد شده تکراری است. لطفا ایمیل دیگری انتخاب کنید.', true);
                         } else if (serverResponse == "un") {
                           _showSnackBar(context,
-                              'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.');
+                              'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.', true);
                         }
                       }
                     },
@@ -226,12 +226,15 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 }
 
-void _showSnackBar(BuildContext context, String message) {
+void _showSnackBar(BuildContext context, String message, bool isError) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: Theme.of(context).textTheme.displaySmall,
+        style: (isError
+            ? Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.red)
+            : Theme.of(context).textTheme.displaySmall
+        ),
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,

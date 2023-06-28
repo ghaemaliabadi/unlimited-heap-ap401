@@ -244,7 +244,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                                             tempPickedDate ?? Jalali.now());
                                       } else {
                                         showDialogError(context,
-                                            'تاریخ وارد شده باید بعد از تاریخ امروز باشد');
+                                            'تاریخ و زمان وارد شده باید بعد از تاریخ امروز باشد');
                                       }
                                     },
                                   ),
@@ -346,12 +346,12 @@ class _AddNewTicketState extends State<AddNewTicket> {
                                     ),
                                     onPressed: () {
                                       if (tempPickedDate!
-                                          .isAfter(Jalali.now())) {
+                                          .isAfter(widget.ticket!.outboundDate!)) {
                                         Navigator.of(context).pop(
                                             tempPickedDate ?? Jalali.now());
                                       } else {
                                         showDialogError(context,
-                                            'تاریخ وارد شده باید بعد از تاریخ امروز باشد');
+                                            'تاریخ و زمان وارد شده باید بعد از تاریخ شروع حرکت باشد');
                                       }
                                     },
                                   ),

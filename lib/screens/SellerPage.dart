@@ -285,18 +285,81 @@ class _SellerPageState extends State<SellerPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      ticket.company.logo!,
-                      width: 50.0,
-                      height: 50.0,
+                    GestureDetector(
+                      onTap: () {
+                        _showSnackBar(context, 'ویرایش بلیط');
+                      },
+                      child: Container(
+                        width: 40.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(1000),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black38,
+                              offset: Offset(0, 0),
+                              blurRadius: 1.0,
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.edit,
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .primary,
+                          size: 25,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      ticket.company.name,
-                      style: Theme.of(context).textTheme.bodyLarge,
+                    SizedBox(height: 10.0),
+                    GestureDetector(
+                      onTap: () {
+                        _showSnackBar(context, 'حذف بلیط');
+                      },
+                      child: Container(
+                        width: 40.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(1000),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black38,
+                              offset: Offset(0, 0),
+                              blurRadius: 1.0,
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.delete,
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .primary,
+                          size: 25,
+                        ),
+                      ),
                     ),
                   ],
                 ),
+                // const SizedBox(width: 16.0),
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   children: [
+                //     Image.asset(
+                //       ticket.company.logo!,
+                //       width: 50.0,
+                //       height: 50.0,
+                //     ),
+                //     const SizedBox(height: 8.0),
+                //     Text(
+                //       ticket.company.name,
+                //       style: Theme.of(context).textTheme.bodyLarge,
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(width: 16.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,7 +465,7 @@ class _SellerPageState extends State<SellerPage> {
             height: 2.0,
             color: Colors.black,
           ),
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 4.0),
           Column(
             children: [
               Padding(

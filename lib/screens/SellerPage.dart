@@ -18,6 +18,7 @@ class SellerPage extends StatefulWidget {
 
 class _SellerPageState extends State<SellerPage> {
   var numberFormat = NumberFormat("###,###", "en_US");
+
   // TODO: get this part from backend
   List<Ticket> tickets = [
     Ticket(
@@ -94,10 +95,7 @@ class _SellerPageState extends State<SellerPage> {
       appBar: AppBar(
         elevation: 1.5,
         title: Text(widget.title,
-            style: Theme
-                .of(context)
-                .textTheme
-                .displayMedium),
+            style: Theme.of(context).textTheme.displayMedium),
       ),
       body: InkWell(
           splashFactory: NoSplash.splashFactory,
@@ -110,34 +108,27 @@ class _SellerPageState extends State<SellerPage> {
           child: Column(
             children: [
               Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.75,
-                  child: FutureBuilder(
-                    future:
-                    Future.delayed(const Duration(seconds: 2)).then((
-                        value) => tickets),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        // return Expanded(child: buildListViewForCards());
-                        return buildListViewForCards();
-                      } else {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 100.0),
-                          child: Center(
-                            child: LoadingAnimationWidget.fourRotatingDots(
-                              color: Theme
-                                  .of(context)
-                                  .colorScheme
-                                  .primary,
-                              size: 100,
-                            ),
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: FutureBuilder(
+                  future: Future.delayed(const Duration(seconds: 2))
+                      .then((value) => tickets),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      // return Expanded(child: buildListViewForCards());
+                      return buildListViewForCards();
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 100.0),
+                        child: Center(
+                          child: LoadingAnimationWidget.fourRotatingDots(
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 100,
                           ),
-                        );
-                      }
-                    },
-                  ),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -147,8 +138,9 @@ class _SellerPageState extends State<SellerPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              AddNewTicket(title: 'ثبت بلیط جدید',),
+                          builder: (context) => AddNewTicket(
+                            title: 'ثبت بلیط جدید',
+                          ),
                         ),
                       );
                     },
@@ -175,10 +167,7 @@ class _SellerPageState extends State<SellerPage> {
       margin: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(1000),
-        color: Theme
-            .of(context)
-            .colorScheme
-            .primary,
+        color: Theme.of(context).colorScheme.primary,
         boxShadow: const [
           BoxShadow(
             color: Colors.black38,
@@ -192,13 +181,9 @@ class _SellerPageState extends State<SellerPage> {
         children: [
           Text(
             input,
-            style: Theme
-                .of(context)
-                .textTheme
-                .displayMedium!
-                .copyWith(
-              fontSize: 22,
-            ),
+            style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                  fontSize: 22,
+                ),
           ),
         ],
       ),
@@ -212,10 +197,7 @@ class _SellerPageState extends State<SellerPage> {
           const SizedBox(height: 200.0),
           Text(
             'هیچ بلیطی یافت نشد.',
-            style: Theme
-                .of(context)
-                .textTheme
-                .displayLarge,
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ],
       );
@@ -229,7 +211,6 @@ class _SellerPageState extends State<SellerPage> {
       );
     }
   }
-
 
   List<Ticket> divideByRemainingSeats(List<Ticket> tickets) {
     List<Ticket> remaining0Tickets = [];
@@ -246,13 +227,15 @@ class _SellerPageState extends State<SellerPage> {
   }
 
   Widget ticketCard({required Ticket ticket}) {
-    return GestureDetector(
-      onTap: () {
-        _showSnackBar(context, 'مشاهده جزئیات بلیط');
-      },
-      child: ticketContainer(ticket),
-    );
+    // return GestureDetector(
+    //   onTap: () {
+    //     _showSnackBar(context, 'مشاهده جزئیات بلیط');
+    //   },
+    //   child:
+    return ticketContainer(ticket);
+    // );
   }
+
   Container ticketContainer(Ticket ticket) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -298,8 +281,10 @@ class _SellerPageState extends State<SellerPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                AddNewTicket(title: 'ویرایش بلیط شماره  ${ticket.ticketID}', ticket: ticket,),
+                            builder: (context) => AddNewTicket(
+                              title: 'ویرایش بلیط شماره  ${ticket.ticketID}',
+                              ticket: ticket,
+                            ),
                           ),
                         );
                       },
@@ -319,10 +304,7 @@ class _SellerPageState extends State<SellerPage> {
                         ),
                         child: Icon(
                           Icons.edit,
-                          color: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
+                          color: Theme.of(context).colorScheme.primary,
                           size: 25,
                         ),
                       ),
@@ -330,7 +312,62 @@ class _SellerPageState extends State<SellerPage> {
                     SizedBox(height: 10.0),
                     GestureDetector(
                       onTap: () {
-                        _showSnackBar(context, 'حذف بلیط');
+                        // show dialog for submit delete
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'حذف بلیط',
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                              content: Text(
+                                'آیا از حذف بلیط اطمینان دارید؟',
+                                style: Theme.of(context).textTheme.displaySmall,
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'خیر',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall!
+                                        .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    // delete ticket
+                                    setState(() {
+                                      // TODO: delete ticket from database
+                                      tickets.remove(ticket);
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'بله',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall!
+                                        .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                       child: Container(
                         width: 40.0,
@@ -348,10 +385,7 @@ class _SellerPageState extends State<SellerPage> {
                         ),
                         child: Icon(
                           Icons.delete,
-                          color: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
+                          color: Theme.of(context).colorScheme.primary,
                           size: 25,
                         ),
                       ),
@@ -378,7 +412,7 @@ class _SellerPageState extends State<SellerPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                        () {
+                    () {
                       if (ticket.description != '') {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8),
@@ -391,33 +425,33 @@ class _SellerPageState extends State<SellerPage> {
                         return const SizedBox(height: 0);
                       }
                     }(),
-                        () {
+                    () {
                       return Row(
                         children: ticket.tags
                             .map(
                               (tag) => Container(
-                            margin: const EdgeInsets.only(right: 4.0),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4.0),
-                            decoration: BoxDecoration(
-                              color: Colors.blueAccent.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(1000),
-                            ),
-                            child: Text(
-                              tag,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                color: Colors.black,
+                                margin: const EdgeInsets.only(right: 4.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 4.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.blueAccent.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(1000),
+                                ),
+                                child: Text(
+                                  tag,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Colors.black,
+                                      ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
+                            )
                             .toList(),
                       );
                     }(),
-                        () {
+                    () {
                       if (ticket.description == '') {
                         return const SizedBox(height: 12.0);
                       } else {
@@ -468,7 +502,7 @@ class _SellerPageState extends State<SellerPage> {
               ],
             ),
           ),
-              () {
+          () {
             if (ticket.description == '') {
               return const SizedBox(height: 26.0);
             } else {
@@ -487,24 +521,24 @@ class _SellerPageState extends State<SellerPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                        () {
+                    () {
                       if (ticket.remainingSeats > 0) {
                         return Text(
                           '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
                           style:
-                          Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[700],
-                            fontSize: 16.0,
-                          ),
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.grey[700],
+                                    fontSize: 16.0,
+                                  ),
                         );
                       } else {
                         return Text(
                           'تکمیل ظرفیت',
                           style:
-                          Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.red[700],
-                            fontSize: 16.0,
-                          ),
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.red[700],
+                                    fontSize: 16.0,
+                                  ),
                         );
                       }
                     }(),
@@ -513,17 +547,17 @@ class _SellerPageState extends State<SellerPage> {
                         Text(
                             '${convertEnToFa(numberFormat.format(ticket.price))}',
                             style:
-                            Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontSize: 28.0,
-                              color: (ticket) {
-                                if (ticket.remainingSeats > 0) {
-                                  return Colors.blueAccent;
-                                } else {
-                                  return Colors.grey[700];
-                                }
-                              }(ticket),
-                              fontWeight: FontWeight.bold,
-                            )),
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      fontSize: 28.0,
+                                      color: (ticket) {
+                                        if (ticket.remainingSeats > 0) {
+                                          return Colors.blueAccent;
+                                        } else {
+                                          return Colors.grey[700];
+                                        }
+                                      }(ticket),
+                                      fontWeight: FontWeight.bold,
+                                    )),
                         const SizedBox(width: 4.0),
                         Column(
                           children: [
@@ -534,9 +568,9 @@ class _SellerPageState extends State<SellerPage> {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                color: Colors.grey[700],
-                                fontSize: 18.0,
-                              ),
+                                    color: Colors.grey[700],
+                                    fontSize: 18.0,
+                                  ),
                             ),
                           ],
                         ),
@@ -558,16 +592,10 @@ void _showSnackBar(BuildContext context, String message) {
     SnackBar(
       content: Text(
         message,
-        style: Theme
-            .of(context)
-            .textTheme
-            .displaySmall,
+        style: Theme.of(context).textTheme.displaySmall,
       ),
       duration: const Duration(seconds: 1),
-      backgroundColor: Theme
-          .of(context)
-          .colorScheme
-          .secondary,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
     ),
   );
 }

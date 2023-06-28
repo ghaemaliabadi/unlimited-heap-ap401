@@ -70,7 +70,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
-                            int.parse(value) < 0) {
+                            int.parse(value) <= 0) {
                           return 'کد بلیط باید یک عدد باشد';
                         }
                         return null;
@@ -93,7 +93,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: DropdownButtonFormField(
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if ((value == null || value.isEmpty) && !widget.title.contains('ویرایش')) {
                           return 'لطفا نوع بلیط را انتخاب کنید';
                         }
                         return null;
@@ -611,7 +611,11 @@ class _AddNewTicketState extends State<AddNewTicket> {
                 onPressed: () {
                   // run validators
                   if (_formKey.currentState!.validate()) {
-                    // TODO: edit or add ticket on server
+                    if (widget.title.contains('ویرایش')) {
+                      // TODO: edit ticket on server
+                    } else {
+                      // TODO: check repeat ticket on server and add it
+                    }
                     Navigator.of(context).pop();
                     print('validate success');
                   } else {

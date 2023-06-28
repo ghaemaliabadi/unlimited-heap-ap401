@@ -4,6 +4,7 @@ import 'company.dart';
 
 class Ticket {
   Ticket({
+    required this.ticketID,
     required this.transportBy,
     required this.from,
     required this.to,
@@ -16,6 +17,7 @@ class Ticket {
     required this.tags,
   });
 
+  int ticketID;
   String transportBy;
   String from;
   String to;
@@ -27,9 +29,11 @@ class Ticket {
   String description;
   List<String> tags;
 
-  String get outboundTimeString => convertEnToFa("${outboundDate?.hour}:${outboundDate?.minute}");
+  String get outboundTimeString => convertEnToFa("${makeNumberTwoDigit(outboundDate!.hour)}:${makeNumberTwoDigit(outboundDate!.minute)}");
+  String get outboundTimeAndDateString => convertEnToFa("$outboundTimeString - ${outboundDate?.formatter.dd} ${outboundDate?.formatter.mN}");
 
-  String get inboundTimeString => convertEnToFa("${inboundDate?.hour}:${inboundDate?.minute}");
+  String get inboundTimeString => convertEnToFa("${makeNumberTwoDigit(inboundDate!.hour)}:${makeNumberTwoDigit(inboundDate!.minute)}");
+  String get inboundTimeAndDateString => convertEnToFa("$inboundTimeString - ${inboundDate?.formatter.dd} ${inboundDate?.formatter.mN}");
   var numberFormat = NumberFormat("###,###", "en_US");
   String get priceString => convertEnToFa(numberFormat.format(price));
   String get dateString {
@@ -50,4 +54,11 @@ convertEnToFa(String txt) {
       .replaceAll('7', '۷')
       .replaceAll('8', '۸')
       .replaceAll('9', '۹');
+}
+
+makeNumberTwoDigit(int number) {
+  if (number < 10) {
+    return "0$number";
+  }
+  return number;
 }

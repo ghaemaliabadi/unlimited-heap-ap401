@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'AccountPage.dart';
 import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
+import 'SellerPage.dart';
 import 'SignUpPage.dart';
 
 class DemoHomePage extends StatefulWidget {
@@ -39,6 +40,8 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 context, 'صفحه اصلی پروژه', const ProjectMainPage()),
             buildElevatedButtonWithRedirect(
                 context, 'حساب کاربری', const AccountPage()),
+            buildElevatedButtonWithRedirect(
+                context, 'صفحه فروشندگان', const SellerPage()),
           ],
         ),
       ),

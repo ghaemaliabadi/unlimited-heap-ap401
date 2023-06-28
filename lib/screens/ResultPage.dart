@@ -50,8 +50,10 @@ AutoScrollController _scrollController = AutoScrollController();
 class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
+    // TODO: get this part from backend
     orgTickets = tickets = [
       Ticket(
+        ticketID: 1,
         transportBy: 'هواپیما',
         from: 'تهران',
         to: 'مشهد',
@@ -64,6 +66,7 @@ class _ResultPageState extends State<ResultPage> {
         tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
       ),
       Ticket(
+        ticketID: 2,
         transportBy: 'هواپیما',
         from: 'تهران',
         to: 'مشهد',
@@ -76,6 +79,7 @@ class _ResultPageState extends State<ResultPage> {
         tags: ['CF8', 'اکونومی', 'سیستمی'],
       ),
       Ticket(
+        ticketID: 3,
         transportBy: 'هواپیما',
         from: 'تهران',
         to: 'مشهد',
@@ -88,6 +92,7 @@ class _ResultPageState extends State<ResultPage> {
         tags: ['Fokker 100', 'بیزنس', 'سیستمی'],
       ),
       Ticket(
+        ticketID: 4,
         transportBy: 'هواپیما',
         from: 'تهران',
         to: 'مشهد',
@@ -100,6 +105,7 @@ class _ResultPageState extends State<ResultPage> {
         tags: ['CF8', 'اکونومی', 'سیستمی'],
       ),
       Ticket(
+        ticketID: 5,
         transportBy: 'هواپیما',
         from: 'تهران',
         to: 'مشهد',

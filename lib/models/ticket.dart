@@ -4,6 +4,7 @@ import 'company.dart';
 
 class Ticket {
   Ticket({
+    required this.ticketID,
     required this.transportBy,
     required this.from,
     required this.to,
@@ -16,6 +17,7 @@ class Ticket {
     required this.tags,
   });
 
+  int ticketID;
   String transportBy;
   String from;
   String to;

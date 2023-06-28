@@ -4,11 +4,18 @@ import 'package:tab_container/tab_container.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/sort.dart';
 import '../models/trip.dart';
+import '../models/userinfo.dart';
 import '../theme/MainTheme.dart';
 import 'ResultPage.dart';
 
 class ProjectMainPage extends StatefulWidget {
-  const ProjectMainPage({super.key});
+  User? user;
+
+  ProjectMainPage(
+      {Key? key,
+        this.user,
+      })
+      : super(key: key);
 
   final String title = 'صفحه اصلی پروژه';
 
@@ -28,6 +35,7 @@ List<String> items = [
 ];
 List<Trip> lastTrips = [];
 
+User? user;
 String? selectedValue;
 String? lastSelectedValue;
 String? transportBy;
@@ -542,6 +550,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       travelType = 'رفت و برگشت';
     }
     Trip tripData = Trip(
+      user: user!,
       transportBy: transportBy!,
       type: travelType!,
       from: selectedValueFrom!,

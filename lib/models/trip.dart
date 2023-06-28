@@ -1,6 +1,7 @@
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/models/passenger.dart';
 import 'package:unlimited_heap_ap401/models/ticket.dart';
+import 'package:unlimited_heap_ap401/models/userinfo.dart';
 
 class Trip {
   Trip({
@@ -11,12 +12,14 @@ class Trip {
     required this.date,
     required this.dateRange,
     required this.passengers,
+    this.user,
   });
 
   String transportBy;
   String type;
   String from;
   String to;
+  User? user;
   Jalali? date;
   JalaliRange? dateRange;
   Ticket? departTicket;

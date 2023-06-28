@@ -29,7 +29,7 @@ public class AccountManagement {
         DataBaseHandler handler = new DataBaseHandler("db/Users.csv");
         String[] userInfo = handler.findUserRows(email, false);
         if (userInfo.length != 0 && userInfo[0].split("-")[1].equals(isSeller) && userInfo[0].split("-")[2].equals(password)) {
-            return "true";
+            return userInfo[0].split("-")[0];   // return username
         } else {
             return "false";
         }

@@ -5,10 +5,17 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../models/company.dart';
 import '../models/ticket.dart';
+import '../models/userinfo.dart';
 import 'AddNewTicket.dart';
 
 class SellerPage extends StatefulWidget {
-  const SellerPage({super.key});
+  User? user;
+
+  SellerPage(
+      {Key? key,
+        this.user,
+      })
+      : super(key: key);
 
   final String title = 'صفحه فروشنده';
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
+import '../models/userinfo.dart';
 import 'ProjectMainPage.dart';
 import 'SellerPage.dart';
 
@@ -131,26 +132,35 @@ class _LoginPageState extends State<LoginPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // TODO: pass user model to project main page or seller page
-                        bool serverResponse = await _checkLogin(
+                        String serverResponse = await _checkLogin(
                             _emailController.text,
                             _passwordController.text,
                             isSeller
                         );
-                        if (serverResponse) {
-                          _showSnackBar(context, 'ورود با موفقیت انجام شد.', false);
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => (
-                                  isSeller
-                                  ? const SellerPage()
-                                  : const ProjectMainPage()
+                        if (context.mounted) {
+                          if (serverResponse != "false") {
+                            User user = User(
+                              username: serverResponse,
+                              password: _passwordController.text,
+                              email: _emailController.text,
+                            );
+                            _showSnackBar(
+                                context, 'ورود با موفقیت انجام شد.', false);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                (
+                                    isSeller
+                                    ? SellerPage(user: user)
+                                    : ProjectMainPage(user: user)
+                                )
                               )
-                            )
-                          );
-                        } else {
-                          _showSnackBar(context, 'ایمیل یا رمز عبور اشتباه است.', true);
-                          FocusManager.instance.primaryFocus?.unfocus();
+                            );
+                          } else {
+                            _showSnackBar(
+                                context, 'ایمیل یا رمز عبور اشتباه است.', true);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          }
                         }
                       }
                     },
@@ -207,15 +217,15 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
   );
 }
 
-Future<bool> _checkLogin(String email, String password, bool isSeller) async {
-  bool response = false;
+Future<String> _checkLogin(String email, String password, bool isSeller) async {
+  String response = "false";
   await Socket.connect(LoginPage.ip, LoginPage.port).then((serverSocket) {
     print("Connected!");
     serverSocket.write("login-$isSeller-$email-$password*");
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {
-      response = String.fromCharCodes(socket).trim().substring(2) == "true";
+      response = String.fromCharCodes(socket).trim().substring(2);
       print(response);
     });
   }

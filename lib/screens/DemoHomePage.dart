@@ -33,15 +33,15 @@ class _DemoHomePageState extends State<DemoHomePage> {
                         .displayLarge
                         ?.copyWith(fontSize: 36)),
             buildElevatedButtonWithRedirect(
-                context, 'ثبت‌نام', SignUpPage()),
+                context, 'ثبت‌نام', const SignUpPage()),
             buildElevatedButtonWithRedirect(
                 context, 'ورود', const LoginPage()),
             buildElevatedButtonWithRedirect(
-                context, 'صفحه اصلی پروژه', const ProjectMainPage()),
+                context, 'صفحه اصلی پروژه', ProjectMainPage()),
             buildElevatedButtonWithRedirect(
                 context, 'حساب کاربری', const AccountPage()),
             buildElevatedButtonWithRedirect(
-                context, 'صفحه فروشندگان', const SellerPage()),
+                context, 'صفحه فروشندگان', SellerPage()),
           ],
         ),
       ),

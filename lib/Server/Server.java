@@ -79,8 +79,12 @@ class RequestHandler extends Thread {
                 }
                 break;
             case "login":
-                ClientAccount clientAccount = new ClientAccount();
-                response = String.valueOf(clientAccount.login(dataArr[1], dataArr[2]));
+                if (dataArr[1].equals("false")) {   // login-false-... => client login
+                    ClientAccount clientAccount = new ClientAccount();
+                    response = String.valueOf(clientAccount.login(dataArr[2], dataArr[3]));
+                } else if (dataArr[1].equals("true")) {   // login-true-... => seller login
+
+                }
                 break;
             default:
                 response = "false";

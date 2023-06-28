@@ -5,6 +5,7 @@ import 'package:unlimited_heap_ap401/screens/SellerPage.dart';
 import '../models/userinfo.dart';
 import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
+import 'dart:convert' show utf8;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,7 +14,7 @@ class SignUpPage extends StatefulWidget {
   final String emailRegex =
       "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
       "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
-  static const String ip = "10.0.2.2";
+  static const String ip = "127.0.0.1";
   static const int port = 1234;
 
   @override
@@ -27,6 +28,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
+  final _companyNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +164,33 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
               ),
+                  () {
+                if (isSeller) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                    child: TextFormField(
+                      controller: _companyNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'لطفا نام شرکت را وارد کنید.';
+                        }
+                        return null;
+                      },
+                      style: Theme.of(context).textTheme.displaySmall,
+                      decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        labelText: 'نام شرکت',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        suffixIcon: const Icon(Icons.business),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              } (),
               // submit button
               Expanded(
                 flex: 3,
@@ -175,13 +204,16 @@ class _SignUpPageState extends State<SignUpPage> {
                             _usernameController.text,
                             _passwordController.text,
                             _emailController.text,
-                            isSeller);
+                            isSeller,
+                            _companyNameController.text
+                            );
                         if (context.mounted) {
                           if (serverResponse == "true") {
                             User user = User(
                               username: _usernameController.text,
                               password: _passwordController.text,
                               email: _emailController.text,
+                              firstName: _companyNameController.text,
                             );
                             _showSnackBar(
                                 context, 'ثبت‌نام با موفقیت انجام شد.', false);
@@ -263,15 +295,15 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
   );
 }
 
-Future<String> _checkSignUp(String username, String password, String email, bool isSeller) async {
+Future<String> _checkSignUp(String username, String password, String email, bool isSeller, String companyName) async {
   String response = "false";
   await Socket.connect(SignUpPage.ip, SignUpPage.port).then((serverSocket) {
     print("Connected!");
-    serverSocket.write("signup-$isSeller-$username-$password-$email*");
+    serverSocket.write("signup-$isSeller-$username-$password-$email-$companyName*");
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {
-      response = String.fromCharCodes(socket).trim().substring(2);
+      response = utf8.decode(socket);
       print(response);
     });
   }

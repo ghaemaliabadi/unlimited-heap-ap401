@@ -3,7 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class AccountManagement {
-    String signup(String isSeller, String username, String password, String email) {
+    String signup(String isSeller, String username, String password, String email, String firstName) {
         DataBaseHandler handler = new DataBaseHandler("db/Users.csv");
         try {
             File file = new File("db/Users.csv");
@@ -12,7 +12,7 @@ public class AccountManagement {
             boolean usedEmail = handler.findEmail(email);
             if (userInfo.length == 0 && !usedEmail) {
                 String info = username + "-" + isSeller + "-" + password + "-" + email +
-                        "-" + "null" + "-" + "null" + "-" + "null" + "-" + "null" + "-" + "null" + "-" + "null" + "\n";
+                        "-" + "null" + "-" + "null" + "-" + "null" + "-" + firstName + "-" + "null" + "-" + "null" + "\n";
                 writer.write(info);
                 writer.close();
             } else if (usedEmail){

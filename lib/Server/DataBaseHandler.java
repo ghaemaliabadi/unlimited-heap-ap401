@@ -54,13 +54,11 @@ public class DataBaseHandler {
     String[] getCompanyTickets(String companyName) {
         ArrayList<String> rows = new ArrayList<>();
         try {
-            System.out.println(companyName);
             File file = new File(fileName);
             Scanner reader = new Scanner(file);
             String thisRow;
             while (reader.hasNextLine()) {
                 thisRow = reader.nextLine();
-                System.out.println(thisRow);
                 if (thisRow.split("-")[14].equals(companyName)) {
                     rows.add(thisRow);
                 }

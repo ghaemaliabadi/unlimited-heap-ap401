@@ -66,7 +66,7 @@ class _SellerPageState extends State<SellerPage> {
                     .height * 0.75,
                 child: FutureBuilder(
                   // future: Future.delayed(const Duration(seconds: 2))
-                  future: _getUserTickets("وارش")
+                  future: _getUserTickets("ماهان")
                       .then((value) => tickets),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/userinfo.dart';
 import 'ProjectMainPage.dart';
 import 'SellerPage.dart';
+import 'dart:convert' show utf8;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -225,7 +226,7 @@ Future<String> _checkLogin(String email, String password, bool isSeller) async {
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {
-      response = String.fromCharCodes(socket).trim().substring(2);
+      response = utf8.decode(socket);
       print(response);
     });
   }

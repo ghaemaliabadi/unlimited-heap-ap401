@@ -38,13 +38,13 @@ class RequestHandler extends Thread {
             System.out.println("Request was failed");
         }
     }
+
     String listener() {
         StringBuilder listen = new StringBuilder();
         char i;
         try {
             while (true) {
                 i = (char) dis.read();
-                System.out.println(i);
                 if (i == '*') {
                     break;
                 }
@@ -74,7 +74,11 @@ class RequestHandler extends Thread {
         switch (dataArr[0]) {
             case "signup":
                 AccountManagement accountManagement = new AccountManagement();
-                response = String.valueOf(accountManagement.signup(dataArr[1], dataArr[2], dataArr[3], dataArr[4]));
+                if (dataArr[1].equals("true")) {
+                    response = String.valueOf(accountManagement.signup(dataArr[1], dataArr[2], dataArr[3], dataArr[4], dataArr[5]));
+                } else {
+                    response = String.valueOf(accountManagement.signup(dataArr[1], dataArr[2], dataArr[3], dataArr[4], "null"));
+                }
                 break;
             case "login":
                 accountManagement = new AccountManagement();
@@ -86,9 +90,8 @@ class RequestHandler extends Thread {
             case "getTickets":
                 ticketManagement = new TicketManagement();
                 response = ticketManagement.getTickets(dataArr[1]);
-                System.out.println(response);
                 break;
-                default:
+            default:
                 response = "false";
         }
         try {

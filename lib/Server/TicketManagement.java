@@ -72,10 +72,8 @@ public class TicketManagement {
 
     String getTickets(String companyName) {
         String[] tickets = handler.getCompanyTickets(companyName);
-        System.out.println("printing tickets");
         String out = "";
         for (String ticket : tickets) {
-            System.out.println(ticket);
             out += ticket + "\n";
         }
         return out;

@@ -8,10 +8,11 @@ public class ClientAccount {
         try {
             File file = new File("db/Users.csv");
             FileWriter writer = new FileWriter(file, true);
-            String[] userInfo = handler.findUserRows(username);
+            String[] userInfo = handler.findUserRows(username, true);
             boolean usedEmail = handler.findEmail(email);
             if (userInfo.length == 0 && !usedEmail) {
-                String info = username + "-" + password + "-" + email + "\n";
+                String info = username + "-" + password + "-" + email +
+                        "-" + "null" + "-" + "null" + "-" + "null" + "-" + "null" + "-" + "null" + "-" + "null" + "\n";
                 writer.write(info);
                 writer.close();
             } else if (usedEmail){
@@ -23,5 +24,14 @@ public class ClientAccount {
             throw new RuntimeException(e);
         }
         return "true";
+    }
+    String login(String email, String password) {
+        DataBaseHandler handler = new DataBaseHandler("db/Users.csv");
+        String[] userInfo = handler.findUserRows(email, false);
+        if (userInfo.length != 0 && userInfo[0].split("-")[1].equals(password)) {
+            return "true";
+        } else {
+            return "false";
+        }
     }
 }

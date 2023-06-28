@@ -7,7 +7,7 @@ public class DataBaseHandler {
     DataBaseHandler(String fileName) {
         this.fileName = fileName;
     }
-    String[] findUserRows(String username) {
+    String[] findUserRows(String key, boolean isUsername) {
         ArrayList<String> rows = new ArrayList<>();
         try {
             File file = new File(fileName);
@@ -15,8 +15,14 @@ public class DataBaseHandler {
             String thisRow;
             while (reader.hasNextLine()) {
                 thisRow = reader.nextLine();
-                if (thisRow.startsWith(username)) {
-                    rows.add(thisRow);
+                if (isUsername) {
+                    if (thisRow.split("-")[0].equals(key)) {
+                        rows.add(thisRow);
+                    }
+                } else {
+                    if (thisRow.split("-")[2].equals(key)) {
+                        rows.add(thisRow);
+                    }
                 }
             }
         } catch (Exception e) {

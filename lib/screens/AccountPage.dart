@@ -8,7 +8,6 @@ import '../models/userinfo.dart';
 import '../models/tripsTaken.dart';
 import '../models/transfer.dart';
 
-//TODO: fix sizes and paddings
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -177,8 +176,9 @@ List<Transfer> transfers = [
 
 String startingDateLabel = 'از تاریخ';
 String endingDateLabel = 'تا تاریخ';
-Jalali startingDateSearch = Jalali.now();
+Jalali startingDateSearch = Jalali(1380, 1, 1);
 Jalali endingDateSearch = Jalali.now();
+String IdSearch = '';
 
 class _AccountPageState extends State<AccountPage> {
 
@@ -207,15 +207,29 @@ class _AccountPageState extends State<AccountPage> {
 
   void _runIdSearch(String enteredID) {
     setState(() {
-      _foundTrips = takenTrips.where((trip) => trip.id.startsWith(enteredID)).toList();
+      if (_foundTrips.length < takenTrips.length) {
+        _foundTrips = takenTrips.where((trip) => trip.id.startsWith(enteredID)
+            && trip.date.compareTo(startingDateSearch) >= 0
+            && trip.date.compareTo(endingDateSearch) <= 0).toList();
+      } else {
+        _foundTrips = takenTrips.where((trip) => trip.id.startsWith(enteredID)).toList();
+      }
     });
   }
 
-  // void _runDateSearch(Jalali startingDate, Jalali endingDate) {
-  //   setState(() {
-  //     _foundTrips = takenTrips.where((trip) => trip.date.compareTo(startingDate) >= 0 && trip.date.compareTo(endingDate) <= 0).toList();
-  //   });
-  // }
+  void _runDateSearch(Jalali startingDate, Jalali endingDate) {
+    setState(() {
+      if (_foundTrips.length < takenTrips.length) {
+        _foundTrips = takenTrips.where((trip) =>
+        trip.id.startsWith(IdSearch)
+            && trip.date.compareTo(startingDateSearch) >= 0
+            && trip.date.compareTo(endingDateSearch) <= 0).toList();
+      } else {
+        _foundTrips =
+            takenTrips.where((trip) => trip.id.startsWith(IdSearch)).toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -402,7 +416,6 @@ class _AccountPageState extends State<AccountPage> {
                                   children: [
                                     Text(
                                       'ویرایش اطلاعات',
-                                      //TODO: change the widget to form fields
                                       style: Theme.of(context).textTheme.labelMedium,
                                     ),
                                     const Icon(
@@ -487,7 +500,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.39,
+                        height: pageHeight * 0.37,
                         child: Column(
                           children: [
                             Row(
@@ -709,7 +722,7 @@ class _AccountPageState extends State<AccountPage> {
                       elevation: 2.5,
                       child: Container(
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.31,
+                        height: pageHeight * 0.25,
                         child: Column(
                           children: [
                             Row(
@@ -740,7 +753,11 @@ class _AccountPageState extends State<AccountPage> {
                               width: pageWidth * 0.82,
                               height: pageHeight * 0.05,
                               child: TextFormField(
-                                onChanged: (value) => _runIdSearch(value),
+                                onChanged: (value) {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  IdSearch = value;
+                                  _runIdSearch(value);
+                                },
                                 keyboardType: TextInputType.number,
                                 style: Theme.of(context).textTheme.headlineMedium,
                                 decoration: InputDecoration(
@@ -762,12 +779,12 @@ class _AccountPageState extends State<AccountPage> {
                               ]
                             ),
                             const SizedBox(height: 10.0,),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'جستجو',
-                              ),
-                            )
+                            // ElevatedButton(
+                            //   onPressed: () {},
+                            //   child: const Text(
+                            //     'جستجو',
+                            //   ),
+                            // )
                           ]
                         )
                       )
@@ -962,7 +979,11 @@ class _AccountPageState extends State<AccountPage> {
         var pickedDate = await showPersianDatePicker(
           context: context,
           initialDate: Jalali.now(),
-          firstDate: Jalali(1380, 1, 1),
+          firstDate: (
+              flag.compareTo('از') == 0
+              ? Jalali(1380, 1, 1)
+              : startingDateSearch
+          ),
           lastDate: Jalali.now(),
         );
         if (flag.compareTo('از') == 0) {
@@ -973,11 +994,13 @@ class _AccountPageState extends State<AccountPage> {
         setState(() {
           if (flag.compareTo('از') == 0) {
             startingDateLabel = convertEnToFa(
-                "${startingDateSearch.formatter.wN} ${startingDateSearch.formatter.dd} ${startingDateSearch.formatter.mN}");
+                "${startingDateSearch.formatter.dd} ${startingDateSearch.formatter.mN} ${startingDateSearch.formatter.yy}");
           } else {
             endingDateLabel = convertEnToFa(
-                "${endingDateSearch.formatter.wN} ${endingDateSearch.formatter.dd} ${endingDateSearch.formatter.mN}");
+                "${endingDateSearch.formatter.dd} ${endingDateSearch.formatter.mN} ${endingDateSearch.formatter.yy}");
           }
+          FocusManager.instance.primaryFocus?.unfocus();
+          _runDateSearch(startingDateSearch, endingDateSearch);
         });
       },
       child: Container(
@@ -1146,7 +1169,9 @@ Future<dynamic> showDialogToEditEmail(BuildContext context) async {
 class CustomAlertDialogToEditEmail extends StatefulWidget {
   const CustomAlertDialogToEditEmail({super.key});
 
-  final String emailRegex = "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
+  final String emailRegex =
+      "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
+      "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
 
   @override
   State<CustomAlertDialogToEditEmail> createState() => _CustomAlertDialogToEditEmailState();

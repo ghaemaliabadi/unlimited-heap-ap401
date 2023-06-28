@@ -8,7 +8,7 @@ class EditUserInfoPage extends StatefulWidget {
 }
 
 class _EditUserInfoPageState extends State<EditUserInfoPage> {
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   int? selectedDay;
   String? selectedMonth;
   int? selectedYear;
@@ -19,7 +19,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
     var pageWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('ویرایش اطلاعات کاربری'),
       ),
@@ -32,18 +32,12 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Form(
-          key: _formKey,
+          // key: _formKey,
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 35.0),
             child: Column(
               children: [
                 TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'لطفا نام خود را وارد کنید.';
-                    }
-                    return null;
-                  },
                   style: Theme.of(context).textTheme.displaySmall,
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
@@ -55,12 +49,6 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                 ),
                 SizedBox(height: pageHeight * 0.03,),
                 TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'لطفا نام خانوادگی خود را وارد کنید.';
-                    }
-                    return null;
-                  },
                   style: Theme.of(context).textTheme.displaySmall,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,
@@ -79,12 +67,6 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                       width: pageWidth * 0.4,
                       child: TextFormField(
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'لطفا کد ملی خود را وارد کنید.';
-                          }
-                          return null;
-                        },
                         style: Theme.of(context).textTheme.displaySmall,
                         decoration: InputDecoration(
                           alignLabelWithHint: true,
@@ -100,12 +82,6 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                       width: pageWidth * 0.4,
                       child: TextFormField(
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'لطفا شماره تماس خود را وارد کنید.';
-                          }
-                          return null;
-                        },
                         style: Theme.of(context).textTheme.displaySmall,
                         decoration: InputDecoration(
                           alignLabelWithHint: true,
@@ -133,7 +109,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: pageWidth * 0.25,
+                      width: pageWidth * 0.28,
                       child: DropdownButtonFormField(
                         decoration: const InputDecoration(
                           alignLabelWithHint: true,
@@ -164,7 +140,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     ),
                     // SizedBox(width: pageWidth * 0.05,),
                     SizedBox(
-                      width: pageWidth * 0.25,
+                      width: pageWidth * 0.28,
                       child: DropdownButtonFormField(
                         decoration: const InputDecoration(
                           alignLabelWithHint: true,
@@ -192,7 +168,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     ),
                     // SizedBox(width: pageWidth * 0.05,),
                     SizedBox(
-                      width: pageWidth * 0.25,
+                      width: pageWidth * 0.28,
                       child: DropdownButtonFormField(
                         decoration: const InputDecoration(
                           alignLabelWithHint: true,
@@ -235,12 +211,13 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('در حال ارسال اطلاعات...')),
-                          );
-                          Navigator.of(context).pop();
-                        }
+                        _showSnackBar(context, 'اطلاعات با موفقیت ثبت شد.');
+                        Navigator.of(context).pop();
+                        // if (_formKey.currentState!.validate()) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(content: Text('در حال ارسال اطلاعات...')),
+                        //   );
+                        // }
                       },
                       style: ButtonStyle(
                         minimumSize:
@@ -266,4 +243,17 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
       )
     );
   }
+}
+
+void _showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: Theme.of(context).textTheme.displaySmall,
+      ),
+      duration: const Duration(seconds: 1),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+    ),
+  );
 }

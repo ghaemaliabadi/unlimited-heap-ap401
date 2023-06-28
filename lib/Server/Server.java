@@ -1,8 +1,7 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class Server {
     static boolean isServerUp = true;
@@ -25,14 +24,16 @@ public class Server {
 
 class RequestHandler extends Thread {
     Socket socket;
-    DataInputStream dis;
-    DataOutputStream dos;
+    BufferedReader dis;
+    BufferedWriter dos;
 
     RequestHandler(Socket socket) {
         this.socket = socket;
         try {
-            dis = new DataInputStream(socket.getInputStream());
-            dos = new DataOutputStream(socket.getOutputStream());
+            dis = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+//            dis = new DataInputStream(socket.getInputStream());
+//            dos = new DataOutputStream(socket.getOutputStream());
+            dos = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             System.out.println("Request was failed");
         }
@@ -43,6 +44,7 @@ class RequestHandler extends Thread {
         try {
             while (true) {
                 i = (char) dis.read();
+                System.out.println(i);
                 if (i == '*') {
                     break;
                 }
@@ -84,11 +86,15 @@ class RequestHandler extends Thread {
             case "getTickets":
                 ticketManagement = new TicketManagement();
                 response = ticketManagement.getTickets(dataArr[1]);
+                System.out.println(response);
+                break;
                 default:
                 response = "false";
         }
         try {
-            dos.writeUTF(response);
+            dos.write(response);
+            dos.flush();
+            dos.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

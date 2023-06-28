@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -12,89 +14,28 @@ import 'AddNewTicket.dart';
 class SellerPage extends StatefulWidget {
   User? user;
 
-  SellerPage(
-      {Key? key,
-        this.user,
-      })
-      : super(key: key);
+  SellerPage({
+    Key? key,
+    this.user,
+  }) : super(key: key);
 
   final String title = 'صفحه فروشنده';
+  static const String ip = "127.0.0.1";
+  static const int port = 1234;
 
   @override
   State<SellerPage> createState() => _SellerPageState();
 }
 
+List<Ticket>? tickets;
+
 class _SellerPageState extends State<SellerPage> {
   var numberFormat = NumberFormat("###,###", "en_US");
 
-  // TODO: get this part from backend
-  List<Ticket> tickets = [
-    Ticket(
-      ticketID: 1,
-      transportBy: 'پرواز داخلی',
-      from: 'تهران',
-      to: 'مشهد',
-      outboundDate: Jalali(1401, 3, 15, 12, 30),
-      inboundDate: Jalali(1400, 3, 15, 13, 35),
-      company: Company('زاگرس'),
-      price: 920000,
-      remainingSeats: 68,
-      description: 'توضیحات تستی نام واسه قطار',
-      tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
-    ),
-    Ticket(
-      ticketID: 2,
-      transportBy: 'پرواز داخلی',
-      from: 'تهران',
-      to: 'مشهد',
-      outboundDate: Jalali(1401, 3, 15, 14, 20),
-      inboundDate: Jalali(1400, 3, 15, 15, 25),
-      company: Company('ماهان'),
-      price: 1210000,
-      remainingSeats: 55,
-      description: '',
-      tags: ['CF8', 'اکونومی', 'سیستمی'],
-    ),
-    Ticket(
-      ticketID: 3,
-      transportBy: 'پرواز داخلی',
-      from: 'تهران',
-      to: 'مشهد',
-      outboundDate: Jalali(1401, 3, 15, 15, 30),
-      inboundDate: Jalali(1400, 3, 15, 16, 35),
-      company: Company('زاگرس'),
-      price: 1590000,
-      remainingSeats: 12,
-      description: '',
-      tags: ['Fokker 100', 'بیزنس', 'سیستمی'],
-    ),
-    Ticket(
-      ticketID: 4,
-      transportBy: 'پرواز داخلی',
-      from: 'تهران',
-      to: 'مشهد',
-      outboundDate: Jalali(1401, 3, 15, 18, 20),
-      inboundDate: Jalali(1400, 3, 15, 18, 25),
-      company: Company('ماهان'),
-      price: 990000,
-      remainingSeats: 0,
-      description: '',
-      tags: ['CF8', 'اکونومی', 'سیستمی'],
-    ),
-    Ticket(
-      ticketID: 5,
-      transportBy: 'پرواز داخلی',
-      from: 'تهران',
-      to: 'مشهد',
-      outboundDate: Jalali(1401, 3, 15, 18, 20),
-      inboundDate: Jalali(1400, 3, 15, 18, 25),
-      company: Company('وارش'),
-      price: 1120000,
-      remainingSeats: 15,
-      description: '',
-      tags: ['CF8', 'اکونومی', 'سیستمی'],
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +44,10 @@ class _SellerPageState extends State<SellerPage> {
       appBar: AppBar(
         elevation: 1.5,
         title: Text(widget.title,
-            style: Theme.of(context).textTheme.displayMedium),
+            style: Theme
+                .of(context)
+                .textTheme
+                .displayMedium),
       ),
       body: InkWell(
           splashFactory: NoSplash.splashFactory,
@@ -116,9 +60,13 @@ class _SellerPageState extends State<SellerPage> {
           child: Column(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.75,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.75,
                 child: FutureBuilder(
-                  future: Future.delayed(const Duration(seconds: 2))
+                  // future: Future.delayed(const Duration(seconds: 2))
+                  future: _getUserTickets("وارش")
                       .then((value) => tickets),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -129,7 +77,10 @@ class _SellerPageState extends State<SellerPage> {
                         padding: const EdgeInsets.only(top: 100.0),
                         child: Center(
                           child: LoadingAnimationWidget.fourRotatingDots(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme
+                                .of(context)
+                                .colorScheme
+                                .primary,
                             size: 100,
                           ),
                         ),
@@ -146,10 +97,11 @@ class _SellerPageState extends State<SellerPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddNewTicket(
-                            title: 'ثبت بلیط جدید',
-                            user: widget.user,
-                          ),
+                          builder: (context) =>
+                              AddNewTicket(
+                                title: 'ثبت بلیط جدید',
+                                user: widget.user,
+                              ),
                         ),
                       );
                     },
@@ -176,7 +128,10 @@ class _SellerPageState extends State<SellerPage> {
       margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(1000),
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme
+            .of(context)
+            .colorScheme
+            .primary,
         boxShadow: const [
           BoxShadow(
             color: Colors.black38,
@@ -190,9 +145,13 @@ class _SellerPageState extends State<SellerPage> {
         children: [
           Text(
             input,
-            style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  fontSize: 22,
-                ),
+            style: Theme
+                .of(context)
+                .textTheme
+                .displayMedium!
+                .copyWith(
+              fontSize: 22,
+            ),
           ),
         ],
       ),
@@ -200,22 +159,25 @@ class _SellerPageState extends State<SellerPage> {
   }
 
   Widget buildListViewForCards() {
-    if (tickets.isEmpty) {
+    if (tickets!.isEmpty) {
       return Column(
         children: [
           const SizedBox(height: 200.0),
           Text(
             'هیچ بلیطی یافت نشد.',
-            style: Theme.of(context).textTheme.displayLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .displayLarge,
           ),
         ],
       );
     } else {
-      tickets = divideByRemainingSeats(tickets);
+      tickets = divideByRemainingSeats(tickets!);
       return ListView.builder(
-        itemCount: tickets.length,
+        itemCount: tickets!.length,
         itemBuilder: (context, index) {
-          return ticketCard(ticket: tickets[index]);
+          return ticketCard(ticket: tickets![index]);
         },
       );
     }
@@ -290,11 +252,13 @@ class _SellerPageState extends State<SellerPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddNewTicket(
-                              title: 'ویرایش بلیط شماره  ${ticket.ticketID}',
-                              ticket: ticket,
-                              user: widget.user,
-                            ),
+                            builder: (context) =>
+                                AddNewTicket(
+                                  title: 'ویرایش بلیط شماره  ${ticket
+                                      .ticketID}',
+                                  ticket: ticket,
+                                  user: widget.user,
+                                ),
                           ),
                         );
                       },
@@ -314,7 +278,10 @@ class _SellerPageState extends State<SellerPage> {
                         ),
                         child: Icon(
                           Icons.edit,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .primary,
                           size: 25,
                         ),
                       ),
@@ -330,11 +297,17 @@ class _SellerPageState extends State<SellerPage> {
                               title: Text(
                                 'حذف بلیط',
                                 style:
-                                    Theme.of(context).textTheme.displayMedium,
+                                Theme
+                                    .of(context)
+                                    .textTheme
+                                    .displayMedium,
                               ),
                               content: Text(
                                 'آیا از حذف بلیط اطمینان دارید؟',
-                                style: Theme.of(context).textTheme.displaySmall,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .displaySmall,
                               ),
                               actions: [
                                 TextButton(
@@ -343,14 +316,16 @@ class _SellerPageState extends State<SellerPage> {
                                   },
                                   child: Text(
                                     'خیر',
-                                    style: Theme.of(context)
+                                    style: Theme
+                                        .of(context)
                                         .textTheme
                                         .displaySmall!
                                         .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
+                                      color: Theme
+                                          .of(context)
+                                          .colorScheme
+                                          .primary,
+                                    ),
                                   ),
                                 ),
                                 TextButton(
@@ -358,20 +333,22 @@ class _SellerPageState extends State<SellerPage> {
                                     // delete ticket
                                     setState(() {
                                       // TODO: delete ticket from database
-                                      tickets.remove(ticket);
+                                      tickets?.remove(ticket);
                                     });
                                     Navigator.pop(context);
                                   },
                                   child: Text(
                                     'بله',
-                                    style: Theme.of(context)
+                                    style: Theme
+                                        .of(context)
                                         .textTheme
                                         .displaySmall!
                                         .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                        ),
+                                      color: Theme
+                                          .of(context)
+                                          .colorScheme
+                                          .primary,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -395,7 +372,10 @@ class _SellerPageState extends State<SellerPage> {
                         ),
                         child: Icon(
                           Icons.delete,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .primary,
                           size: 25,
                         ),
                       ),
@@ -422,24 +402,28 @@ class _SellerPageState extends State<SellerPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    () {
+                        () {
                       if (ticket.description != '') {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8),
                           child: Text(
                             ticket.description,
-                            style: Theme.of(context).textTheme.displaySmall,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .displaySmall,
                           ),
                         );
                       } else {
                         return const SizedBox(height: 0);
                       }
                     }(),
-                    () {
+                        () {
                       return Row(
                         children: ticket.tags
                             .map(
-                              (tag) => Container(
+                              (tag) =>
+                              Container(
                                 margin: const EdgeInsets.only(right: 4.0),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 8.0, vertical: 4.0),
@@ -449,19 +433,20 @@ class _SellerPageState extends State<SellerPage> {
                                 ),
                                 child: Text(
                                   tag,
-                                  style: Theme.of(context)
+                                  style: Theme
+                                      .of(context)
                                       .textTheme
                                       .bodySmall
                                       ?.copyWith(
-                                        color: Colors.black,
-                                      ),
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
-                            )
+                        )
                             .toList(),
                       );
                     }(),
-                    () {
+                        () {
                       if (ticket.description == '') {
                         return const SizedBox(height: 12.0);
                       } else {
@@ -476,12 +461,18 @@ class _SellerPageState extends State<SellerPage> {
                             children: [
                               Text(
                                 ticket.outboundTimeString,
-                                style: Theme.of(context).textTheme.displayLarge,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .displayLarge,
                               ),
                               const SizedBox(height: 4.0),
                               Text(
                                 ticket.from,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodySmall,
                               ),
                             ],
                           ),
@@ -495,12 +486,18 @@ class _SellerPageState extends State<SellerPage> {
                             children: [
                               Text(
                                 ticket.inboundTimeString,
-                                style: Theme.of(context).textTheme.displayLarge,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .displayLarge,
                               ),
                               const SizedBox(height: 4.0),
                               Text(
                                 ticket.to,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .bodySmall,
                               ),
                             ],
                           ),
@@ -512,7 +509,7 @@ class _SellerPageState extends State<SellerPage> {
               ],
             ),
           ),
-          () {
+              () {
             if (ticket.description == '') {
               return const SizedBox(height: 26.0);
             } else {
@@ -531,56 +528,71 @@ class _SellerPageState extends State<SellerPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    () {
+                        () {
                       if (ticket.remainingSeats > 0) {
                         return Text(
-                          '${convertEnToFa(ticket.remainingSeats)} صندلی باقی مانده',
+                          '${convertEnToFa(ticket
+                              .remainingSeats)} صندلی باقی مانده',
                           style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Colors.grey[700],
-                                    fontSize: 16.0,
-                                  ),
+                          Theme
+                              .of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                            color: Colors.grey[700],
+                            fontSize: 16.0,
+                          ),
                         );
                       } else {
                         return Text(
                           'تکمیل ظرفیت',
                           style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Colors.red[700],
-                                    fontSize: 16.0,
-                                  ),
+                          Theme
+                              .of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                            color: Colors.red[700],
+                            fontSize: 16.0,
+                          ),
                         );
                       }
                     }(),
                     Row(
                       children: [
                         Text(
-                            '${convertEnToFa(numberFormat.format(ticket.price))}',
+                            '${convertEnToFa(numberFormat.format(ticket
+                                .price))}',
                             style:
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      fontSize: 28.0,
-                                      color: (ticket) {
-                                        if (ticket.remainingSeats > 0) {
-                                          return Colors.blueAccent;
-                                        } else {
-                                          return Colors.grey[700];
-                                        }
-                                      }(ticket),
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                            Theme
+                                .of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                              fontSize: 28.0,
+                              color: (ticket) {
+                                if (ticket.remainingSeats > 0) {
+                                  return Colors.blueAccent;
+                                } else {
+                                  return Colors.grey[700];
+                                }
+                              }(ticket),
+                              fontWeight: FontWeight.bold,
+                            )),
                         const SizedBox(width: 4.0),
                         Column(
                           children: [
                             const SizedBox(height: 4.0),
                             Text(
                               'تومان',
-                              style: Theme.of(context)
+                              style: Theme
+                                  .of(context)
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                    color: Colors.grey[700],
-                                    fontSize: 18.0,
-                                  ),
+                                color: Colors.grey[700],
+                                fontSize: 18.0,
+                              ),
                             ),
                           ],
                         ),
@@ -602,10 +614,16 @@ void _showSnackBar(BuildContext context, String message) {
     SnackBar(
       content: Text(
         message,
-        style: Theme.of(context).textTheme.displaySmall,
+        style: Theme
+            .of(context)
+            .textTheme
+            .displaySmall,
       ),
       duration: const Duration(seconds: 1),
-      backgroundColor: Theme.of(context).colorScheme.secondary,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .secondary,
     ),
   );
 }
@@ -623,4 +641,58 @@ convertEnToFa(txt) {
       .replaceAll('7', '۷')
       .replaceAll('8', '۸')
       .replaceAll('9', '۹');
+}
+
+Future<String> _getUserTickets(companyName) async {
+  String response = "false";
+  await Socket.connect(SellerPage.ip, SellerPage.port).then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("getTickets-$companyName*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      // response = String.fromCharCodes(socket).trim().substring(2);
+      response = utf8.decode(socket);
+      List<String> temp = response.split("\n");
+      tickets = [];
+      for (var line in temp) {
+        List<String> element = line.split("-");
+        if (element.length > 1) {
+          List<String> tags = [];
+          if (element[18] != '') {
+            tags.add(element[18]);
+          }
+          if (element[19] != '') {
+            tags.add(element[19]);
+          }
+          if (element[20] != '') {
+            tags.add(element[20]);
+          }
+          if (element[21] != '') {
+            tags.add(element[21]);
+          }
+          tickets?.add(Ticket(
+              ticketID: int.parse(element[0]),
+              transportBy: element[1],
+              from: element[2],
+              to: element[3],
+              outboundDate: Jalali(
+                  int.parse(element[4]), int.parse(element[5]),
+                  int.parse(element[6]), int.parse(element[7]),
+                  int.parse(element[8])),
+              inboundDate
+                  : Jalali(
+                  int.parse(element[9]), int.parse(element[10]),
+                  int.parse(element[11]), int.parse(element[12]),
+                  int.parse(element[13])),
+              company: Company(element[14]),
+              price: int.parse(element[15]),
+              remainingSeats: int.parse(element[16]),
+              description: element[17] == 'null' ? '' : element[17],
+              tags: tags));
+        }
+      }
+    });
+  });
+  return Future.delayed(const Duration(milliseconds: 1000), () => response);
 }

@@ -176,30 +176,36 @@ class _SignUpPageState extends State<SignUpPage> {
                             _passwordController.text,
                             _emailController.text,
                             isSeller);
-                        if (serverResponse == "true") {
-                          User user = User(
-                            username: _usernameController.text,
-                            password: _passwordController.text,
-                            email: _emailController.text,
-                          );
-                          _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.', false);
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => (
-                                  isSeller
-                                  ? const SellerPage()
-                                  : ProjectMainPage(user: user)
-                              )
+                        if (context.mounted) {
+                          if (serverResponse == "true") {
+                            User user = User(
+                              username: _usernameController.text,
+                              password: _passwordController.text,
+                              email: _emailController.text,
+                            );
+                            _showSnackBar(
+                                context, 'ثبت‌نام با موفقیت انجام شد.', false);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                (
+                                    isSeller
+                                        ? const SellerPage()
+                                        : ProjectMainPage(user: user)
+                                )
                             )
-                          );
-                        } else if (serverResponse == "email"){
-                          _showSnackBar(context,
-                              'ایمیل وارد شده تکراری است. لطفا ایمیل دیگری انتخاب کنید.', true);
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        } else if (serverResponse == "un") {
-                          _showSnackBar(context,
-                              'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.', true);
-                          FocusManager.instance.primaryFocus?.unfocus();
+                            );
+                          } else if (serverResponse == "email") {
+                            _showSnackBar(context,
+                                'ایمیل وارد شده تکراری است. لطفا ایمیل دیگری انتخاب کنید.',
+                                true);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          } else if (serverResponse == "un") {
+                            _showSnackBar(context,
+                                'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.',
+                                true);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          }
                         }
                       }
                     },

@@ -137,20 +137,25 @@ class _LoginPageState extends State<LoginPage> {
                             _passwordController.text,
                             isSeller
                         );
-                        if (serverResponse) {
-                          _showSnackBar(context, 'ورود با موفقیت انجام شد.', false);
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => (
-                                  isSeller
-                                  ? const SellerPage()
-                                  : const ProjectMainPage()
-                              )
+                        if (context.mounted) {
+                          if (serverResponse) {
+                            _showSnackBar(
+                                context, 'ورود با موفقیت انجام شد.', false);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                (
+                                    isSeller
+                                        ? const SellerPage()
+                                        : ProjectMainPage()
+                                )
                             )
-                          );
-                        } else {
-                          _showSnackBar(context, 'ایمیل یا رمز عبور اشتباه است.', true);
-                          FocusManager.instance.primaryFocus?.unfocus();
+                            );
+                          } else {
+                            _showSnackBar(
+                                context, 'ایمیل یا رمز عبور اشتباه است.', true);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          }
                         }
                       }
                     },

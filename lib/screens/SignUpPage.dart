@@ -23,6 +23,8 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isSeller = false;
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
+                  controller: _passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'لطفا رمز عبور را وارد کنید.';
@@ -117,6 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
+                  controller: _emailController,
                   validator: (value) {
                     RegExp regExp = RegExp(widget.emailRegex);
                     if (value == null || value.isEmpty) {
@@ -166,7 +170,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         bool serverResponse = await _checkSignUp(
-                            _usernameController.text);
+                            _usernameController.text,
+                            _passwordController.text,
+                            _emailController.text,
+                            isSeller);
                         if (serverResponse) {
                           _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
                           FocusManager.instance.primaryFocus?.unfocus();
@@ -229,11 +236,11 @@ void _showSnackBar(BuildContext context, String message) {
   );
 }
 
-Future<bool> _checkSignUp(String username) async {
+Future<bool> _checkSignUp(String username, String password, String email, bool isSeller) async {
   bool response = false;
   await Socket.connect(SignUpPage.ip, SignUpPage.port).then((serverSocket) {
     print("Connected!");
-    serverSocket.write("signup-client-$username*");
+    serverSocket.write("signup-$isSeller-$username-$password-$email*");
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {

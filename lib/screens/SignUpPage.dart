@@ -169,17 +169,20 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        bool serverResponse = await _checkSignUp(
+                        String serverResponse = await _checkSignUp(
                             _usernameController.text,
                             _passwordController.text,
                             _emailController.text,
                             isSeller);
-                        if (serverResponse) {
+                        if (serverResponse == "true") {
                           _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
                           FocusManager.instance.primaryFocus?.unfocus();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const ProjectMainPage()));
-                        } else {
+                        } else if (serverResponse == "email"){
+                          _showSnackBar(context,
+                              'ایمیل وارد شده تکراری است. لطفا ایمیل دیگری انتخاب کنید.');
+                        } else if (serverResponse == "un") {
                           _showSnackBar(context,
                               'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.');
                         }
@@ -236,17 +239,16 @@ void _showSnackBar(BuildContext context, String message) {
   );
 }
 
-Future<bool> _checkSignUp(String username, String password, String email, bool isSeller) async {
-  bool response = false;
+Future<String> _checkSignUp(String username, String password, String email, bool isSeller) async {
+  String response = "false";
   await Socket.connect(SignUpPage.ip, SignUpPage.port).then((serverSocket) {
     print("Connected!");
     serverSocket.write("signup-$isSeller-$username-$password-$email*");
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {
-      String temp = String.fromCharCodes(socket).trim().substring(2);
-      response = temp.compareTo("true") == 0;
-      print("$response");
+      response = String.fromCharCodes(socket).trim().substring(2);
+      print(response);
     });
   }
   );

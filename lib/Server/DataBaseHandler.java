@@ -3,13 +3,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DataBaseHandler {
-    final File file;
+    String fileName;
     DataBaseHandler(String fileName) {
-        this.file = new File(fileName);
+        this.fileName = fileName;
     }
     String[] findUserRows(String username) {
         ArrayList<String> rows = new ArrayList<>();
         try {
+            File file = new File(fileName);
             Scanner reader = new Scanner(file);
             String thisRow;
             while (reader.hasNextLine()) {
@@ -23,5 +24,24 @@ public class DataBaseHandler {
         }
         String[] out = new String[rows.size()];
         return rows.toArray(out);
+    }
+
+    boolean findEmail(String email) {
+        boolean flag = false;
+        try {
+            File file = new File(fileName);
+            Scanner reader = new Scanner(file);
+            String thisRow;
+            while (reader.hasNextLine()) {
+                thisRow = reader.nextLine();
+                if (thisRow.split("-")[2].equals(email)) {
+                    flag = true;
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("File not found!");
+        }
+        return flag;
     }
 }

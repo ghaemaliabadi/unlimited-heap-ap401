@@ -182,7 +182,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                     },
                     onChanged: (value) {
                       setState(() {
-                        widget.ticket?.from = value;
+                        widget.ticket?.to = value;
                       });
                     },
                     decoration: InputDecoration(
@@ -202,217 +202,369 @@ class _AddNewTicketState extends State<AddNewTicket> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GestureDetector(
-                  onTap: () async {
-                    // رفت
-                    var pickedDate = await showModalBottomSheet<Jalali>(
-                      context: context,
-                      builder: (context) {
-                        Jalali? tempPickedDate = widget.ticket?.outboundDate;
-                        return SizedBox(
-                          height: 250,
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text("تاریخ و زمان حرکت به مقصد:        ",
+                            style: Theme.of(context).textTheme.bodyLarge),
+                      ],
+                    ),
+                    SizedBox(height: 8,),
+                    GestureDetector(
+                      onTap: () async {
+                        var pickedDate = await showModalBottomSheet<Jalali>(
+                          context: context,
+                          builder: (context) {
+                            Jalali? tempPickedDate = widget.ticket?.outboundDate;
+                            return SizedBox(
+                              height: 250,
+                              child: Column(
                                 children: <Widget>[
-                                  CupertinoButton(
-                                    child: const Text(
-                                      'لغو',
-                                      style: TextStyle(
-                                        fontFamily: 'Kalameh',
-                                        fontSize: 20,
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      CupertinoButton(
+                                        child: const Text(
+                                          'لغو',
+                                          style: TextStyle(
+                                            fontFamily: 'Kalameh',
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
                                       ),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
+                                      CupertinoButton(
+                                        child: const Text(
+                                          'تایید',
+                                          style: TextStyle(
+                                            fontFamily: 'Kalameh',
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          if (tempPickedDate!
+                                              .isAfter(Jalali.now())) {
+                                            Navigator.of(context).pop(
+                                                tempPickedDate ?? Jalali.now());
+                                          } else {
+                                            showDialogError(context,
+                                                'تاریخ و زمان وارد شده باید بعد از تاریخ امروز باشد');
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  CupertinoButton(
-                                    child: const Text(
-                                      'تایید',
-                                      style: TextStyle(
-                                        fontFamily: 'Kalameh',
-                                        fontSize: 20,
+                                  const Divider(
+                                    height: 0,
+                                    thickness: 1,
+                                  ),
+                                  Expanded(
+                                    child: CupertinoTheme(
+                                      data: const CupertinoThemeData(
+                                        textTheme: CupertinoTextThemeData(
+                                          dateTimePickerTextStyle:
+                                          TextStyle(fontFamily: "Kalameh"),
+                                        ),
+                                      ),
+                                      child: PCupertinoDatePicker(
+                                        mode: PCupertinoDatePickerMode.dateAndTime,
+                                        onDateTimeChanged: (Jalali dateTime) {
+                                          tempPickedDate = dateTime;
+                                        },
                                       ),
                                     ),
-                                    onPressed: () {
-                                      if (tempPickedDate!
-                                          .isAfter(Jalali.now())) {
-                                        Navigator.of(context).pop(
-                                            tempPickedDate ?? Jalali.now());
-                                      } else {
-                                        showDialogError(context,
-                                            'تاریخ و زمان وارد شده باید بعد از تاریخ امروز باشد');
-                                      }
-                                    },
                                   ),
                                 ],
                               ),
-                              const Divider(
-                                height: 0,
-                                thickness: 1,
-                              ),
-                              Expanded(
-                                child: CupertinoTheme(
-                                  data: const CupertinoThemeData(
-                                    textTheme: CupertinoTextThemeData(
-                                      dateTimePickerTextStyle:
-                                          TextStyle(fontFamily: "Kalameh"),
-                                    ),
-                                  ),
-                                  child: PCupertinoDatePicker(
-                                    mode: PCupertinoDatePickerMode.dateAndTime,
-                                    onDateTimeChanged: (Jalali dateTime) {
-                                      tempPickedDate = dateTime;
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         );
+                        if (pickedDate?.day == null) {
+                          widget.ticket?.outboundDate = Jalali.now();
+                        } else {
+                          widget.ticket?.outboundDate = pickedDate;
+                        }
+                        setState(() {});
                       },
-                    );
-                    if (pickedDate?.day == null) {
-                      widget.ticket?.outboundDate = Jalali.now();
-                    } else {
-                      widget.ticket?.outboundDate = pickedDate;
-                    }
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    height: 50,
-                    padding: const EdgeInsets.only(left: 10, right: 15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.black38,
-                        width: 1,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: 50,
+                        padding: const EdgeInsets.only(left: 10, right: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.black38,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.calendar_today_outlined,
+                              color: Colors.black45,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              widget.ticket!.outboundTimeAndDateString,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    child: Row(
+                  ],
+                ),
+                Column(
+                  children: [
+                    Row(
                       children: [
-                        const Icon(
-                          Icons.calendar_today_outlined,
-                          color: Colors.black45,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          widget.ticket!.outboundTimeAndDateString,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
+                        Text("تاریخ و زمان رسیدن به مقصد:        ",
+                            style: Theme.of(context).textTheme.bodyLarge),
                       ],
+                    ),
+                    SizedBox(height: 8,),
+                    GestureDetector(
+                      onTap: () async {
+                        var pickedDate = await showModalBottomSheet<Jalali>(
+                          context: context,
+                          builder: (context) {
+                            Jalali? tempPickedDate = widget.ticket?.inboundDate;
+                            return SizedBox(
+                              height: 250,
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      CupertinoButton(
+                                        child: const Text(
+                                          'لغو',
+                                          style: TextStyle(
+                                            fontFamily: 'Kalameh',
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      CupertinoButton(
+                                        child: const Text(
+                                          'تایید',
+                                          style: TextStyle(
+                                            fontFamily: 'Kalameh',
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          if (tempPickedDate!
+                                              .isAfter(widget.ticket!.outboundDate!)) {
+                                            Navigator.of(context).pop(
+                                                tempPickedDate ?? Jalali.now());
+                                          } else {
+                                            showDialogError(context,
+                                                'تاریخ و زمان وارد شده باید بعد از تاریخ شروع حرکت باشد');
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    height: 0,
+                                    thickness: 1,
+                                  ),
+                                  Expanded(
+                                    child: CupertinoTheme(
+                                      data: const CupertinoThemeData(
+                                        textTheme: CupertinoTextThemeData(
+                                          dateTimePickerTextStyle:
+                                          TextStyle(fontFamily: "Kalameh"),
+                                        ),
+                                      ),
+                                      child: PCupertinoDatePicker(
+                                        mode: PCupertinoDatePickerMode.dateAndTime,
+                                        onDateTimeChanged: (Jalali dateTime) {
+                                          tempPickedDate = dateTime;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                        if (pickedDate?.day == null) {
+                          widget.ticket?.inboundDate = Jalali.now();
+                        } else {
+                          widget.ticket?.inboundDate = pickedDate!;
+                        }
+                        setState(() {});
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        height: 50,
+                        padding: const EdgeInsets.only(left: 10, right: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.black38,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.calendar_today_outlined,
+                              color: Colors.black45,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              widget.ticket!.inboundTimeAndDateString,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  child: TextFormField(
+                    style: const TextStyle(color: Colors.black54),
+                    validator: (value) {
+                      if (value == null || value.isEmpty || int.tryParse(value) == null || int.tryParse(value) == 0) {
+                        return 'قیمت رو به صورت یک عدد صحیح به تومان وارد کنید';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        widget.ticket?.price = int.parse(value);
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'قیمت',
+                      hintStyle: const TextStyle(color: Colors.black54),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () async {
-                    // رفت
-                    var pickedDate = await showModalBottomSheet<Jalali>(
-                      context: context,
-                      builder: (context) {
-                        Jalali? tempPickedDate = widget.ticket?.inboundDate;
-                        return SizedBox(
-                          height: 250,
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  CupertinoButton(
-                                    child: const Text(
-                                      'لغو',
-                                      style: TextStyle(
-                                        fontFamily: 'Kalameh',
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  CupertinoButton(
-                                    child: const Text(
-                                      'تایید',
-                                      style: TextStyle(
-                                        fontFamily: 'Kalameh',
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      if (tempPickedDate!
-                                          .isAfter(widget.ticket!.outboundDate!)) {
-                                        Navigator.of(context).pop(
-                                            tempPickedDate ?? Jalali.now());
-                                      } else {
-                                        showDialogError(context,
-                                            'تاریخ و زمان وارد شده باید بعد از تاریخ شروع حرکت باشد');
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const Divider(
-                                height: 0,
-                                thickness: 1,
-                              ),
-                              Expanded(
-                                child: CupertinoTheme(
-                                  data: const CupertinoThemeData(
-                                    textTheme: CupertinoTextThemeData(
-                                      dateTimePickerTextStyle:
-                                          TextStyle(fontFamily: "Kalameh"),
-                                    ),
-                                  ),
-                                  child: PCupertinoDatePicker(
-                                    mode: PCupertinoDatePickerMode.dateAndTime,
-                                    onDateTimeChanged: (Jalali dateTime) {
-                                      tempPickedDate = dateTime;
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                    if (pickedDate?.day == null) {
-                      widget.ticket?.inboundDate = Jalali.now();
-                    } else {
-                      widget.ticket?.inboundDate = pickedDate!;
-                    }
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    height: 50,
-                    padding: const EdgeInsets.only(left: 10, right: 15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.black38,
-                        width: 1,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  child: TextFormField(
+                    style: const TextStyle(color: Colors.black54),
+                    validator: (value) {
+                      if (value == null || value.isEmpty || int.tryParse(value) == null || int.tryParse(value) == 0) {
+                        return 'ظرفیت باید به صورت یک عدد صحیح باشد';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        widget.ticket?.remainingSeats = int.parse(value);
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'ظرفیت',
+                      hintStyle: const TextStyle(color: Colors.black54),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.calendar_today_outlined,
-                          color: Colors.black45,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          widget.ticket!.inboundTimeAndDateString,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  child: TextFormField(
+                    style: const TextStyle(color: Colors.black54),
+                    validator: (value) {
+                      if (value!.length > 40) {
+                        return 'توضیحات بلیط نباید بیشتر از 40 کاراکتر باشد';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        widget.ticket?.from = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'توضیحات بلیط',
+                      hintStyle: const TextStyle(color: Colors.black54),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  child: TextFormField(
+                    style: const TextStyle(color: Colors.black54),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'تگ‌های بلیط را وارد کنید';
+                      }
+                      // count , in value
+                      var cnt = 0;
+                      for (int i = 0; i < value.length; i++) {
+                        if (value[i] == ',') {
+                          cnt++;
+                        }
+                      }
+                      if (cnt > 3) {
+                        return 'تگ‌های بلیط باید حداکثر ۴ تگ باشد';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        var splitByComma = value.split(',');
+                        widget.ticket?.tags = splitByComma;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'تگ‌های بلیط',
+                      hintStyle: const TextStyle(color: Colors.black54),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
                   ),
                 ),

@@ -614,7 +614,6 @@ class _ResultPageState extends State<ResultPage> {
     return GestureDetector(
       onTap: () {
         if (ticket.remainingSeats > 0) {
-          // print('hi bitch');
           Navigator.push(
             context,
             MaterialPageRoute(

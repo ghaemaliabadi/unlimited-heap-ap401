@@ -30,8 +30,10 @@ class Ticket {
   List<String> tags;
 
   String get outboundTimeString => convertEnToFa("${outboundDate?.hour}:${outboundDate?.minute}");
+  String get outboundTimeAndDateString => convertEnToFa("${outboundDate?.hour}:${outboundDate?.minute} - ${outboundDate?.formatter.wN} ${outboundDate?.formatter.dd} ${outboundDate?.formatter.mN}");
 
   String get inboundTimeString => convertEnToFa("${inboundDate?.hour}:${inboundDate?.minute}");
+  String get inboundTimeAndDateString => convertEnToFa("${inboundDate?.hour}:${inboundDate?.minute} - ${inboundDate?.formatter.wN} ${inboundDate?.formatter.dd} ${inboundDate?.formatter.mN}");
   var numberFormat = NumberFormat("###,###", "en_US");
   String get priceString => convertEnToFa(numberFormat.format(price));
   String get dateString {

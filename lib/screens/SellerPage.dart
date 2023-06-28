@@ -5,6 +5,7 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../models/company.dart';
 import '../models/ticket.dart';
+import 'AddNewTicket.dart';
 
 class SellerPage extends StatefulWidget {
   const SellerPage({super.key});
@@ -119,7 +120,8 @@ class _SellerPageState extends State<SellerPage> {
                         value) => tickets),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Expanded(child: buildListViewForCards());
+                        // return Expanded(child: buildListViewForCards());
+                        return buildListViewForCards();
                       } else {
                         return Padding(
                           padding: const EdgeInsets.only(top: 100.0),
@@ -142,7 +144,13 @@ class _SellerPageState extends State<SellerPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      _showSnackBar(context, 'ثبت بلیط جدید');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AddNewTicket(title: 'ثبت بلیط جدید',),
+                        ),
+                      );
                     },
                     child: buildButton('ثبت بلیط جدید'),
                   ),

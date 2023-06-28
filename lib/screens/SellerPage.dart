@@ -22,7 +22,7 @@ class _SellerPageState extends State<SellerPage> {
   List<Ticket> tickets = [
     Ticket(
       ticketID: 1,
-      transportBy: 'هواپیما',
+      transportBy: 'پرواز داخلی',
       from: 'تهران',
       to: 'مشهد',
       outboundDate: Jalali(1401, 3, 15, 12, 30),
@@ -35,7 +35,7 @@ class _SellerPageState extends State<SellerPage> {
     ),
     Ticket(
       ticketID: 2,
-      transportBy: 'هواپیما',
+      transportBy: 'پرواز داخلی',
       from: 'تهران',
       to: 'مشهد',
       outboundDate: Jalali(1401, 3, 15, 14, 20),
@@ -48,7 +48,7 @@ class _SellerPageState extends State<SellerPage> {
     ),
     Ticket(
       ticketID: 3,
-      transportBy: 'هواپیما',
+      transportBy: 'پرواز داخلی',
       from: 'تهران',
       to: 'مشهد',
       outboundDate: Jalali(1401, 3, 15, 15, 30),
@@ -61,7 +61,7 @@ class _SellerPageState extends State<SellerPage> {
     ),
     Ticket(
       ticketID: 4,
-      transportBy: 'هواپیما',
+      transportBy: 'پرواز داخلی',
       from: 'تهران',
       to: 'مشهد',
       outboundDate: Jalali(1401, 3, 15, 18, 20),
@@ -74,7 +74,7 @@ class _SellerPageState extends State<SellerPage> {
     ),
     Ticket(
       ticketID: 5,
-      transportBy: 'هواپیما',
+      transportBy: 'پرواز داخلی',
       from: 'تهران',
       to: 'مشهد',
       outboundDate: Jalali(1401, 3, 15, 18, 20),
@@ -295,7 +295,13 @@ class _SellerPageState extends State<SellerPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _showSnackBar(context, 'ویرایش بلیط');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AddNewTicket(title: 'ویرایش بلیط شماره  ${ticket.ticketID}', ticket: ticket,),
+                          ),
+                        );
                       },
                       child: Container(
                         width: 40.0,

@@ -1,12 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:unlimited_heap_ap401/screens/ProjectMainPage.dart';
-
-import 'SellerPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   final String title = 'ورود';
+  static const String ip = "10.0.2.2";
+  static const int port = 1234;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -15,6 +17,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool visiblePassword = false;
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
+                  controller: _emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'لطفا ایمیل را وارد کنید.';
@@ -69,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
+                  controller: _passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'لطفا رمز عبور را وارد کنید.';
@@ -103,22 +109,22 @@ class _LoginPageState extends State<LoginPage> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         // TODO: check username and password with server
                         // TODO: if account type is seller go to seller page
                         // TODO: pass user model to project main page or seller page
                         bool tempIsSeller = true;
-                        if (tempIsSeller) {
-                          _showSnackBar(context, 'ورود به اکانت فروشنده انجام شد.');
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const SellerPage()));
-                        } else {
-                          _showSnackBar(context, 'ورود با موفقیت انجام شد.');
+                        bool serverResponse = await _checkLogin(
+                            _emailController.text, _passwordController.text);
+                        if (serverResponse) {
+                          _showSnackBar(context, 'ورود با موفقیت انجام شد.', false);
                           FocusManager.instance.primaryFocus?.unfocus();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const ProjectMainPage()));
+                        } else {
+                          _showSnackBar(context, 'ایمیل یا رمز عبور اشتباه است.', true);
+                          FocusManager.instance.primaryFocus?.unfocus();
                         }
                       }
                     },
@@ -159,15 +165,34 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-void _showSnackBar(BuildContext context, String message) {
+void _showSnackBar(BuildContext context, String message, bool isError) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: Theme.of(context).textTheme.displaySmall,
+        style: (isError
+            ? Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.red)
+            : Theme.of(context).textTheme.displaySmall
+        ),
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,
     ),
   );
+}
+
+Future<bool> _checkLogin(String email, String password) async {
+  bool response = false;
+  await Socket.connect(LoginPage.ip, LoginPage.port).then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("login-$email-$password*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = String.fromCharCodes(socket).trim().substring(2) == "true";
+      print(response);
+    });
+  }
+  );
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
 }

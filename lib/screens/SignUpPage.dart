@@ -5,15 +5,14 @@ import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({super.key});
+  const SignUpPage({super.key});
 
   final String title = 'ثبت‌نام';
   final String emailRegex =
       "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
       "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
-  static const String ip = "127.0.0.1";
-  static const int port = 444;
-  // final Socket socket = Socket.connect(ip, port) as Socket;
+  static const String ip = "10.0.2.2";
+  static const int port = 1234;
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -23,6 +22,9 @@ class _SignUpPageState extends State<SignUpPage> {
   bool visiblePassword = false;
   bool isSeller = false;
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
+                  controller: _usernameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'لطفا نام کاربری را وارد کنید.';
@@ -76,6 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
+                  controller: _passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'لطفا رمز عبور را وارد کنید.';
@@ -116,6 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: TextFormField(
+                  controller: _emailController,
                   validator: (value) {
                     RegExp regExp = RegExp(widget.emailRegex);
                     if (value == null || value.isEmpty) {
@@ -164,15 +169,22 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        bool serverResponse = await _checkSignUp();
-                        if (serverResponse) {
-                          _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.');
+                        String serverResponse = await _checkSignUp(
+                            _usernameController.text,
+                            _passwordController.text,
+                            _emailController.text,
+                            isSeller);
+                        if (serverResponse == "true") {
+                          _showSnackBar(context, 'ثبت‌نام با موفقیت انجام شد.', false);
                           FocusManager.instance.primaryFocus?.unfocus();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const ProjectMainPage()));
-                        } else {
+                        } else if (serverResponse == "email"){
                           _showSnackBar(context,
-                              'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.');
+                              'ایمیل وارد شده تکراری است. لطفا ایمیل دیگری انتخاب کنید.', true);
+                        } else if (serverResponse == "un") {
+                          _showSnackBar(context,
+                              'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.', true);
                         }
                       }
                     },
@@ -214,12 +226,15 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 }
 
-void _showSnackBar(BuildContext context, String message) {
+void _showSnackBar(BuildContext context, String message, bool isError) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: Theme.of(context).textTheme.displaySmall,
+        style: (isError
+            ? Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.red)
+            : Theme.of(context).textTheme.displaySmall
+        ),
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -227,22 +242,18 @@ void _showSnackBar(BuildContext context, String message) {
   );
 }
 
-Future<bool> _checkSignUp() async {
-  bool response = false;
+Future<String> _checkSignUp(String username, String password, String email, bool isSeller) async {
+  String response = "false";
   await Socket.connect(SignUpPage.ip, SignUpPage.port).then((serverSocket) {
-      print("Connected!");
-      serverSocket.write("signup*");
-      serverSocket.flush();
-      print("Sent data!");
-      serverSocket.listen((socket) {
-        String temp = "";
-        // print("Received data: $socket");
-        for (int i = 2; i < socket.length; i++) {
-          temp += String.fromCharCode(socket[i]);
-        }
-        response = temp.compareTo("true") == 0;
-      });
-    }
+    print("Connected!");
+    serverSocket.write("signup-$isSeller-$username-$password-$email*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = String.fromCharCodes(socket).trim().substring(2);
+      print(response);
+    });
+  }
   );
-  return response;
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
 }

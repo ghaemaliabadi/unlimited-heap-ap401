@@ -29,11 +29,11 @@ class Ticket {
   String description;
   List<String> tags;
 
-  String get outboundTimeString => convertEnToFa("${outboundDate?.hour}:${outboundDate?.minute}");
-  String get outboundTimeAndDateString => convertEnToFa("${outboundDate?.hour}:${outboundDate?.minute} - ${outboundDate?.formatter.wN} ${outboundDate?.formatter.dd} ${outboundDate?.formatter.mN}");
+  String get outboundTimeString => convertEnToFa("${makeNumberTwoDigit(outboundDate!.hour)}:${makeNumberTwoDigit(outboundDate!.minute)}");
+  String get outboundTimeAndDateString => convertEnToFa("$outboundTimeString - ${outboundDate?.formatter.dd} ${outboundDate?.formatter.mN}");
 
-  String get inboundTimeString => convertEnToFa("${inboundDate?.hour}:${inboundDate?.minute}");
-  String get inboundTimeAndDateString => convertEnToFa("${inboundDate?.hour}:${inboundDate?.minute} - ${inboundDate?.formatter.wN} ${inboundDate?.formatter.dd} ${inboundDate?.formatter.mN}");
+  String get inboundTimeString => convertEnToFa("${makeNumberTwoDigit(inboundDate!.hour)}:${makeNumberTwoDigit(inboundDate!.minute)}");
+  String get inboundTimeAndDateString => convertEnToFa("$inboundTimeString - ${inboundDate?.formatter.dd} ${inboundDate?.formatter.mN}");
   var numberFormat = NumberFormat("###,###", "en_US");
   String get priceString => convertEnToFa(numberFormat.format(price));
   String get dateString {
@@ -54,4 +54,11 @@ convertEnToFa(String txt) {
       .replaceAll('7', '۷')
       .replaceAll('8', '۸')
       .replaceAll('9', '۹');
+}
+
+makeNumberTwoDigit(int number) {
+  if (number < 10) {
+    return "0$number";
+  }
+  return number;
 }

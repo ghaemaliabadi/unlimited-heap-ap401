@@ -26,22 +26,23 @@ class _AddNewTicketState extends State<AddNewTicket> {
   @override
   void initState() {
     widget.ticket ??= Ticket(
-        ticketID: 0,
-        transportBy: 'پرواز داخلی',
-        from: '',
-        to: '',
-        outboundDate: Jalali.now(),
-        inboundDate: Jalali.now(),
-        company: Company(
-          'آسمان',
-        ),
-        price: 0,
-        remainingSeats: 0,
-        description: '',
-        tags: [],
-      );
+      ticketID: 0,
+      transportBy: 'پرواز داخلی',
+      from: '',
+      to: '',
+      outboundDate: Jalali.now(),
+      inboundDate: Jalali.now(),
+      company: Company(
+        'آسمان',
+      ),
+      price: 0,
+      remainingSeats: 0,
+      description: '',
+      tags: [],
+    );
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,15 +64,16 @@ class _AddNewTicketState extends State<AddNewTicket> {
                   child: TextFormField(
                     style: const TextStyle(color: Colors.black54),
                     validator: (value) {
-                      if (value == null || value.isEmpty || int.parse(value) < 0) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          int.parse(value) < 0) {
                         return 'کد بلیط باید یک عدد باشد';
                       }
                       return null;
                     },
                     onChanged: (value) {
                       setState(() {
-                        widget.ticket?.ticketID =
-                            int.parse(value);
+                        widget.ticket?.ticketID = int.parse(value);
                       });
                     },
                     decoration: InputDecoration(
@@ -131,8 +133,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                     ],
                     onChanged: (value) {
                       setState(() {
-                        widget.ticket?.transportBy =
-                            value!;
+                        widget.ticket?.transportBy = value!;
                       });
                     },
                   ),
@@ -157,8 +158,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                     },
                     onChanged: (value) {
                       setState(() {
-                        widget.ticket?.from =
-                            value;
+                        widget.ticket?.from = value;
                       });
                     },
                     decoration: InputDecoration(
@@ -182,8 +182,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                     },
                     onChanged: (value) {
                       setState(() {
-                        widget.ticket?.from =
-                            value;
+                        widget.ticket?.from = value;
                       });
                     },
                     decoration: InputDecoration(
@@ -205,23 +204,25 @@ class _AddNewTicketState extends State<AddNewTicket> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                      // رفت
+                    // رفت
                     var pickedDate = await showModalBottomSheet<Jalali>(
                       context: context,
                       builder: (context) {
-                        Jalali? tempPickedDate;
+                        Jalali? tempPickedDate = widget.ticket?.outboundDate;
                         return SizedBox(
                           height: 250,
                           child: Column(
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   CupertinoButton(
                                     child: const Text(
                                       'لغو',
                                       style: TextStyle(
                                         fontFamily: 'Kalameh',
+                                        fontSize: 20,
                                       ),
                                     ),
                                     onPressed: () {
@@ -233,10 +234,18 @@ class _AddNewTicketState extends State<AddNewTicket> {
                                       'تایید',
                                       style: TextStyle(
                                         fontFamily: 'Kalameh',
+                                        fontSize: 20,
                                       ),
                                     ),
                                     onPressed: () {
-                                      Navigator.of(context).pop(tempPickedDate ?? Jalali.now());
+                                      if (tempPickedDate!
+                                          .isAfter(Jalali.now())) {
+                                        Navigator.of(context).pop(
+                                            tempPickedDate ?? Jalali.now());
+                                      } else {
+                                        showDialogError(context,
+                                            'تاریخ وارد شده باید بعد از تاریخ امروز باشد');
+                                      }
                                     },
                                   ),
                                 ],
@@ -249,7 +258,8 @@ class _AddNewTicketState extends State<AddNewTicket> {
                                 child: CupertinoTheme(
                                   data: const CupertinoThemeData(
                                     textTheme: CupertinoTextThemeData(
-                                      dateTimePickerTextStyle: TextStyle(fontFamily: "Kalameh"),
+                                      dateTimePickerTextStyle:
+                                          TextStyle(fontFamily: "Kalameh"),
                                     ),
                                   ),
                                   child: PCupertinoDatePicker(
@@ -265,9 +275,12 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         );
                       },
                     );
-                    widget.ticket?.outboundDate = pickedDate;
-                    setState(() {
-                    });
+                    if (pickedDate?.day == null) {
+                      widget.ticket?.outboundDate = Jalali.now();
+                    } else {
+                      widget.ticket?.outboundDate = pickedDate;
+                    }
+                    setState(() {});
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.45,
@@ -298,23 +311,25 @@ class _AddNewTicketState extends State<AddNewTicket> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                      // رفت
+                    // رفت
                     var pickedDate = await showModalBottomSheet<Jalali>(
                       context: context,
                       builder: (context) {
-                        Jalali? tempPickedDate;
+                        Jalali? tempPickedDate = widget.ticket?.inboundDate;
                         return SizedBox(
                           height: 250,
                           child: Column(
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   CupertinoButton(
                                     child: const Text(
                                       'لغو',
                                       style: TextStyle(
                                         fontFamily: 'Kalameh',
+                                        fontSize: 20,
                                       ),
                                     ),
                                     onPressed: () {
@@ -326,10 +341,18 @@ class _AddNewTicketState extends State<AddNewTicket> {
                                       'تایید',
                                       style: TextStyle(
                                         fontFamily: 'Kalameh',
+                                        fontSize: 20,
                                       ),
                                     ),
                                     onPressed: () {
-                                      Navigator.of(context).pop(tempPickedDate ?? Jalali.now());
+                                      if (tempPickedDate!
+                                          .isAfter(Jalali.now())) {
+                                        Navigator.of(context).pop(
+                                            tempPickedDate ?? Jalali.now());
+                                      } else {
+                                        showDialogError(context,
+                                            'تاریخ وارد شده باید بعد از تاریخ امروز باشد');
+                                      }
                                     },
                                   ),
                                 ],
@@ -342,7 +365,8 @@ class _AddNewTicketState extends State<AddNewTicket> {
                                 child: CupertinoTheme(
                                   data: const CupertinoThemeData(
                                     textTheme: CupertinoTextThemeData(
-                                      dateTimePickerTextStyle: TextStyle(fontFamily: "Kalameh"),
+                                      dateTimePickerTextStyle:
+                                          TextStyle(fontFamily: "Kalameh"),
                                     ),
                                   ),
                                   child: PCupertinoDatePicker(
@@ -358,10 +382,12 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         );
                       },
                     );
+                    if (pickedDate?.day == null) {
+                      widget.ticket?.inboundDate = Jalali.now();
+                    } else {
                       widget.ticket?.inboundDate = pickedDate!;
-                    setState(() {
-
-                    });
+                    }
+                    setState(() {});
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.45,
@@ -399,19 +425,6 @@ class _AddNewTicketState extends State<AddNewTicket> {
   }
 }
 
-void _showSnackBar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        message,
-        style: Theme.of(context).textTheme.displaySmall,
-      ),
-      duration: const Duration(seconds: 1),
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-    ),
-  );
-}
-
 convertEnToFa(txt) {
   txt = txt.toString();
   return txt
@@ -425,4 +438,28 @@ convertEnToFa(txt) {
       .replaceAll('7', '۷')
       .replaceAll('8', '۸')
       .replaceAll('9', '۹');
+}
+
+Future<dynamic> showDialogError(BuildContext context, String errorText) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        // shadow
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        title: const Text('خطا'),
+        content: Text(errorText, style: Theme.of(context).textTheme.bodyLarge),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('تایید'),
+          ),
+        ],
+      );
+    },
+  );
 }

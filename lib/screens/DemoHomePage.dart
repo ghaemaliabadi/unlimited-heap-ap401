@@ -41,7 +41,7 @@ class _DemoHomePageState extends State<DemoHomePage> {
             buildElevatedButtonWithRedirect(
                 context, 'حساب کاربری', const AccountPage()),
             buildElevatedButtonWithRedirect(
-                context, 'صفحه فروشندگان', const SellerPage()),
+                context, 'صفحه فروشندگان', SellerPage()),
           ],
         ),
       ),

@@ -151,8 +151,8 @@ class _LoginPageState extends State<LoginPage> {
                                 builder: (context) =>
                                 (
                                     isSeller
-                                        ? const SellerPage()
-                                        : ProjectMainPage(user: user)
+                                    ? SellerPage(user: user)
+                                    : ProjectMainPage(user: user)
                                 )
                               )
                             );

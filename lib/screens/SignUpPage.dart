@@ -190,8 +190,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 builder: (context) =>
                                 (
                                     isSeller
-                                        ? const SellerPage()
-                                        : ProjectMainPage(user: user)
+                                    ? SellerPage(user: user)
+                                    : ProjectMainPage(user: user)
                                 )
                             )
                             );

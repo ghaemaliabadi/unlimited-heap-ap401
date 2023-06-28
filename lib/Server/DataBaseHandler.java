@@ -20,7 +20,7 @@ public class DataBaseHandler {
                         rows.add(thisRow);
                     }
                 } else {
-                    if (thisRow.split("-")[2].equals(key)) {
+                    if (thisRow.split("-")[3].equals(key)) {
                         rows.add(thisRow);
                     }
                 }
@@ -40,7 +40,7 @@ public class DataBaseHandler {
             String thisRow;
             while (reader.hasNextLine()) {
                 thisRow = reader.nextLine();
-                if (thisRow.split("-")[2].equals(email)) {
+                if (thisRow.split("-")[3].equals(email)) {
                     flag = true;
                     break;
                 }

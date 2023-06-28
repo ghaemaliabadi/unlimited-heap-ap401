@@ -71,16 +71,12 @@ class RequestHandler extends Thread {
         String response = "";
         switch (dataArr[0]) {
             case "signup":
-                if (dataArr[1].equals("false")) {   // signup-false-... => client signup
-                    ClientAccount clientAccount = new ClientAccount();
-                    response = String.valueOf(clientAccount.signup(dataArr[2], dataArr[3], dataArr[4]));
-                } else if (dataArr[1].equals("true")) {   // signup-true-... => seller signup
-
-                }
+                AccountManagement accountManagement = new AccountManagement();
+                response = String.valueOf(accountManagement.signup(dataArr[1], dataArr[2], dataArr[3], dataArr[4]));
                 break;
             case "login":
-                ClientAccount clientAccount = new ClientAccount();
-                response = String.valueOf(clientAccount.login(dataArr[1], dataArr[2]));
+                accountManagement = new AccountManagement();
+                response = String.valueOf(accountManagement.login(dataArr[1], dataArr[2], dataArr[3]));
                 break;
             default:
                 response = "false";

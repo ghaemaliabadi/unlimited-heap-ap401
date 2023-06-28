@@ -1,7 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:unlimited_heap_ap401/screens/ProjectMainPage.dart';
+
+import 'ProjectMainPage.dart';
+import 'SellerPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,6 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool visiblePassword = false;
+  bool isSeller = false;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -103,6 +105,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: isSeller,
+                      onChanged: (value) {
+                        isSeller = value!;
+                        setState(() {});
+                      },
+                      activeColor: Theme.of(context).colorScheme.primary,
+                    ),
+                    Text('ورود به عنوان فروشنده',
+                        style: Theme.of(context).textTheme.displaySmall),
+                  ],
+                ),
+              ),
               // submit button
               Expanded(
                 flex: 3,
@@ -111,17 +131,23 @@ class _LoginPageState extends State<LoginPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // TODO: check username and password with server
-                        // TODO: if account type is seller go to seller page
                         // TODO: pass user model to project main page or seller page
-                        bool tempIsSeller = true;
                         bool serverResponse = await _checkLogin(
-                            _emailController.text, _passwordController.text);
+                            _emailController.text,
+                            _passwordController.text,
+                            isSeller
+                        );
                         if (serverResponse) {
                           _showSnackBar(context, 'ورود با موفقیت انجام شد.', false);
                           FocusManager.instance.primaryFocus?.unfocus();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const ProjectMainPage()));
+                              builder: (context) => (
+                                  isSeller
+                                  ? const SellerPage()
+                                  : const ProjectMainPage()
+                              )
+                            )
+                          );
                         } else {
                           _showSnackBar(context, 'ایمیل یا رمز عبور اشتباه است.', true);
                           FocusManager.instance.primaryFocus?.unfocus();
@@ -181,11 +207,11 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
   );
 }
 
-Future<bool> _checkLogin(String email, String password) async {
+Future<bool> _checkLogin(String email, String password, bool isSeller) async {
   bool response = false;
   await Socket.connect(LoginPage.ip, LoginPage.port).then((serverSocket) {
     print("Connected!");
-    serverSocket.write("login-$email-$password*");
+    serverSocket.write("login-$isSeller-$email-$password*");
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {

@@ -1,3 +1,6 @@
+import 'dart:convert' show utf8;
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -572,7 +575,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                           },
                           onChanged: (value) {
                             setState(() {
-                              widget.ticket?.from = value;
+                              widget.ticket?.description = value;
                             });
                           },
                           decoration: InputDecoration(
@@ -616,8 +619,8 @@ class _AddNewTicketState extends State<AddNewTicket> {
                           onChanged: (value) {
                             setState(() {
                               value = value.replaceAll('،', ',');
-                              value = value.replaceAll(', ', '');
-                              value = value.replaceAll(' ,', '');
+                              value = value.replaceAll(', ', ',');
+                              value = value.replaceAll(' ,', ',');
                               var splitByComma = value.split(',');
                               widget.ticket?.tags = splitByComma;
                             });
@@ -639,27 +642,60 @@ class _AddNewTicketState extends State<AddNewTicket> {
                   width: MediaQuery.of(context).size.width * 0.93,
                   height: 54.0,
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // run validators
                       if (_formKey.currentState!.validate()) {
+                        var isEdit = false;
                         if (widget.title.contains('ویرایش')) {
-                          // TODO: edit ticket on server
-                        } else {
-                          // TODO: check repeat ticket on server and add it
+                          isEdit = true;
                         }
-                        // Navigator.of(context).pop();
-                        FocusScope.of(context).unfocus();
-                        Future.delayed(const Duration(milliseconds: 200), () {
-                          Navigator.pushReplacement(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder: (context, animation1, animation2) =>
-                                    SellerPage(
-                                      user: widget.user,
-                                    )),
-                          );
-                        });
-                        print('validate success');
+                        String serverResponse = await _addTicket(
+                          // ignore: prefer_interpolation_to_compose_strings
+                            widget.ticket!.ticketID.toString() + '-' +
+                                widget.ticket!.transportBy + '-' +
+                                widget.ticket!.from + '-' +
+                                widget.ticket!.to + '-' +
+                                widget.ticket!.outboundDate!.year.toString() + '-' +
+                                widget.ticket!.outboundDate!.month.toString() + '-' +
+                                widget.ticket!.outboundDate!.day.toString() + '-' +
+                                widget.ticket!.outboundDate!.hour.toString() + '-' +
+                                widget.ticket!.outboundDate!.minute.toString() + '-' +
+                                widget.ticket!.inboundDate!.year.toString() + '-' +
+                                widget.ticket!.inboundDate!.month.toString() + '-' +
+                                widget.ticket!.inboundDate!.day.toString() + '-' +
+                                widget.ticket!.inboundDate!.hour.toString() + '-' +
+                                widget.ticket!.inboundDate!.minute.toString() + '-' +
+                                widget.user!.firstName! + '-' +
+                                widget.ticket!.price.toString() + '-' +
+                                widget.ticket!.remainingSeats.toString() + '-' +
+                                widget.ticket!.description +
+                                widget.ticket!.tagsString,
+                            isEdit
+                        );
+                        if (serverResponse == "true") {
+                          // Navigator.of(context).pop();
+                          // ignore: use_build_context_synchronously
+                          FocusScope.of(context).unfocus();
+                          Future.delayed(const Duration(milliseconds: 200), () {
+                            Navigator.pushReplacement(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (context, animation1, animation2) =>
+                                      SellerPage(
+                                        user: widget.user,
+                                      )),
+                            );
+                          });
+                          print('validate success');
+                        } else {
+                          if (serverResponse == "code is not unique") {
+                            // ignore: use_build_context_synchronously
+                            showDialogError(context, "کد بلیط تکراری است");
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            showDialogError(context, serverResponse);
+                          }
+                        }
                       } else {
                         print('validate failed');
                       }
@@ -734,5 +770,41 @@ Future<dynamic> showDialogError(BuildContext context, String errorText) {
         ],
       );
     },
+  );
+}
+
+Future<String> _addTicket(str, isEdit) async {
+  String response = "false";
+  await Socket.connect(SellerPage.ip, SellerPage.port).then((serverSocket) {
+    print("Connected!");
+    if (isEdit) {
+    serverSocket.write("editTicket-$str*");
+    } else {
+    serverSocket.write("addTicket-$str*");
+    }
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+    });
+  });
+  return Future.delayed(const Duration(milliseconds: 1000), () => response);
+}
+
+void _showSnackBar(BuildContext context, String message, bool isError) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: (isError
+            ? Theme.of(context)
+            .textTheme
+            .displaySmall
+            ?.copyWith(color: Colors.red)
+            : Theme.of(context).textTheme.displaySmall),
+      ),
+      duration: const Duration(seconds: 1),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+    ),
   );
 }

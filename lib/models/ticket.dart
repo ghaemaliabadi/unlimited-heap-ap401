@@ -29,6 +29,19 @@ class Ticket {
   String description;
   List<String> tags;
 
+  String get tagsString {
+    var str = "";
+    for (int i = 0; i < 4; i++) {
+      str += "-";
+      if (i < tags.length) {
+        str += tags[i];
+      } else {
+        str += 'null';
+      }
+    }
+    return str;
+  }
+
   String get outboundTimeString => convertEnToFa("${makeNumberTwoDigit(outboundDate!.hour)}:${makeNumberTwoDigit(outboundDate!.minute)}");
   String get outboundTimeAndDateString => convertEnToFa("$outboundTimeString - ${outboundDate?.formatter.dd} ${outboundDate?.formatter.mN}");
 

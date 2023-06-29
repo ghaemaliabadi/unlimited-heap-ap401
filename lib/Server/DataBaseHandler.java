@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class DataBaseHandler {
@@ -58,13 +59,14 @@ public class DataBaseHandler {
             Scanner reader = new Scanner(file);
             String thisRow;
             while (reader.hasNextLine()) {
+                System.out.println("Hi " + companyName);
                 thisRow = reader.nextLine();
-                if (companyName != "all") {
+                if (!Objects.equals(companyName, "all")) {
                     if (thisRow.split("-")[14].equals(companyName)) {
                         rows.add(thisRow);
-                    } else {
-                        rows.add(thisRow);
                     }
+                } else {
+                    rows.add(thisRow);
                 }
             }
         } catch (Exception e) {

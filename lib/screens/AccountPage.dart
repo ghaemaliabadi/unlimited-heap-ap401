@@ -781,9 +781,9 @@ class _AccountPageState extends State<AccountPage> {
                               height: pageHeight * 0.05,
                               child: TextFormField(
                                 onChanged: (value) {
-                                  FocusManager.instance.primaryFocus?.unfocus();
                                   idSearch = value;
                                   _runIdSearch(value);
+                                  // FocusManager.instance.primaryFocus?.unfocus();
                                 },
                                 keyboardType: TextInputType.number,
                                 style: Theme.of(context).textTheme.headlineMedium,

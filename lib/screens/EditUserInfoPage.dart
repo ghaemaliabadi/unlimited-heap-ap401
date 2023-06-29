@@ -37,31 +37,36 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
             margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 35.0),
             child: Column(
               children: [
-                TextFormField(
-                  style: Theme.of(context).textTheme.displaySmall,
+                SizedBox(
+                  width: pageWidth * 0.85,
+                  child: TextFormField(
+                    style: Theme.of(context).textTheme.displaySmall,
+                      decoration: InputDecoration(
+                        alignLabelWithHint: true,
+                        labelText: 'نام',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                  ),
+                ),
+                SizedBox(height: pageHeight * 0.03,),
+                SizedBox(
+                  width: pageWidth * 0.85,
+                  child: TextFormField(
+                    style: Theme.of(context).textTheme.displaySmall,
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
-                      labelText: 'نام',
+                      labelText: 'نام خانوادگی',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                ),
-                SizedBox(height: pageHeight * 0.03,),
-                TextFormField(
-                  style: Theme.of(context).textTheme.displaySmall,
-                  decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    labelText: 'نام خانوادگی',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
                   ),
                 ),
                 SizedBox(height: pageHeight * 0.03,),
-                // form for birthdate
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
                       width: pageWidth * 0.4,
@@ -96,7 +101,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                 ),
                 SizedBox(height: pageHeight * 0.03,),
                 SizedBox(
-                  width: pageWidth * 0.9,
+                  width: pageWidth * 0.85,
                   height: pageHeight * 0.03,
                   child: Text(
                     'تاریخ تولد',
@@ -109,7 +114,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: pageWidth * 0.28,
+                      width: (pageWidth * 0.85) / 3,
                       child: DropdownButtonFormField(
                         decoration: const InputDecoration(
                           alignLabelWithHint: true,
@@ -140,7 +145,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     ),
                     // SizedBox(width: pageWidth * 0.05,),
                     SizedBox(
-                      width: pageWidth * 0.28,
+                      width: (pageWidth * 0.85) / 3,
                       child: DropdownButtonFormField(
                         decoration: const InputDecoration(
                           alignLabelWithHint: true,
@@ -168,7 +173,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     ),
                     // SizedBox(width: pageWidth * 0.05,),
                     SizedBox(
-                      width: pageWidth * 0.28,
+                      width: (pageWidth * 0.85) / 3,
                       child: DropdownButtonFormField(
                         decoration: const InputDecoration(
                           alignLabelWithHint: true,

@@ -70,7 +70,7 @@ class RequestHandler extends Thread {
         String data = listener();
         System.out.println("data is: " + data);
         String[] dataArr = data.split("-");
-        String response = "";
+        String response;
         switch (dataArr[0]) {
             case "signup":
                 AccountManagement accountManagement = new AccountManagement();

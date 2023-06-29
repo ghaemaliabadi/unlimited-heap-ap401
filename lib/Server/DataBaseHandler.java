@@ -2,6 +2,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
+import java.io.FileWriter;
 
 public class DataBaseHandler {
     String fileName;
@@ -93,5 +94,38 @@ public class DataBaseHandler {
             System.out.println("File not found!");
         }
         return flag;
+    }
+
+    void write(String data) {
+        try {
+            File file = new File(fileName);
+            java.io.FileWriter writer = new java.io.FileWriter(file, true);
+            writer.write(data);
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("File not found!");
+        }
+    }
+
+    void deleteRow(String username) {
+        try {
+            File file = new File(fileName);
+            Scanner reader = new Scanner(file);
+            String thisRow;
+            ArrayList<String> rows = new ArrayList<>();
+            while (reader.hasNextLine()) {
+                thisRow = reader.nextLine();
+                if (!thisRow.split("-")[0].equals(username)) {
+                    rows.add(thisRow);
+                }
+            }
+            FileWriter writer = new FileWriter(file);
+            for (String row : rows) {
+                writer.write(row + "\n");
+            }
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("File not found!");
+        }
     }
 }

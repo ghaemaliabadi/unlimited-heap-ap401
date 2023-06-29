@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../models/userinfo.dart';
 import 'AccountPage.dart';
 import 'LoginPage.dart';
@@ -40,7 +41,19 @@ class _DemoHomePageState extends State<DemoHomePage> {
             buildElevatedButtonWithRedirect(
                 context, 'صفحه اصلی پروژه', ProjectMainPage()),
             buildElevatedButtonWithRedirect(
-                context, 'حساب کاربری', const AccountPage()),
+                context, 'حساب کاربری', AccountPage(
+              user: User(
+                username: 'sample_username',
+                password: 'Aa@010101',
+                email: 'sample@sample.com',
+                balance: '۰',
+                phoneNumber: '۰۹۱۲۳۴۵۶۷۸۹',
+                birthDate: Jalali(1370, 1, 1),
+                firstName: 'محمد',
+                lastName: 'محمدی',
+                nationalID: '0920513',
+              )
+            )),
             buildElevatedButtonWithRedirect(
                 context, 'صفحه فروشندگان', SellerPage(
               user: User(

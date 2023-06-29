@@ -1,3 +1,6 @@
+import 'dart:convert' show utf8;
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:tab_container/tab_container.dart';
@@ -8,24 +11,34 @@ import '../models/userinfo.dart';
 import '../models/tripsTaken.dart';
 import '../models/transfer.dart';
 
-
+// ignore: must_be_immutable
 class AccountPage extends StatefulWidget {
-  const AccountPage({super.key});
+  User? user;
+
+  AccountPage(
+      {Key? key,
+        this.user,
+      })
+      : super(key: key);
+
+  static const String ip = "10.0.2.2";
+  static const int port = 1234;
+
   @override
   State<AccountPage> createState() => _AccountPageState();
 }
 
-User sampleUser = User(
-  username: 'sample_username',
-  password: 'Aa@010101',
-  email: 'sample@sample.com',
-  balance: '۰',
-  phoneNumber: '۰۹۱۲۳۴۵۶۷۸۹',
-  birthDate: Jalali(1370, 1, 1),
-  firstName: 'محمد',
-  lastName: 'محمدی',
-  nationalID: '0920513',
-);
+// User sampleUser = User(
+//   username: 'sample_username',
+//   password: 'Aa@010101',
+//   email: 'sample@sample.com',
+//   balance: '۰',
+//   phoneNumber: '۰۹۱۲۳۴۵۶۷۸۹',
+//   birthDate: Jalali(1370, 1, 1),
+//   firstName: 'محمد',
+//   lastName: 'محمدی',
+//   nationalID: '0920513',
+// );
 
 List<TakenTrip> takenTrips = [
   TakenTrip(
@@ -178,7 +191,7 @@ String startingDateLabel = 'از تاریخ';
 String endingDateLabel = 'تا تاریخ';
 Jalali startingDateSearch = Jalali(1380, 1, 1);
 Jalali endingDateSearch = Jalali.now();
-String IdSearch = '';
+String idSearch = '';
 
 class _AccountPageState extends State<AccountPage> {
 
@@ -221,12 +234,12 @@ class _AccountPageState extends State<AccountPage> {
     setState(() {
       if (_foundTrips.length < takenTrips.length) {
         _foundTrips = takenTrips.where((trip) =>
-        trip.id.startsWith(IdSearch)
+        trip.id.startsWith(idSearch)
             && trip.date.compareTo(startingDateSearch) >= 0
             && trip.date.compareTo(endingDateSearch) <= 0).toList();
       } else {
         _foundTrips =
-            takenTrips.where((trip) => trip.id.startsWith(IdSearch)).toList();
+            takenTrips.where((trip) => trip.id.startsWith(idSearch)).toList();
       }
     });
   }
@@ -297,7 +310,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   ),
                   Text(
-                    sampleUser.username,
+                    widget.user!.username,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Divider(
@@ -337,13 +350,13 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                               const SizedBox(width: 50.0,),
                               Text(
-                                sampleUser.email,
+                                widget.user!.email,
                                 style: Theme.of(context).textTheme.headlineMedium,
                               ),
                               const SizedBox(width: 30.0,),
                               InkWell(
                                 onTap: () {
-                                  showDialogToEditEmail(context);
+                                  showDialogToEditEmail(context, widget.user);
                                 },
                                 child: Row(
                                   children: [
@@ -373,7 +386,7 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                               SizedBox(width: pageWidth * 0.05,),
                               Text(
-                                '${sampleUser.getBalance()} ریال',
+                                '${widget.user!.getBalance()} ریال',
                                 style: Theme.of(context).textTheme.headlineMedium,
                               ),
                               const SizedBox(width: 30.0),
@@ -430,16 +443,16 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           const SizedBox(height: 20.0,),
                           buildRowForUserInfo(context, 'نام و نام خانوادگی',
-                              sampleUser.getFullName()),
+                              widget.user!.getFullName()),
                           const SizedBox(height: 20.0,),
                           buildRowForUserInfo(context, 'کد ملی',
-                              (sampleUser.getNationalID())),
+                              (widget.user!.getNationalID())),
                           const SizedBox(height: 20.0,),
                           buildRowForUserInfo(context, 'شماره تماس',
-                              (sampleUser.getPhoneNumber())),
+                              (widget.user!.getPhoneNumber())),
                           const SizedBox(height: 20.0,),
                           buildRowForUserInfo(context, 'تاریخ تولد',
-                              (sampleUser.getBirthDateString())),
+                              (widget.user!.getBirthDateString())),
                         ]
                       ),
                     )
@@ -468,7 +481,7 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           const SizedBox(width: 5.0,),
                           TextButton(
-                            onPressed: () => showDialogToEditPassword(context),
+                            onPressed: () => showDialogToEditPassword(context, widget.user),
                             child: Text(
                               'ویرایش رمز عبور',
                               style: Theme.of(context).textTheme.headlineMedium,
@@ -525,7 +538,7 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                                 const SizedBox(width: 50.0,),
                                 Text(
-                                  '${sampleUser.getBalance()} ریال',
+                                  '${widget.user!.getBalance()} ریال',
                                   style: Theme.of(context).textTheme.labelMedium,
                                 ),
                               ],
@@ -575,10 +588,10 @@ class _AccountPageState extends State<AccountPage> {
                                     SizedBox(width: pageWidth * 0.08),
                                     ElevatedButton(
                                       onPressed: () {
-                                        sampleUser.addBalance(_addBalanceController.text);
+                                        widget.user!.addBalance(_addBalanceController.text);
                                         setState(() {});
                                         FocusManager.instance.primaryFocus?.unfocus();
-                                        _showSnackBar(context, 'موجودی با موفقیت افزایش یافت.');
+                                        _showSnackBar(context, 'موجودی با موفقیت افزایش یافت.', false);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
@@ -625,7 +638,7 @@ class _AccountPageState extends State<AccountPage> {
                                           validator: (value) {
                                             if (value == null || value.isEmpty) {
                                               return 'لطفا مبلغ مورد نظر را وارد کنید.';
-                                            } else if (!sampleUser.checkEnoughBalance(value)) {
+                                            } else if (!widget.user!.checkEnoughBalance(value)) {
                                               _withdrawBalanceController.clear();
                                               return 'موجودی حساب شما کافی نیست.';
                                             }
@@ -649,14 +662,14 @@ class _AccountPageState extends State<AccountPage> {
                                     ElevatedButton(
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
-                                          sampleUser.withdrawBalance(
+                                          widget.user!.withdrawBalance(
                                               _withdrawBalanceController
                                                   .text);
                                           setState(() {});
                                           FocusManager.instance
                                               .primaryFocus?.unfocus();
                                           _showSnackBar(context,
-                                              'موجودی با موفقیت به حساب بانکی شما انتقال یافت.');
+                                              'موجودی با موفقیت به حساب بانکی شما انتقال یافت.', false);
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -755,7 +768,7 @@ class _AccountPageState extends State<AccountPage> {
                               child: TextFormField(
                                 onChanged: (value) {
                                   FocusManager.instance.primaryFocus?.unfocus();
-                                  IdSearch = value;
+                                  idSearch = value;
                                   _runIdSearch(value);
                                 },
                                 keyboardType: TextInputType.number,
@@ -1157,17 +1170,23 @@ Row buildRowForUserInfo(BuildContext context, String title, String? value) {
   );
 }
 
-Future<dynamic> showDialogToEditEmail(BuildContext context) async {
+Future<dynamic> showDialogToEditEmail(BuildContext context, User? user) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return const CustomAlertDialogToEditEmail();
+      return CustomAlertDialogToEditEmail(user: user);
     },
   );
 }
-
+// ignore: must_be_immutable
 class CustomAlertDialogToEditEmail extends StatefulWidget {
-  const CustomAlertDialogToEditEmail({super.key});
+  User? user;
+
+   CustomAlertDialogToEditEmail(
+      {Key? key,
+        this.user,
+      })
+      : super(key: key);
 
   final String emailRegex =
       "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
@@ -1218,12 +1237,23 @@ class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEm
       ),
       actions: [
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              sampleUser.setEmail(_controller.text);
-              setState(() {});
-              _showSnackBar(context, 'ایمیل با موفقیت ویرایش شد.');
-              Navigator.of(context).pop();
+              // widget.user?.setEmail(_controller.text);
+              String serverResponse = await _checkEmailUpdate(widget.user!.username, _controller.text);
+              print(serverResponse);
+              if (context.mounted) {
+                if (serverResponse == 'true') {
+                  setState(() {
+                    widget.user?.setEmail(_controller.text);
+                  });
+                  _showSnackBar(context, 'ایمیل با موفقیت ویرایش شد.', false);
+                  Navigator.of(context).pop();
+                } else {
+                  _showSnackBar(context, 'ایمیل وارد شده تکراری است.', true);
+                  Navigator.of(context).pop();
+                }
+              }
             }
           },
           child: const Text('تایید'),
@@ -1233,17 +1263,39 @@ class _CustomAlertDialogToEditEmailState extends State<CustomAlertDialogToEditEm
   }
 }
 
-Future<dynamic> showDialogToEditPassword(BuildContext context) async {
+Future<String> _checkEmailUpdate(String username, String email) async {
+  String response = "false";
+  await Socket.connect(AccountPage.ip, AccountPage.port).then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("edit-email-$username-$email*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+      print(response);
+    });
+  }
+  );
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
+}
+
+Future<dynamic> showDialogToEditPassword(BuildContext context, User? user) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return const CustomAlertDialogToEditPassword();
+      return CustomAlertDialogToEditPassword(user: user);
     },
   );
 }
-
+// ignore: must_be_immutable
 class CustomAlertDialogToEditPassword extends StatefulWidget {
-  const CustomAlertDialogToEditPassword({super.key});
+  User? user;
+
+   CustomAlertDialogToEditPassword(
+      {Key? key,
+        this.user,
+      })
+      : super(key: key);
 
   @override
   State<CustomAlertDialogToEditPassword> createState() => _CustomAlertDialogToEditPasswordState();
@@ -1278,7 +1330,7 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'لطفا رمز عبور فعلی را وارد کنید.';
-                  } else if (value != sampleUser.password) {
+                  } else if (value != widget.user!.password) {
                     return 'رمز عبور فعلی اشتباه است.';
                   }
                   return null;
@@ -1376,7 +1428,7 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
           TextButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                sampleUser.password = _controller.text;
+                widget.user!.password = _controller.text;
                 Navigator.of(context).pop();
               }
             },
@@ -1404,12 +1456,15 @@ class GoToTransactionsTab extends StatelessWidget {
   }
 }
 
-void _showSnackBar(BuildContext context, String text) {
+void _showSnackBar(BuildContext context, String message, bool isError) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
-        text,
-        style: Theme.of(context).textTheme.displaySmall,
+        message,
+        style: (isError
+            ? Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.red)
+            : Theme.of(context).textTheme.displaySmall
+        ),
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,

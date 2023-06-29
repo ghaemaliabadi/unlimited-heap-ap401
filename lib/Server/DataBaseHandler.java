@@ -99,7 +99,7 @@ public class DataBaseHandler {
     void write(String data) {
         try {
             File file = new File(fileName);
-            java.io.FileWriter writer = new java.io.FileWriter(file, true);
+            FileWriter writer = new java.io.FileWriter(file, true);
             writer.write(data);
             writer.close();
         } catch (Exception e) {

@@ -1426,10 +1426,22 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
         ),
         actions: [
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                widget.user!.password = _controller.text;
-                Navigator.of(context).pop();
+                String serverResponse = await _checkPasswordUpdate(widget.user!.username, _controller.text);
+                print(serverResponse);
+                if (context.mounted) {
+                  if (serverResponse == 'true') {
+                    setState(() {
+                      widget.user?.password = _controller.text;
+                    });
+                    _showSnackBar(context, 'رمز عبور با موفقیت ویرایش شد.', false);
+                    Navigator.of(context).pop();
+                  } else {
+                    _showSnackBar(context, 'لطفا دوباره تلاش کنید.', true);
+                    Navigator.of(context).pop();
+                  }
+                }
               }
             },
             child: const Text('تایید'),
@@ -1437,6 +1449,22 @@ class _CustomAlertDialogToEditPasswordState extends State<CustomAlertDialogToEdi
         ]
     );
   }
+}
+
+Future<String> _checkPasswordUpdate(String username, String password) async {
+  String response = "false";
+  await Socket.connect(AccountPage.ip, AccountPage.port).then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("edit-password-$username-$password*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+      print(response);
+    });
+  }
+  );
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
 }
 
 class GoToTransactionsTab extends StatelessWidget {

@@ -85,12 +85,8 @@ class RequestHandler extends Thread {
                 response = String.valueOf(accountManagement.login(dataArr[1], dataArr[2], dataArr[3]));
                 break;
             case "edit":
-                if (dataArr[1].equals("email")) {
-                    accountManagement = new AccountManagement();
-                    response = String.valueOf(accountManagement.edit(dataArr[1], dataArr[2], dataArr[3]));
-                } else {
-
-                }
+                accountManagement = new AccountManagement();
+                response = String.valueOf(accountManagement.edit(dataArr[1], dataArr[2], dataArr[3]));
                 break;
             case "addTicket":
                 TicketManagement ticketManagement = new TicketManagement();

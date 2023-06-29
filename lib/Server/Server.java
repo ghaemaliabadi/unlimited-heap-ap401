@@ -91,7 +91,10 @@ class RequestHandler extends Thread {
                     String r2 = String.valueOf(accountManagement.edit("lastName", dataArr[2], dataArr[4]));
                     String r3 = String.valueOf(accountManagement.edit("nationalId", dataArr[2], dataArr[5]));
                     String r4 = String.valueOf(accountManagement.edit("phoneNumber", dataArr[2], dataArr[6]));
-                    response = (r1.equals("true") && r2.equals("true") && r3.equals("true") && r4.equals("true") ? "true" : "false");
+                    String r5 = String.valueOf(accountManagement.edit("birthdate", dataArr[2], dataArr[7]));
+                    response = (r1.equals("true") && r2.equals("true") && r3.equals("true") && r4.equals("true") && r5.equals("true")
+                            ? "true"
+                            : "false");
                 } else {
                     response = String.valueOf(accountManagement.edit(dataArr[1], dataArr[2], dataArr[3]));
                 }

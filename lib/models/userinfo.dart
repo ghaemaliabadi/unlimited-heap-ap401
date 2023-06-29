@@ -58,6 +58,10 @@ class User {
     email = text;
   }
 
+  void setBirthDate(int year, String month, int day) {
+    birthDate = Jalali(year, convertMonthToNum(month), day);
+  }
+
   void addBalance(String amount) {
     balance = convertFaToEn(balance ?? '0');
     balance = (int.parse(balance ?? '0') + int.parse(amount)).toString();
@@ -86,4 +90,35 @@ convertFaToEn(String text) {
       .replaceAll('۷', '7')
       .replaceAll('۸', '8')
       .replaceAll('۹', '9');
+}
+
+int convertMonthToNum(String month) {
+  switch (month) {
+    case 'فروردین':
+      return 1;
+    case 'اردیبهشت':
+      return 2;
+    case 'خرداد':
+      return 3;
+    case 'تیر':
+      return 4;
+    case 'مرداد':
+      return 5;
+    case 'شهریور':
+      return 6;
+    case 'مهر':
+      return 7;
+    case 'آبان':
+      return 8;
+    case 'آذر':
+      return 9;
+    case 'دی':
+      return 10;
+    case 'بهمن':
+      return 11;
+    case 'اسفند':
+      return 12;
+    default:
+      return 1;
+  }
 }

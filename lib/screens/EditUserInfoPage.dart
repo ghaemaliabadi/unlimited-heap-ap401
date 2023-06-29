@@ -1,7 +1,21 @@
+import 'dart:convert' show utf8;
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
+import '../models/userinfo.dart';
+
+// ignore: must_be_immutable
 class EditUserInfoPage extends StatefulWidget {
-  const EditUserInfoPage({super.key});
+  User? user;
+
+  EditUserInfoPage({Key? key,
+    this.user,
+  })
+      : super(key: key);
+
+  static const String ip = "10.0.2.2";
+  static const int port = 1234;
 
   @override
   State<EditUserInfoPage> createState() => _EditUserInfoPageState();
@@ -17,6 +31,12 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
   Widget build(BuildContext context) {
     var pageHeight = MediaQuery.of(context).size.height;
     var pageWidth = MediaQuery.of(context).size.width;
+
+    // TODO: change initial value to hint text
+    final firstNameController = TextEditingController(text: widget.user!.firstName);
+    final lastNameController = TextEditingController(text: widget.user!.lastName);
+    final nationalIdController = TextEditingController(text: widget.user!.nationalID);
+    final phoneNumberController = TextEditingController(text: widget.user!.phoneNumber);
 
     return Scaffold(
       // resizeToAvoidBottomInset: false,
@@ -40,6 +60,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                 SizedBox(
                   width: pageWidth * 0.85,
                   child: TextFormField(
+                    controller: firstNameController,
                     style: Theme.of(context).textTheme.displaySmall,
                       decoration: InputDecoration(
                         alignLabelWithHint: true,
@@ -54,6 +75,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                 SizedBox(
                   width: pageWidth * 0.85,
                   child: TextFormField(
+                    controller: lastNameController,
                     style: Theme.of(context).textTheme.displaySmall,
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
@@ -71,6 +93,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     SizedBox(
                       width: pageWidth * 0.4,
                       child: TextFormField(
+                        controller: nationalIdController,
                         keyboardType: TextInputType.number,
                         style: Theme.of(context).textTheme.displaySmall,
                         decoration: InputDecoration(
@@ -86,6 +109,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     SizedBox(
                       width: pageWidth * 0.4,
                       child: TextFormField(
+                        controller: phoneNumberController,
                         keyboardType: TextInputType.number,
                         style: Theme.of(context).textTheme.displaySmall,
                         decoration: InputDecoration(
@@ -99,6 +123,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     ),
                   ],
                 ),
+                // TODO: add birthdate to db
                 SizedBox(height: pageHeight * 0.03,),
                 SizedBox(
                   width: pageWidth * 0.85,
@@ -215,14 +240,34 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: ElevatedButton(
-                      onPressed: () {
-                        _showSnackBar(context, 'اطلاعات با موفقیت ثبت شد.');
-                        Navigator.of(context).pop();
-                        // if (_formKey.currentState!.validate()) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(content: Text('در حال ارسال اطلاعات...')),
-                        //   );
-                        // }
+                      onPressed: () async {
+                        String serverResponse = await _updateUserInfo(
+                          widget.user!.username,
+                          '${firstNameController.text == '' ? 'null' : firstNameController.text}-'
+                              '${lastNameController.text == '' ? 'null' : lastNameController.text}-'
+                              '${nationalIdController.text == '' ? 'null' : nationalIdController.text}-'
+                              '${phoneNumberController.text == '' ? 'null' : phoneNumberController.text}',
+                        );
+                        print(serverResponse);
+                        if (context.mounted) {
+                          if (serverResponse == 'true') {
+                            setState(() {
+                              widget.user!.firstName = firstNameController.text;
+                              widget.user!.lastName = lastNameController.text;
+                              widget.user!.nationalID = nationalIdController.text;
+                              widget.user!.phoneNumber = phoneNumberController.text;
+                            });
+                            _showSnackBar(context, 'اطلاعات با موفقیت ثبت شد.', false);
+                            Navigator.of(context).pop();
+                            // if (_formKey.currentState!.validate()) {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     const SnackBar(content: Text('در حال ارسال اطلاعات...')),
+                            //   );
+                            // }
+                          } else {
+                            _showSnackBar(context, 'خطا در ثبت اطلاعات.', true);
+                          }
+                        }
                       },
                       style: ButtonStyle(
                         minimumSize:
@@ -250,12 +295,31 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
   }
 }
 
-void _showSnackBar(BuildContext context, String message) {
+Future<String> _updateUserInfo(String username, String info) async {
+  String response = "false";
+  await Socket.connect(EditUserInfoPage.ip, EditUserInfoPage.port).then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("edit-all-$username-$info*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+      print(response);
+    });
+  }
+  );
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
+}
+
+void _showSnackBar(BuildContext context, String message, bool isError) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: Theme.of(context).textTheme.displaySmall,
+        style: (isError
+            ? Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.red)
+            : Theme.of(context).textTheme.displaySmall
+        ),
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,

@@ -421,7 +421,9 @@ class _AccountPageState extends State<AccountPage> {
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => const EditUserInfoPage(),
+                                      builder: (context) => EditUserInfoPage(
+                                        user: widget.user,
+                                      ),
                                     ),
                                   );
                                 },

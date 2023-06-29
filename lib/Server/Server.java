@@ -86,7 +86,15 @@ class RequestHandler extends Thread {
                 break;
             case "edit":
                 accountManagement = new AccountManagement();
-                response = String.valueOf(accountManagement.edit(dataArr[1], dataArr[2], dataArr[3]));
+                if (dataArr[1].equals("all")) {
+                    String r1 = String.valueOf(accountManagement.edit("firstName", dataArr[2], dataArr[3]));
+                    String r2 = String.valueOf(accountManagement.edit("lastName", dataArr[2], dataArr[4]));
+                    String r3 = String.valueOf(accountManagement.edit("nationalId", dataArr[2], dataArr[5]));
+                    String r4 = String.valueOf(accountManagement.edit("phoneNumber", dataArr[2], dataArr[6]));
+                    response = (r1.equals("true") && r2.equals("true") && r3.equals("true") && r4.equals("true") ? "true" : "false");
+                } else {
+                    response = String.valueOf(accountManagement.edit(dataArr[1], dataArr[2], dataArr[3]));
+                }
                 break;
             case "addTicket":
                 TicketManagement ticketManagement = new TicketManagement();

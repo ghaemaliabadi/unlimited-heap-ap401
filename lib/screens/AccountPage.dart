@@ -197,7 +197,8 @@ class _AccountPageState extends State<AccountPage> {
 
   final _addBalanceController = TextEditingController();
   final _withdrawBalanceController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final _transferFormKey = GlobalKey<FormState>();
+  final _balanceFormKey = GlobalKey<FormState>();
   late TabContainerController _tabController = TabContainerController(length: 2);
 
   List<TakenTrip> _foundTrips = [];
@@ -571,16 +572,25 @@ class _AccountPageState extends State<AccountPage> {
                                     SizedBox(
                                       width: pageWidth * 0.5,
                                       height: pageHeight * 0.06,
-                                      child: TextFormField(
-                                        controller: _addBalanceController,
-                                        keyboardType: TextInputType.number,
-                                        style: Theme.of(context).textTheme.headlineMedium,
-                                        decoration: InputDecoration(
-                                          suffixText: 'ریال',
-                                          labelText: 'مبلغ مورد نظر',
-                                          alignLabelWithHint: true,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10.0),
+                                      child: Form(
+                                        key: _balanceFormKey,
+                                        child: TextFormField(
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'لطفا مبلغ مورد نظر را وارد کنید.';
+                                            }
+                                            return null;
+                                          },
+                                          controller: _addBalanceController,
+                                          keyboardType: TextInputType.number,
+                                          style: Theme.of(context).textTheme.headlineMedium,
+                                          decoration: InputDecoration(
+                                            suffixText: 'ریال',
+                                            labelText: 'مبلغ مورد نظر',
+                                            alignLabelWithHint: true,
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -588,10 +598,12 @@ class _AccountPageState extends State<AccountPage> {
                                     SizedBox(width: pageWidth * 0.08),
                                     ElevatedButton(
                                       onPressed: () {
-                                        widget.user!.addBalance(_addBalanceController.text);
-                                        setState(() {});
-                                        FocusManager.instance.primaryFocus?.unfocus();
-                                        _showSnackBar(context, 'موجودی با موفقیت افزایش یافت.', false);
+                                        if (_balanceFormKey.currentState!.validate()) {
+                                          widget.user!.addBalance(_addBalanceController.text);
+                                          setState(() {});
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                          _showSnackBar(context, 'موجودی با موفقیت افزایش یافت.', false);
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                         fixedSize: Size(pageWidth * 0.2, pageHeight * 0.05),
@@ -633,7 +645,7 @@ class _AccountPageState extends State<AccountPage> {
                                       width: pageWidth * 0.5,
                                       height: pageHeight * 0.06,
                                       child: Form(
-                                        key: _formKey,
+                                        key: _transferFormKey,
                                         child: TextFormField(
                                           validator: (value) {
                                             if (value == null || value.isEmpty) {
@@ -661,7 +673,7 @@ class _AccountPageState extends State<AccountPage> {
                                     SizedBox(width: pageWidth * 0.08),
                                     ElevatedButton(
                                       onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
+                                        if (_transferFormKey.currentState!.validate()) {
                                           widget.user!.withdrawBalance(
                                               _withdrawBalanceController
                                                   .text);

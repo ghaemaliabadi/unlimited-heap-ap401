@@ -92,6 +92,10 @@ class RequestHandler extends Thread {
                 ticketManagement = new TicketManagement();
                 response = ticketManagement.getTickets(dataArr[1]);
                 break;
+            case "deleteTicket":
+                ticketManagement = new TicketManagement();
+                response = String.valueOf(ticketManagement.deleteTicket(dataArr[1]));
+                break;
             default:
                 response = "false";
         }

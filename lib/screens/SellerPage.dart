@@ -333,8 +333,8 @@ class _SellerPageState extends State<SellerPage> {
                                   onPressed: () {
                                     // delete ticket
                                     setState(() {
-                                      // TODO: delete ticket from database
                                       tickets?.remove(ticket);
+                                      _deleteTicket(ticket.ticketID);
                                     });
                                     Navigator.pop(context);
                                   },
@@ -693,6 +693,20 @@ Future<String> _getUserTickets(companyName) async {
               tags: tags));
         }
       }
+    });
+  });
+  return Future.delayed(const Duration(milliseconds: 1000), () => response);
+}
+
+Future<String> _deleteTicket(code) async {
+  String response = "false";
+  await Socket.connect(SellerPage.ip, SellerPage.port).then((serverSocket) {
+    print("Connected!");
+      serverSocket.write("deleteTicket-$code*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
     });
   });
   return Future.delayed(const Duration(milliseconds: 1000), () => response);

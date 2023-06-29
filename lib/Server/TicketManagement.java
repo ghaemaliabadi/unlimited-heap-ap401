@@ -70,6 +70,26 @@ public class TicketManagement {
         return "true";
     }
 
+
+    String deleteTicket(String ticketCode) {
+        DataBaseHandler handler = new DataBaseHandler("db/Tickets.csv");
+        String[] allTickets = handler.getAllTickets();
+        String out = "";
+        for (String ticket : allTickets) {
+            if (!ticket.split("-")[0].equals(ticketCode)) {
+                out += ticket + "\n";
+            }
+        }
+        try {
+            File file = new File("db/Tickets.csv");
+            FileWriter writer = new FileWriter(file);
+            writer.write(out);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "true";
+    }
     String getTickets(String companyName) {
         String[] tickets = handler.getCompanyTickets(companyName);
         String out = "";

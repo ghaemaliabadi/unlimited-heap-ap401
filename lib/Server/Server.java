@@ -70,7 +70,7 @@ class RequestHandler extends Thread {
         String data = listener();
         System.out.println("data is: " + data);
         String[] dataArr = data.split("-");
-        String response = "";
+        String response;
         switch (dataArr[0]) {
             case "signup":
                 AccountManagement accountManagement = new AccountManagement();
@@ -86,7 +86,10 @@ class RequestHandler extends Thread {
                 break;
             case "addTicket":
                 TicketManagement ticketManagement = new TicketManagement();
-                response = String.valueOf(ticketManagement.addTicket(dataArr[1], dataArr[2], dataArr[3], dataArr[4], dataArr[5], dataArr[6], dataArr[7], dataArr[8], dataArr[9], dataArr[10], dataArr[11], dataArr[12], dataArr[13], dataArr[14], dataArr[15], dataArr[16], dataArr[17], dataArr[18], dataArr[19], dataArr[20], dataArr[21], dataArr[22]));
+                response = String.valueOf(ticketManagement.addTicket(dataArr[1], dataArr[2], dataArr[3], dataArr[4],
+                        dataArr[5], dataArr[6], dataArr[7], dataArr[8], dataArr[9], dataArr[10], dataArr[11], dataArr[12],
+                        dataArr[13], dataArr[14], dataArr[15], dataArr[16], dataArr[17], dataArr[18], dataArr[19], dataArr[20],
+                        dataArr[21], dataArr[22]));
             case "getTickets":
                 ticketManagement = new TicketManagement();
                 response = ticketManagement.getTickets(dataArr[1]);

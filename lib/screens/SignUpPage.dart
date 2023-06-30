@@ -225,7 +225,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             FocusManager.instance.primaryFocus?.unfocus();
                             if (widget.trip != null) {
                               widget.trip?.user = user;
-                              Navigator.of(context).push(MaterialPageRoute(
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
                                   builder: (context) => PaymentSuccess(
                                         trip: widget.trip!,
                                       )));
@@ -272,7 +272,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                   child: Text(

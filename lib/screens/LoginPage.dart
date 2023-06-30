@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:unlimited_heap_ap401/screens/SignUpPage.dart';
 
 import '../models/trip.dart';
 import '../models/userinfo.dart';
@@ -203,9 +204,14 @@ class _LoginPageState extends State<LoginPage> {
               Expanded(
                 flex: 1,
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => SignUpPage(
+                              trip: widget.trip,
+                            )));
+                  },
                   child: Text(
-                    'فراموشی رمز عبور',
+                    'حساب کاربری ندارید؟ برای ثبت‌نام کلیک کنید',
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),

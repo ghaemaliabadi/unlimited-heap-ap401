@@ -10,6 +10,7 @@ import '../theme/MainTheme.dart';
 import 'AccountPage.dart';
 import 'ResultPage.dart';
 
+// ignore: must_be_immutable
 class ProjectMainPage extends StatefulWidget {
   User? user;
 
@@ -120,14 +121,25 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                             ),
                           );
                         } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AccountPage(
-                                  user: widget.user!
-                              ),
-                            ),
-                          );
+                            if (widget.user?.accountType == "seller") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AccountPage(
+                                    user: widget.user,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AccountPage(
+                                    user: widget.user,
+                                  ),
+                                ),
+                              );
+                            }
                         }
                       },
                   ),

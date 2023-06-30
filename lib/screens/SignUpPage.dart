@@ -214,6 +214,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               password: _passwordController.text,
                               email: _emailController.text,
                               firstName: _companyNameController.text,
+                              accountType: isSeller ? "seller" : "customer",
                             );
                             _showSnackBar(
                                 context, 'ثبت‌نام با موفقیت انجام شد.', false);

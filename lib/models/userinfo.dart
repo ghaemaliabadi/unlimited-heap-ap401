@@ -12,6 +12,7 @@ class User {
     this.firstName,
     this.lastName,
     this.nationalID,
+    this.accountType,
   });
 
   String username;
@@ -23,6 +24,7 @@ class User {
   String? firstName;
   String? lastName;
   String? nationalID;
+  String? accountType;
 
   String getFullName() {
     return '${firstName ?? '-'} ${lastName ?? ''}';

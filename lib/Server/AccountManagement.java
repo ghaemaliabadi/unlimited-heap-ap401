@@ -97,4 +97,14 @@ public class AccountManagement {
             return "false";
         }
     }
+
+    String getFirstName(String username) {
+        DataBaseHandler handler = new DataBaseHandler("db/Users.csv");
+        String[] userInfo = handler.findUserRows(username, true);
+        if (userInfo.length != 0) {
+            return userInfo[0].split("-")[7];
+        } else {
+            return "false";
+        }
+    }
 }

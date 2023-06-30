@@ -143,7 +143,10 @@ class _LoginPageState extends State<LoginPage> {
                               username: serverResponse,
                               password: _passwordController.text,
                               email: _emailController.text,
+                              firstName: await _getFirstName(serverResponse),
+                              accountType: isSeller ? "seller" : "customer",
                             );
+                            // ignore: use_build_context_synchronously
                             _showSnackBar(
                                 context, 'ورود با موفقیت انجام شد.', false);
                             FocusManager.instance.primaryFocus?.unfocus();
@@ -221,6 +224,21 @@ Future<String> _checkLogin(String email, String password, bool isSeller) async {
   await Socket.connect(LoginPage.ip, LoginPage.port).then((serverSocket) {
     print("Connected!");
     serverSocket.write("login-$isSeller-$email-$password*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+      print(response);
+    });
+  });
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
+}
+
+Future<String> _getFirstName(String username) async {
+  String response = "false";
+  await Socket.connect(LoginPage.ip, LoginPage.port).then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("getFirstName-$username*");
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {

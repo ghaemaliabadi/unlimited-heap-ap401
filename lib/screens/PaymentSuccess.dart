@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:unlimited_heap_ap401/screens/ProjectMainPage.dart';
 import '../models/trip.dart';
 import 'dart:convert' show utf8;
 
@@ -23,6 +24,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 1.5,
         title: Text(widget.title,
             style: Theme.of(context).textTheme.displayMedium),
@@ -35,9 +37,134 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Text(
-          'پرداخت با موفقیت انجام شد.',
-          style: Theme.of(context).textTheme.displayLarge,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                            () {
+                          if (widget.trip.transportBy.contains('پرواز')) {
+                            return Icons.airplanemode_active_rounded;
+                          } else if (widget.trip.transportBy == 'اتوبوس') {
+                            return Icons.directions_bus_rounded;
+                          } else if (widget.trip.transportBy == 'قطار') {
+                            return Icons.train_rounded;
+                          } else {
+                            return Icons.more_horiz_rounded;
+                          }
+                        }(),
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 4),
+                      // arrow icon
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.account_box_sharp,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'مشخصات مسافران',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                      const SizedBox(width: 4),
+                      // arrow icon
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(
+                          Icons.newspaper_sharp,
+                          color: Theme.of(context).colorScheme.primary
+                      ),
+                      const SizedBox(width: 4),
+                      Text('تایید اطلاعات',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                      const SizedBox(width: 4),
+                      // arrow icon
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.payment_rounded,
+                          color: Theme.of(context).colorScheme.primary
+                      ),
+                      const SizedBox(width: 4),
+                      Text('پرداخت',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 6.0,
+                  ),
+                  SizedBox(
+                    height: 1.0,
+                    child: Container(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 4.0,
+                  ),
+                ],
+              ),
+              // TODO: add trip to transactions
+              const SizedBox(
+                height: 60.0,
+              ),
+              Text(
+                'پرداخت با موفقیت انجام شد.',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              const SizedBox(
+                height: 50.0,
+              ),
+              // back to main page with user data
+              SizedBox(
+                height: 45.0,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => ProjectMainPage(
+                        user: widget.trip.user,
+                      )
+                    )
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  child: Text(
+                    'بازگشت به صفحه اصلی',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

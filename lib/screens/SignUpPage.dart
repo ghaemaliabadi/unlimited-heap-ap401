@@ -1,14 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:unlimited_heap_ap401/screens/PaymentSuccess.dart';
 import 'package:unlimited_heap_ap401/screens/SellerPage.dart';
+import '../models/trip.dart';
 import '../models/userinfo.dart';
 import 'LoginPage.dart';
 import 'ProjectMainPage.dart';
 import 'dart:convert' show utf8;
 
+// ignore: must_be_immutable
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  Trip? trip;
+
+  SignUpPage({Key? key, this.trip}) : super(key: key);
 
   final String title = 'ثبت‌نام';
   final String emailRegex =
@@ -164,7 +169,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
               ),
-                  () {
+              () {
                 if (isSeller) {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -190,7 +195,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 } else {
                   return Container();
                 }
-              } (),
+              }(),
               // submit button
               Expanded(
                 flex: 3,
@@ -205,8 +210,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             _passwordController.text,
                             _emailController.text,
                             isSeller,
-                            _companyNameController.text
-                            );
+                            _companyNameController.text);
                         if (context.mounted) {
                           if (serverResponse == "true") {
                             User user = User(
@@ -219,22 +223,27 @@ class _SignUpPageState extends State<SignUpPage> {
                             _showSnackBar(
                                 context, 'ثبت‌نام با موفقیت انجام شد.', false);
                             FocusManager.instance.primaryFocus?.unfocus();
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                (
-                                    isSeller
-                                    ? SellerPage(user: user)
-                                    : ProjectMainPage(user: user)
-                                )
-                            )
-                            );
+                            if (widget.trip != null) {
+                              widget.trip?.user = user;
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PaymentSuccess(
+                                        trip: widget.trip!,
+                                      )));
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => (isSeller
+                                      ? SellerPage(user: user)
+                                      : ProjectMainPage(user: user))));
+                            }
                           } else if (serverResponse == "email") {
-                            _showSnackBar(context,
+                            _showSnackBar(
+                                context,
                                 'ایمیل وارد شده تکراری است. لطفا ایمیل دیگری انتخاب کنید.',
                                 true);
                             FocusManager.instance.primaryFocus?.unfocus();
                           } else if (serverResponse == "un") {
-                            _showSnackBar(context,
+                            _showSnackBar(
+                                context,
                                 'نام کاربری وارد شده تکراری است. لطفا نام کاربری دیگری انتخاب کنید.',
                                 true);
                             FocusManager.instance.primaryFocus?.unfocus();
@@ -263,8 +272,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const LoginPage()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                   child: Text(
                     'حساب کاربری دارید؟',
@@ -286,9 +295,11 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
       content: Text(
         message,
         style: (isError
-            ? Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.red)
-            : Theme.of(context).textTheme.displaySmall
-        ),
+            ? Theme.of(context)
+                .textTheme
+                .displaySmall
+                ?.copyWith(color: Colors.red)
+            : Theme.of(context).textTheme.displaySmall),
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -296,18 +307,19 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
   );
 }
 
-Future<String> _checkSignUp(String username, String password, String email, bool isSeller, String companyName) async {
+Future<String> _checkSignUp(String username, String password, String email,
+    bool isSeller, String companyName) async {
   String response = "false";
   await Socket.connect(SignUpPage.ip, SignUpPage.port).then((serverSocket) {
     print("Connected!");
-    serverSocket.write("signup-$isSeller-$username-$password-$email-$companyName*");
+    serverSocket
+        .write("signup-$isSeller-$username-$password-$email-$companyName*");
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {
       response = utf8.decode(socket);
       print(response);
     });
-  }
-  );
+  });
   return Future.delayed(const Duration(milliseconds: 100), () => response);
 }

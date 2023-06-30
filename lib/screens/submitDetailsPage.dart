@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:unlimited_heap_ap401/models/passenger.dart';
 
 import '../models/trip.dart';
+import 'LoginPage.dart';
+import 'PaymentSuccess.dart';
 
 // ignore: must_be_immutable
 class SubmitDetailsPage extends StatefulWidget {
@@ -124,6 +126,43 @@ class SubmitDetailsPageState extends State<SubmitDetailsPage> {
                 }
               }(),
               buildPassengersDetails(widget.tripData.passengerList),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.96,
+                height: 54.0,
+                child: TextButton(
+                  onPressed: () {
+                      if (widget.tripData.user?.username == null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                LoginPage(trip: widget.tripData),
+                          ),
+                        );
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PaymentSuccess(
+                              trip: widget.tripData,
+                            )));
+                      }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.primary,
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'پرداخت',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                ),
+              ),
               const SizedBox(height: 64),
             ],
           )),

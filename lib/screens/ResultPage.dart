@@ -53,32 +53,44 @@ AutoScrollController _scrollController = AutoScrollController();
 class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
-    // TODO: get this part from backend
-    _getTicketsFromTo(widget.tripData.transportBy, widget.tripData.from, widget.tripData.to).then((value) => tickets = orgTickets);
-    if (widget.selectedCompanies != null) {
-      for (var i = 0; i < widget.selectedCompanies!.length; i++) {
-        if (!widget.selectedCompanies![i]) {
-          tickets.removeWhere(
-              (element) => element.company.name == allCompanies!.elementAt(i));
+    var tempFrom = widget.tripData.from;
+    var tempTo = widget.tripData.to;
+    if (widget.selectTicketFor == 'return') {
+      tempFrom = widget.tripData.to;
+      tempTo = widget.tripData.from;
+    }
+    _getTicketsFromTo(widget.tripData.transportBy, tempFrom, tempTo).then((value) {
+      tickets = orgTickets;
+      if (widget.selectedCompanies != null) {
+        for (var i = 0; i < widget.selectedCompanies!.length; i++) {
+          if (!widget.selectedCompanies![i]) {
+            tickets.removeWhere(
+                    (element) => element.company.name == allCompanies!.elementAt(i));
+          }
         }
       }
-    }
-    if (widget.selectedTags != null) {
-      for (var i = 0; i < widget.selectedTags!.length; i++) {
-        if (!widget.selectedTags![i]) {
-          tickets.removeWhere(
-              (element) => element.tags.contains(allTags!.elementAt(i)));
+      if (widget.selectedTags != null) {
+        for (var i = 0; i < widget.selectedTags!.length; i++) {
+          if (!widget.selectedTags![i]) {
+            tickets.removeWhere(
+                    (element) => element.tags.contains(allTags!.elementAt(i)));
+          }
         }
       }
+      if (widget.startValue != null) {
+        tickets.removeWhere(
+                (element) => element.outboundDate!.hour < widget.startValue!);
+      }
+      if (widget.endValue != null) {
+        tickets.removeWhere(
+                (element) => element.outboundDate!.hour > widget.endValue!);
+      }
+      for (var ticket in orgTickets) {
+        allTags?.addAll(ticket.tags);
+        allCompanies?.add(ticket.company.name);
+      }
     }
-    if (widget.startValue != null) {
-      tickets.removeWhere(
-          (element) => element.outboundDate!.hour < widget.startValue!);
-    }
-    if (widget.endValue != null) {
-      tickets.removeWhere(
-          (element) => element.outboundDate!.hour > widget.endValue!);
-    }
+    );
     _scrollController = AutoScrollController();
     _scrollController.scrollToIndex(
         (widget.tripData.date!.day + widget.tripData.date!.month * 31) -
@@ -95,10 +107,6 @@ class _ResultPageState extends State<ResultPage> {
   // trip data
   @override
   Widget build(BuildContext context) {
-    for (var ticket in orgTickets) {
-      allTags?.addAll(ticket.tags);
-      allCompanies?.add(ticket.company.name);
-    }
     // trip data
     final Trip tripData = widget.tripData;
     return Scaffold(
@@ -938,6 +946,7 @@ convertEnToFa(txt) {
       .replaceAll('9', '۹');
 }
 
+// TODO: add tiket date to method
 Future<String> _getTicketsFromTo(transportBy, city1, city2) async {
   String response = "false";
   await Socket.connect(ResultPage.ip, ResultPage.port).then((serverSocket) {
@@ -946,7 +955,6 @@ Future<String> _getTicketsFromTo(transportBy, city1, city2) async {
     print("Sent data!");
     serverSocket.listen((socket) {
       response = utf8.decode(socket);
-      print(response);
       List<String> temp = response.split("\n");
       orgTickets = [];
       for (var line in temp) {
@@ -965,7 +973,7 @@ Future<String> _getTicketsFromTo(transportBy, city1, city2) async {
           if (element[21] != '') {
             tags.add(element[21]);
           }
-          orgTickets?.add(Ticket(
+          orgTickets.add(Ticket(
               ticketID: int.parse(element[0]),
               transportBy: element[1],
               from: element[2],

@@ -1,14 +1,21 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
+import '../models/trip.dart';
 import '../models/userinfo.dart';
+import 'PaymentSuccess.dart';
 import 'ProjectMainPage.dart';
 import 'SellerPage.dart';
 import 'dart:convert' show utf8;
 
+// ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  Trip? trip;
 
+  LoginPage({
+    Key? key,
+    this.trip,
+  }) : super(key: key);
   final String title = 'ورود';
   static const String ip = "127.0.0.1";
   static const int port = 1234;
@@ -150,11 +157,21 @@ class _LoginPageState extends State<LoginPage> {
                             _showSnackBar(
                                 context, 'ورود با موفقیت انجام شد.', false);
                             FocusManager.instance.primaryFocus?.unfocus();
-                            Future.delayed(const Duration(milliseconds: 200), () {
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                  builder: (context) => (isSeller
-                                      ? SellerPage(user: user)
-                                      : ProjectMainPage(user: user))));
+                            Future.delayed(const Duration(milliseconds: 200),
+                                () {
+                              if (widget.trip != null) {
+                                widget.trip?.user = user;
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => PaymentSuccess(
+                                            trip: widget.trip!)));
+                              } else {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => (isSeller
+                                            ? SellerPage(user: user)
+                                            : ProjectMainPage(user: user))));
+                              }
                             });
                           } else {
                             _showSnackBar(

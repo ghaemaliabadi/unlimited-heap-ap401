@@ -27,16 +27,36 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
   String? selectedMonth;
   int? selectedYear;
 
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController nationalIdController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+
+  @override
+  void initState() {
+    firstNameController.text = widget.user?.firstName ?? '';
+    lastNameController.text = widget.user?.lastName ?? '';
+    nationalIdController.text = widget.user?.nationalID ?? '';
+    phoneNumberController.text = widget.user?.phoneNumber ?? '';
+    selectedDay = widget.user?.birthDate?.day ?? 1;
+    selectedMonth = convertNumToMonth(widget.user?.birthDate?.month ?? 1);
+    selectedYear = widget.user?.birthDate?.year ?? 1400;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    nationalIdController.dispose();
+    phoneNumberController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var pageHeight = MediaQuery.of(context).size.height;
     var pageWidth = MediaQuery.of(context).size.width;
-
-    // TODO: change initial value to hint text
-    final firstNameController = TextEditingController(text: widget.user!.firstName);
-    final lastNameController = TextEditingController(text: widget.user!.lastName);
-    final nationalIdController = TextEditingController(text: widget.user!.nationalID);
-    final phoneNumberController = TextEditingController(text: widget.user!.phoneNumber);
 
     return Scaffold(
       // resizeToAvoidBottomInset: false,

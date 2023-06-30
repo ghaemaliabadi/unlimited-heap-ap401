@@ -115,11 +115,15 @@ public class TicketManagement {
         return out;
     }
 
-    String getTicketsFromTo(String transportBy, String from, String to) {
+    String getTicketsFromTo(String transportBy, String from, String to, String Month, String Day) {
         String[] tickets = handler.getAllTickets();
         String out = "";
         for (String ticket : tickets) {
-            if (ticket.split("-")[1].equals(transportBy) && ticket.split("-")[2].equals(from) && ticket.split("-")[3].equals(to)) {
+            if (ticket.split("-")[1].equals(transportBy) &&
+                    ticket.split("-")[2].equals(from) &&
+                    ticket.split("-")[3].equals(to) &&
+                    ticket.split("-")[5].equals(Month) &&
+                    ticket.split("-")[6].equals(Day)) {
                 out += ticket + "\n";
             }
         }

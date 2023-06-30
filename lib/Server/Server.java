@@ -138,7 +138,7 @@ class RequestHandler extends Thread {
                 break;
             case "getTicketsFromTo":
                 ticketManagement = new TicketManagement();
-                response = ticketManagement.getTicketsFromTo(dataArr[1], dataArr[2], dataArr[3]);
+                response = ticketManagement.getTicketsFromTo(dataArr[1], dataArr[2], dataArr[3], dataArr[4], dataArr[5]);
                 break;
             default:
                 response = "false";

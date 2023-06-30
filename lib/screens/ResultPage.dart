@@ -55,11 +55,19 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     var tempFrom = widget.tripData.from;
     var tempTo = widget.tripData.to;
+    var tempMonth = widget.tripData.date!.month;
+    var tempDay = widget.tripData.date!.day;
+    if (widget.tripData.type == 'رفت و برگشت') {
+      tempMonth = widget.tripData.dateRange!.start.month;
+      tempDay = widget.tripData.dateRange!.start.day;
+    }
     if (widget.selectTicketFor == 'return') {
       tempFrom = widget.tripData.to;
       tempTo = widget.tripData.from;
+      tempMonth = widget.tripData.dateRange!.end.month;
+      tempDay = widget.tripData.dateRange!.end.day;
     }
-    _getTicketsFromTo(widget.tripData.transportBy, tempFrom, tempTo)
+    _getTicketsFromTo(widget.tripData.transportBy, tempFrom, tempTo, tempMonth, tempDay)
         .then((value) {
       tickets = orgTickets;
       if (widget.selectedCompanies != null) {
@@ -870,6 +878,8 @@ class _ResultPageState extends State<ResultPage> {
                     );
                   }
                 }
+                orgTickets.clear();
+                tickets.clear();
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
@@ -947,10 +957,10 @@ convertEnToFa(txt) {
 }
 
 // TODO: add tiket date to method
-Future<String> _getTicketsFromTo(transportBy, city1, city2) async {
+Future<String> _getTicketsFromTo(transportBy, city1, city2, month, day) async {
   String response = "false";
   await Socket.connect(ResultPage.ip, ResultPage.port).then((serverSocket) {
-    serverSocket.write("getTicketsFromTo-$transportBy-$city1-$city2*");
+    serverSocket.write("getTicketsFromTo-$transportBy-$city1-$city2-$month-$day*");
     serverSocket.flush();
     print("Sent data!");
     serverSocket.listen((socket) {

@@ -3,6 +3,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tab_container/tab_container.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/screens/LoginPage.dart';
+import 'package:unlimited_heap_ap401/screens/SellerPage.dart';
 import '../models/sort.dart';
 import '../models/trip.dart';
 import '../models/userinfo.dart';
@@ -125,7 +126,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AccountPage(
+                                  builder: (context) => SellerPage(
                                     user: widget.user,
                                   ),
                                 ),

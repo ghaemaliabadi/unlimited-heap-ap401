@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 
 public class TicketManagement {
     DataBaseHandler handler = new DataBaseHandler("db/Tickets.csv");
@@ -95,6 +96,21 @@ public class TicketManagement {
         String out = "";
         for (String ticket : tickets) {
             out += ticket + "\n";
+        }
+        return out;
+    }
+
+    String getAllOrigins(String transportBy) {
+        String[] tickets = handler.getAllTickets();
+        String out = "";
+        HashSet<String> origins = new HashSet<>();
+        for (String ticket : tickets) {
+            if (ticket.split("-")[1].equals(transportBy)) {
+                origins.add(ticket.split("-")[2]);
+            }
+        }
+        for (String origin : origins) {
+            out += origin + "\n";
         }
         return out;
     }

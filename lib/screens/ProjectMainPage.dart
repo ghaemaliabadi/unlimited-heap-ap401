@@ -1,3 +1,5 @@
+import 'dart:convert' show utf8;
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tab_container/tab_container.dart';
@@ -15,11 +17,10 @@ import 'ResultPage.dart';
 class ProjectMainPage extends StatefulWidget {
   User? user;
 
-  ProjectMainPage(
-      {Key? key,
-        this.user,
-      })
-      : super(key: key);
+  ProjectMainPage({
+    Key? key,
+    this.user,
+  }) : super(key: key);
 
   final String title = 'صفحه اصلی پروژه';
 
@@ -83,6 +84,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     returnTypeLabel = '$departureTypeLabel الی $returnTypeLabel';
     transportBy = 'پرواز داخلی';
     super.initState();
+    _getAllOrigins(transportBy).then((value) => setState(() {}));
   }
 
   @override
@@ -111,38 +113,42 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                 // row for back icon
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                    IconButton(
-                      icon: const Icon(Icons.account_circle, color: Colors.black54, size: 48,),
-                      onPressed: () {
-                        if (widget.user?.username == null) {
+                  IconButton(
+                    icon: const Icon(
+                      Icons.account_circle,
+                      color: Colors.black54,
+                      size: 48,
+                    ),
+                    onPressed: () {
+                      if (widget.user?.username == null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        );
+                      } else {
+                        if (widget.user?.accountType == "seller") {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
+                              builder: (context) => SellerPage(
+                                user: widget.user,
+                              ),
                             ),
                           );
                         } else {
-                            if (widget.user?.accountType == "seller") {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SellerPage(
-                                    user: widget.user,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AccountPage(
-                                    user: widget.user,
-                                  ),
-                                ),
-                              );
-                            }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AccountPage(
+                                user: widget.user,
+                              ),
+                            ),
+                          );
                         }
-                      },
+                      }
+                    },
                   ),
                   const SizedBox(width: 8),
                   Padding(
@@ -150,13 +156,17 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                     child: Text(
                       'انتخاب سفر',
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                        fontSize: 28,
-                      ),
+                            fontSize: 28,
+                          ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   IconButton(
-                    icon: const Icon(Icons.info, color: Colors.black54, size: 48,),
+                    icon: const Icon(
+                      Icons.info,
+                      color: Colors.black54,
+                      size: 48,
+                    ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -209,7 +219,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(right: 16, top: 16),
+                              padding:
+                                  const EdgeInsets.only(right: 16, top: 16),
                               child: Row(
                                 children: [
                                   Text('جستجوهای اخیر',
@@ -238,8 +249,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                       .textTheme
                                       .headlineLarge
                                       ?.copyWith(
-                                        color:
-                                            Theme.of(context).colorScheme.primary,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         decoration: TextDecoration.underline,
                                       ),
                                 ),
@@ -296,7 +308,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                       ),
                                     ),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           lastTrips[index].title,
@@ -348,7 +361,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
               ),
             ]),
             () {
-              if(lastTrips.isNotEmpty) {
+              if (lastTrips.isNotEmpty) {
                 return Container(
                   color: Colors.white,
                   height: MediaQuery.of(context).size.height * 0.25,
@@ -359,7 +372,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                   height: MediaQuery.of(context).size.height * 0.4,
                 );
               }
-            } (),
+            }(),
           ],
         ),
       ),
@@ -612,10 +625,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     tripData.returnTicket = null;
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ResultPage(
-          tripData: tripData,
-          sort: Sort(),
-          selectTicketFor: 'depart',
-        )));
+              tripData: tripData,
+              sort: Sort(),
+              selectTicketFor: 'depart',
+            )));
     // check if all field are tripData is not equal to another last trip
     if (lastTrips.isNotEmpty) {
       for (var lastTrip in lastTrips) {
@@ -925,24 +938,28 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     int jumpTo = 0;
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'پرواز داخلی';
+    _getAllOrigins(transportBy);
   }
 
   void _tapOnInternationalFlight() {
     int jumpTo = 1;
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'پرواز خارجی';
+    _getAllOrigins(transportBy);
   }
 
   void _tapOnTrain() {
     int jumpTo = 2;
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'قطار';
+    _getAllOrigins(transportBy);
   }
 
   void _tapOnBus() {
     int jumpTo = 3;
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'اتوبوس';
+    _getAllOrigins(transportBy);
   }
 
   GestureDetector buildDatePicker(BuildContext context, String type) {
@@ -1070,4 +1087,25 @@ convertEnToFa(String txt) {
       .replaceAll('7', '۷')
       .replaceAll('8', '۸')
       .replaceAll('9', '۹');
+}
+
+Future<String> _getAllOrigins(transportBy) async {
+  String response = "false";
+  await Socket.connect(SellerPage.ip, SellerPage.port).then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("getAllOrigins-$transportBy*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+      items.clear();
+      for (var item in response.split('\n')) {
+        if (item.isNotEmpty) {
+            items.add(item);
+        }
+      }
+    });
+  });
+  // return Future.delayed(const Duration(milliseconds: 200), () => response);
+  return response;
 }

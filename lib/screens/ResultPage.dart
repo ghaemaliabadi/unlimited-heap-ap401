@@ -910,14 +910,14 @@ class _ResultPageState extends State<ResultPage> {
                             color: Colors.black45,
                           ),
                         ),
-                        Text(
-                          '${convertEnToFa(numberFormat.format(_getMinimumPriceByDate(widget.tripData.transportBy, widget.tripData.from, widget.tripData.to ,dates[index].formatter.mm, dates[index].day)))}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54,
-                          ),
-                        ),
+                        // Text(
+                        //   '${convertEnToFa(numberFormat.format(12000))}',
+                        //   style: const TextStyle(
+                        //     fontSize: 14,
+                        //     fontWeight: FontWeight.bold,
+                        //     color: Colors.black54,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],
@@ -997,20 +997,6 @@ Future<String> _getTicketsFromTo(transportBy, city1, city2) async {
               tags: tags));
         }
       }
-    });
-  });
-  return Future.delayed(const Duration(milliseconds: 1000), () => response);
-}
-
-Future<String> _getMinimumPriceByDate(transportBy, city1, city2, month, day) async {
-  String response = "false";
-  await Socket.connect(ResultPage.ip, ResultPage.port).then((serverSocket) {
-    serverSocket
-        .write("getTicketsFromToByDate-$transportBy-$city1-$city2-$month-$day*");
-    serverSocket.flush();
-    print("Sent data!");
-    serverSocket.listen((socket) {
-      response = utf8.decode(socket);
     });
   });
   return Future.delayed(const Duration(milliseconds: 1000), () => response);

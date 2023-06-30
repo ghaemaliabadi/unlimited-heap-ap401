@@ -169,25 +169,26 @@ List<TakenTrip> takenTrips = [
 //   ),
 // ];
 
-List<Transfer> transfers = [
-  Transfer(
-      date: Jalali(1400, 1, 1),
-      amount: "1000000",
-      id: "123456789",
-  ),
-  Transfer(
-      date: Jalali(1400, 1, 2),
-      amount: "2000000",
-      id: "654886321",
-  ),
-  Transfer(
-      date: Jalali(1400, 1, 3),
-      amount: "3000000",
-      id: "987654321",
-  ),
-];
+// List<Transfer> transfers = [
+//   Transfer(
+//       date: Jalali(1400, 1, 1),
+//       amount: "1000000",
+//       id: "123456789",
+//   ),
+//   Transfer(
+//       date: Jalali(1400, 1, 2),
+//       amount: "2000000",
+//       id: "654886321",
+//   ),
+//   Transfer(
+//       date: Jalali(1400, 1, 3),
+//       amount: "3000000",
+//       id: "987654321",
+//   ),
+// ];
 
 List<Transaction> transactions = [];
+List<Transfer> transfers = [];
 String startingDateLabel = 'از تاریخ';
 String endingDateLabel = 'تا تاریخ';
 Jalali startingDateSearch = Jalali(1380, 1, 1);
@@ -218,6 +219,7 @@ class _AccountPageState extends State<AccountPage> {
     _tabController.jumpTo(1);
     _foundTrips = takenTrips;
     _getTransactions(widget.user!.username);
+    _getTransfers(widget.user!.username);
     super.initState();
   }
 
@@ -972,6 +974,36 @@ class _AccountPageState extends State<AccountPage> {
                 ),
             )
           );
+        }
+      });
+    }
+    );
+    return Future.delayed(const Duration(milliseconds: 100), () => response);
+  }
+
+  Future<String> _getTransfers(String username) async {
+    String response = "false";
+    await Socket.connect(AccountPage.ip, AccountPage.port).then((serverSocket) {
+      print("Connected!");
+      serverSocket.write("getTransfers-$username*");
+      serverSocket.flush();
+      print("Sent data!");
+      serverSocket.listen((socket) {
+        response = utf8.decode(socket);
+        List<String> temp = response.split("*");
+        for (String t in temp) {
+          print(t);
+          String date = t.split("-")[1];
+          transfers.add(
+            Transfer(
+            date: Jalali(int.parse(date.split("/")[0]),
+                int.parse(date.split("/")[1]),
+                int.parse(date.split("/")[2])
+            ),
+            amount: t.split("-")[2],
+            id: t.split("-")[3],
+          )
+        );
         }
       });
     }

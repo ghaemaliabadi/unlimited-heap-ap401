@@ -174,6 +174,9 @@ class _SellerPageState extends State<SellerPage> {
         ],
       );
     } else {
+      tickets?.sort((b, a) =>
+          (a.outboundDate!.hour * 60 + a.outboundDate!.minute)
+              .compareTo(b.outboundDate!.hour * 60 + b.outboundDate!.minute));
       tickets = divideByRemainingSeats(tickets!);
       return ListView.builder(
         itemCount: tickets!.length,

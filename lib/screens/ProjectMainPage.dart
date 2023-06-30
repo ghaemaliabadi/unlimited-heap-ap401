@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tab_container/tab_container.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:unlimited_heap_ap401/screens/LoginPage.dart';
 import '../models/sort.dart';
 import '../models/trip.dart';
 import '../models/userinfo.dart';
 import '../theme/MainTheme.dart';
+import 'AccountPage.dart';
 import 'ResultPage.dart';
 
 class ProjectMainPage extends StatefulWidget {
@@ -35,7 +37,6 @@ List<String> items = [
 ];
 List<Trip> lastTrips = [];
 
-User? user;
 String? selectedValue;
 String? lastSelectedValue;
 String? transportBy;
@@ -102,20 +103,51 @@ class _ProjectMainPage extends State<ProjectMainPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              // row for back icon
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  // move to right side
-                  padding: const EdgeInsets.fromLTRB(0, 12, 12, 0),
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-                    // back to previous page
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 12, 24, 20),
+              child: Row(
+                // row for back icon
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                    IconButton(
+                      icon: const Icon(Icons.account_circle, color: Colors.black54, size: 48,),
+                      onPressed: () {
+                        if (widget.user?.username == null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AccountPage(
+                                  user: widget.user!
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                  ),
+                  const SizedBox(width: 8),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      'انتخاب سفر',
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                        fontSize: 28,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.info, color: Colors.black54, size: 48,),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                ),
-              ],
+                ],
+              ),
             ), // Row For Back Icon
             Column(children: [
               Container(
@@ -550,7 +582,7 @@ class _ProjectMainPage extends State<ProjectMainPage> {
       travelType = 'رفت و برگشت';
     }
     Trip tripData = Trip(
-      user: user!,
+      user: widget.user,
       transportBy: transportBy!,
       type: travelType!,
       from: selectedValueFrom!,

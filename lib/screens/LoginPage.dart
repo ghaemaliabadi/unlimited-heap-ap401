@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                                 context, 'ورود با موفقیت انجام شد.', false);
                             FocusManager.instance.primaryFocus?.unfocus();
                             Future.delayed(const Duration(milliseconds: 200), () {
-                              Navigator.of(context).push(MaterialPageRoute(
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
                                   builder: (context) => (isSeller
                                       ? SellerPage(user: user)
                                       : ProjectMainPage(user: user))));

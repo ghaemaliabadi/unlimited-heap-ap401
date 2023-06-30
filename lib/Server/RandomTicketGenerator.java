@@ -38,10 +38,10 @@ public class RandomTicketGenerator {
             int duration = (int) (Math.random() * 2) + 1;
             int year = 1402;
             int month = 4;
-            int day = 9;
+            int day = (Math.random() < 0.5 ? 10 : 11);
             int year2 = 1402;
             int month2 = 4;
-            int day2 = 9;
+            int day2 = day + 1;
             if (type.equals("پرواز خارجی")) {
                 from = internationalCities.get((int) (Math.random() * internationalCities.size()));
                 to = internationalCities.get((int) (Math.random() * internationalCities.size()));

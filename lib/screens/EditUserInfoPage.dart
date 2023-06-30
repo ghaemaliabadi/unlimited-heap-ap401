@@ -54,7 +54,8 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
         child: Form(
           // key: _formKey,
           child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 35.0),
+            // margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 35.0),
+            padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 25.0),
             child: Column(
               children: [
                 SizedBox(
@@ -88,7 +89,8 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                 ),
                 SizedBox(height: pageHeight * 0.03,),
                 Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
                       width: pageWidth * 0.4,

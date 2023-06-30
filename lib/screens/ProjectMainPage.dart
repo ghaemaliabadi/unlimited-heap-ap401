@@ -167,7 +167,9 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                       color: Colors.black54,
                       size: 48,
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      print('print random data');
+                    },
                   ),
                 ],
               ),
@@ -273,17 +275,6 @@ class _ProjectMainPage extends State<ProjectMainPage> {
                                 return GestureDetector(
                                   onTap: () {
                                     Trip tripData = lastTrips[index];
-                                    // transportBy = lastTrips[index].transportBy;
-                                    // travelType = lastTrips[index].type;
-                                    // selectedValueFrom = lastTrips[index].from;
-                                    // selectedValueTo = lastTrips[index].to;
-                                    // selectedDateForDepartureType =
-                                    //     lastTrips[index].date!;
-                                    // selectedDateForReturnType = lastTrips[index].dateRange!;
-                                    // adultPassengers = lastTrips[index].passengers['adult']!;
-                                    // childPassengers = lastTrips[index].passengers['child']!;
-                                    // infantPassengers = lastTrips[index].passengers['infant']!;
-                                    // setState(() {});
                                     tripData.departTicket = null;
                                     tripData.returnTicket = null;
                                     Navigator.of(context).push(
@@ -939,6 +930,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'پرواز داخلی';
     _getAllOrigins(transportBy);
+    selectedValueFrom = null;
+    selectedValueTo = null;
   }
 
   void _tapOnInternationalFlight() {
@@ -946,6 +939,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'پرواز خارجی';
     _getAllOrigins(transportBy);
+    selectedValueFrom = null;
+    selectedValueTo = null;
   }
 
   void _tapOnTrain() {
@@ -953,6 +948,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'قطار';
     _getAllOrigins(transportBy);
+    selectedValueFrom = null;
+    selectedValueTo = null;
   }
 
   void _tapOnBus() {
@@ -960,6 +957,8 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'اتوبوس';
     _getAllOrigins(transportBy);
+    selectedValueFrom = null;
+    selectedValueTo = null;
   }
 
   GestureDetector buildDatePicker(BuildContext context, String type) {
@@ -1101,7 +1100,7 @@ Future<String> _getAllOrigins(transportBy) async {
       items.clear();
       for (var item in response.split('\n')) {
         if (item.isNotEmpty) {
-            items.add(item);
+          items.add(item);
         }
       }
     });

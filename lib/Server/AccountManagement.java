@@ -69,4 +69,18 @@ public class AccountManagement {
             return "false";
         }
     }
+
+    String getTransactions(String username) {
+        DataBaseHandler handler = new DataBaseHandler("db/Transactions.csv");
+        String[] transactions = handler.findUserRows(username, true);
+        if (transactions.length != 0) {
+            String out = "";
+            for (String transaction : transactions) {
+                out += transaction + "*";
+            }
+            return out.substring(0, out.length() - 1);
+        } else {
+            return "false";
+        }
+    }
 }

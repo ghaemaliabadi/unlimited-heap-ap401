@@ -142,32 +142,32 @@ List<TakenTrip> takenTrips = [
   ),
 ];
 
-List<Transaction> transactions = [
-  Transaction(
-    date: Jalali(1399, 1, 1),
-    amount: '2000000',
-    type: TransactionType.increase,
-    description: 'افزایش موجودی',
-  ),
-  Transaction(
-    date: Jalali(1399, 1, 1),
-    amount: '2000000',
-    type: TransactionType.decrease,
-    description: 'خرید بلیط',
-  ),
-  Transaction(
-    date: Jalali(1399, 1, 3),
-    amount: '15900000',
-    type: TransactionType.increase,
-    description: 'افزایش موجودی',
-  ),
-  Transaction(
-    date: Jalali(1399, 1, 3),
-    amount: '15900000',
-    type: TransactionType.decrease,
-    description: 'خرید بلیط',
-  ),
-];
+// List<Transaction> transactions = [
+//   Transaction(
+//     date: Jalali(1399, 1, 1),
+//     amount: '2000000',
+//     type: TransactionType.increase,
+//     description: 'افزایش موجودی',
+//   ),
+//   Transaction(
+//     date: Jalali(1399, 1, 1),
+//     amount: '2000000',
+//     type: TransactionType.decrease,
+//     description: 'خرید بلیط',
+//   ),
+//   Transaction(
+//     date: Jalali(1399, 1, 3),
+//     amount: '15900000',
+//     type: TransactionType.increase,
+//     description: 'افزایش موجودی',
+//   ),
+//   Transaction(
+//     date: Jalali(1399, 1, 3),
+//     amount: '15900000',
+//     type: TransactionType.decrease,
+//     description: 'خرید بلیط',
+//   ),
+// ];
 
 List<Transfer> transfers = [
   Transfer(
@@ -187,6 +187,7 @@ List<Transfer> transfers = [
   ),
 ];
 
+List<Transaction> transactions = [];
 String startingDateLabel = 'از تاریخ';
 String endingDateLabel = 'تا تاریخ';
 Jalali startingDateSearch = Jalali(1380, 1, 1);
@@ -216,6 +217,7 @@ class _AccountPageState extends State<AccountPage> {
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
     _foundTrips = takenTrips;
+    _getTransactions(widget.user!.username);
     super.initState();
   }
 
@@ -938,6 +940,43 @@ class _AccountPageState extends State<AccountPage> {
         ),
       ),
     );
+  }
+
+  Future<String> _getTransactions(String username) async {
+    String response = "false";
+    await Socket.connect(AccountPage.ip, AccountPage.port).then((serverSocket) {
+      print("Connected!");
+      serverSocket.write("getTransactions-$username*");
+      serverSocket.flush();
+      print("Sent data!");
+      serverSocket.listen((socket) {
+        response = utf8.decode(socket);
+        List<String> temp = response.split("*");
+        for (String t in temp) {
+          print(t);
+          String date = t.split("-")[1];
+          transactions.add(
+            Transaction(
+              date: Jalali(int.parse(date.split("/")[0]),
+                  int.parse(date.split("/")[1]),
+                  int.parse(date.split("/")[2])
+              ),
+              amount: t.split("-")[2],
+              type: (t.split("-")[3] == "increase"
+                  ? TransactionType.increase
+                  : TransactionType.decrease
+              ),
+              description: (t.split("-")[3] == "increase"
+                  ? "افزایش موجودی"
+                  : "خرید بلیط"
+                ),
+            )
+          );
+        }
+      });
+    }
+    );
+    return Future.delayed(const Duration(milliseconds: 100), () => response);
   }
 
   Column buildExpandedWidget(BuildContext context, int index) {

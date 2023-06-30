@@ -136,6 +136,10 @@ class RequestHandler extends Thread {
                 ticketManagement = new TicketManagement();
                 response = ticketManagement.getAllOrigins(dataArr[1]);
                 break;
+            case "getTicketsFromTo":
+                ticketManagement = new TicketManagement();
+                response = ticketManagement.getTicketsFromTo(dataArr[1], dataArr[2], dataArr[3]);
+                break;
             default:
                 response = "false";
         }

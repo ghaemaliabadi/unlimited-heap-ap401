@@ -115,4 +115,15 @@ public class TicketManagement {
         return out;
     }
 
+    String getTicketsFromTo(String transportBy, String from, String to) {
+        String[] tickets = handler.getAllTickets();
+        String out = "";
+        for (String ticket : tickets) {
+            if (ticket.split("-")[1].equals(transportBy) && ticket.split("-")[2].equals(from) && ticket.split("-")[3].equals(to)) {
+                out += ticket + "\n";
+            }
+        }
+        return out;
+    }
+
 }

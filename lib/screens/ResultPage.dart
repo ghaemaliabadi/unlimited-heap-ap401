@@ -1,5 +1,6 @@
 import 'dart:collection';
-
+import 'dart:convert' show utf8;
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -23,17 +24,19 @@ class ResultPage extends StatefulWidget {
   double? startValue;
   double? endValue;
 
-  ResultPage(
-      {Key? key,
-      required this.tripData,
-      required this.sort,
-      required this.selectTicketFor,
-      this.selectedCompanies,
-      this.selectedTags,
-      this.startValue,
-      this.endValue,
-      })
-      : super(key: key);
+  ResultPage({
+    Key? key,
+    required this.tripData,
+    required this.sort,
+    required this.selectTicketFor,
+    this.selectedCompanies,
+    this.selectedTags,
+    this.startValue,
+    this.endValue,
+  }) : super(key: key);
+
+  static const String ip = "127.0.0.1";
+  static const int port = 1234;
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -51,94 +54,30 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
     // TODO: get this part from backend
-    orgTickets = tickets = [
-      Ticket(
-        ticketID: 1,
-        transportBy: 'هواپیما',
-        from: 'تهران',
-        to: 'مشهد',
-        outboundDate: Jalali(1401, 3, 15, 12, 30),
-        inboundDate: Jalali(1400, 3, 15, 13, 35),
-        company: Company('زاگرس'),
-        price: 920000,
-        remainingSeats: 68,
-        description: 'توضیحات تستی نام واسه قطار',
-        tags: ['Fokker 100', 'اکونومی', 'سیستمی'],
-      ),
-      Ticket(
-        ticketID: 2,
-        transportBy: 'هواپیما',
-        from: 'تهران',
-        to: 'مشهد',
-        outboundDate: Jalali(1401, 3, 15, 14, 20),
-        inboundDate: Jalali(1400, 3, 15, 15, 25),
-        company: Company('ماهان'),
-        price: 1210000,
-        remainingSeats: 55,
-        description: '',
-        tags: ['CF8', 'اکونومی', 'سیستمی'],
-      ),
-      Ticket(
-        ticketID: 3,
-        transportBy: 'هواپیما',
-        from: 'تهران',
-        to: 'مشهد',
-        outboundDate: Jalali(1401, 3, 15, 15, 30),
-        inboundDate: Jalali(1400, 3, 15, 16, 35),
-        company: Company('زاگرس'),
-        price: 1590000,
-        remainingSeats: 12,
-        description: '',
-        tags: ['Fokker 100', 'بیزنس', 'سیستمی'],
-      ),
-      Ticket(
-        ticketID: 4,
-        transportBy: 'هواپیما',
-        from: 'تهران',
-        to: 'مشهد',
-        outboundDate: Jalali(1401, 3, 15, 18, 20),
-        inboundDate: Jalali(1400, 3, 15, 18, 25),
-        company: Company('ماهان'),
-        price: 990000,
-        remainingSeats: 0,
-        description: '',
-        tags: ['CF8', 'اکونومی', 'سیستمی'],
-      ),
-      Ticket(
-        ticketID: 5,
-        transportBy: 'هواپیما',
-        from: 'تهران',
-        to: 'مشهد',
-        outboundDate: Jalali(1401, 3, 15, 18, 20),
-        inboundDate: Jalali(1400, 3, 15, 18, 25),
-        company: Company('وارش'),
-        price: 1120000,
-        remainingSeats: 15,
-        description: '',
-        tags: ['CF8', 'اکونومی', 'سیستمی'],
-      ),
-    ];
+    _getTicketsFromTo(widget.tripData.transportBy, widget.tripData.from, widget.tripData.to).then((value) => tickets = orgTickets);
     if (widget.selectedCompanies != null) {
       for (var i = 0; i < widget.selectedCompanies!.length; i++) {
         if (!widget.selectedCompanies![i]) {
-          tickets.removeWhere((element) =>
-              element.company.name == allCompanies!.elementAt(i));
+          tickets.removeWhere(
+              (element) => element.company.name == allCompanies!.elementAt(i));
         }
       }
     }
     if (widget.selectedTags != null) {
       for (var i = 0; i < widget.selectedTags!.length; i++) {
         if (!widget.selectedTags![i]) {
-          tickets.removeWhere((element) =>
-              element.tags.contains(allTags!.elementAt(i)));
+          tickets.removeWhere(
+              (element) => element.tags.contains(allTags!.elementAt(i)));
         }
       }
     }
     if (widget.startValue != null) {
-      tickets.removeWhere((element) => element.outboundDate!.hour < widget.startValue!);
+      tickets.removeWhere(
+          (element) => element.outboundDate!.hour < widget.startValue!);
     }
     if (widget.endValue != null) {
-      tickets.removeWhere((element) => element.outboundDate!.hour > widget.endValue!);
+      tickets.removeWhere(
+          (element) => element.outboundDate!.hour > widget.endValue!);
     }
     _scrollController = AutoScrollController();
     _scrollController.scrollToIndex(
@@ -304,8 +243,10 @@ class _ResultPageState extends State<ResultPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        var selectedCompanies = List<bool>.filled(allCompanies!.length, true);
-                        var selectedTags = List<bool>.filled(allTags!.length, true);
+                        var selectedCompanies =
+                            List<bool>.filled(allCompanies!.length, true);
+                        var selectedTags =
+                            List<bool>.filled(allTags!.length, true);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -314,10 +255,19 @@ class _ResultPageState extends State<ResultPage> {
                               selectTicketFor: widget.selectTicketFor,
                               tags: allTags,
                               companies: allCompanies,
-                              selectedCompanies: (widget.selectedCompanies == null) ? selectedCompanies : widget.selectedCompanies!,
-                              selectedTags: (widget.selectedTags == null) ? selectedTags : widget.selectedTags!,
-                              startValue: (widget.startValue == null) ? 4.5 : widget.startValue!,
-                              endValue: (widget.endValue == null) ? 23.5 : widget.endValue!,
+                              selectedCompanies:
+                                  (widget.selectedCompanies == null)
+                                      ? selectedCompanies
+                                      : widget.selectedCompanies!,
+                              selectedTags: (widget.selectedTags == null)
+                                  ? selectedTags
+                                  : widget.selectedTags!,
+                              startValue: (widget.startValue == null)
+                                  ? 4.5
+                                  : widget.startValue!,
+                              endValue: (widget.endValue == null)
+                                  ? 23.5
+                                  : widget.endValue!,
                             ),
                           ),
                         );
@@ -586,13 +536,13 @@ class _ResultPageState extends State<ResultPage> {
         ],
       );
     } else {
-    tickets = divideByRemainingSeats(tickets);
-    return ListView.builder(
-      itemCount: tickets.length,
-      itemBuilder: (context, index) {
-        return ticketCard(ticket: tickets[index]);
-      },
-    );
+      tickets = divideByRemainingSeats(tickets);
+      return ListView.builder(
+        itemCount: tickets.length,
+        itemBuilder: (context, index) {
+          return ticketCard(ticket: tickets[index]);
+        },
+      );
     }
   }
 
@@ -986,4 +936,60 @@ convertEnToFa(txt) {
       .replaceAll('7', '۷')
       .replaceAll('8', '۸')
       .replaceAll('9', '۹');
+}
+
+Future<String> _getTicketsFromTo(transportBy, city1, city2) async {
+  String response = "false";
+  await Socket.connect(ResultPage.ip, ResultPage.port).then((serverSocket) {
+    serverSocket.write("getTicketsFromTo-$transportBy-$city1-$city2*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+      print(response);
+      List<String> temp = response.split("\n");
+      orgTickets = [];
+      for (var line in temp) {
+        List<String> element = line.split("-");
+        if (element.length > 1) {
+          List<String> tags = [];
+          if (element[18] != '') {
+            tags.add(element[18]);
+          }
+          if (element[19] != '') {
+            tags.add(element[19]);
+          }
+          if (element[20] != '') {
+            tags.add(element[20]);
+          }
+          if (element[21] != '') {
+            tags.add(element[21]);
+          }
+          orgTickets?.add(Ticket(
+              ticketID: int.parse(element[0]),
+              transportBy: element[1],
+              from: element[2],
+              to: element[3],
+              outboundDate: Jalali(
+                  int.parse(element[4]),
+                  int.parse(element[5]),
+                  int.parse(element[6]),
+                  int.parse(element[7]),
+                  int.parse(element[8])),
+              inboundDate: Jalali(
+                  int.parse(element[9]),
+                  int.parse(element[10]),
+                  int.parse(element[11]),
+                  int.parse(element[12]),
+                  int.parse(element[13])),
+              company: Company(element[14]),
+              price: int.parse(element[15]),
+              remainingSeats: int.parse(element[16]),
+              description: element[17] == 'null' ? '' : element[17],
+              tags: tags));
+        }
+      }
+    });
+  });
+  return Future.delayed(const Duration(milliseconds: 1000), () => response);
 }

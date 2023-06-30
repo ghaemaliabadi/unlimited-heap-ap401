@@ -1106,6 +1106,6 @@ Future<String> _getAllOrigins(transportBy) async {
       }
     });
   });
-  // return Future.delayed(const Duration(milliseconds: 200), () => response);
-  return response;
+  return Future.delayed(const Duration(milliseconds: 200), () => response);
+  // return response;
 }

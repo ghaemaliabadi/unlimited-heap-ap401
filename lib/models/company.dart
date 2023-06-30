@@ -8,6 +8,6 @@ class Company {
       'زاگرس': 'assets/images/zagros.png',
       'وارش': 'assets/images/varesh.png',
     };
-    return addresses[name];
+    return addresses[name] ?? 'assets/images/varesh.png';
   }
 }

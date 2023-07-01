@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/screens/PaymentSuccess.dart';
 import 'package:unlimited_heap_ap401/screens/SellerPage.dart';
 import '../models/trip.dart';

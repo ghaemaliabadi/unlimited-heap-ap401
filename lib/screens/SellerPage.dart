@@ -598,43 +598,47 @@ Future<String> _getUserTickets(companyName) async {
       List<String> temp = response.split("\n");
       tickets = [];
       for (var line in temp) {
-        List<String> element = line.split("-");
-        if (element.length > 1) {
-          List<String> tags = [];
-          if (element[18] != '') {
-            tags.add(element[18]);
+        try {
+          List<String> element = line.split("-");
+          if (element.length > 1) {
+            List<String> tags = [];
+            if (element[18] != '') {
+              tags.add(element[18]);
+            }
+            if (element[19] != '') {
+              tags.add(element[19]);
+            }
+            if (element[20] != '') {
+              tags.add(element[20]);
+            }
+            if (element[21] != '') {
+              tags.add(element[21]);
+            }
+            tickets?.add(Ticket(
+                ticketID: int.parse(element[0]),
+                transportBy: element[1],
+                from: element[2],
+                to: element[3],
+                outboundDate: Jalali(
+                    int.parse(element[4]),
+                    int.parse(element[5]),
+                    int.parse(element[6]),
+                    int.parse(element[7]),
+                    int.parse(element[8])),
+                inboundDate: Jalali(
+                    int.parse(element[9]),
+                    int.parse(element[10]),
+                    int.parse(element[11]),
+                    int.parse(element[12]),
+                    int.parse(element[13])),
+                company: Company(element[14]),
+                price: int.parse(element[15]),
+                remainingSeats: int.parse(element[16]),
+                description: element[17] == 'null' ? '' : element[17],
+                tags: tags));
           }
-          if (element[19] != '') {
-            tags.add(element[19]);
-          }
-          if (element[20] != '') {
-            tags.add(element[20]);
-          }
-          if (element[21] != '') {
-            tags.add(element[21]);
-          }
-          tickets?.add(Ticket(
-              ticketID: int.parse(element[0]),
-              transportBy: element[1],
-              from: element[2],
-              to: element[3],
-              outboundDate: Jalali(
-                  int.parse(element[4]),
-                  int.parse(element[5]),
-                  int.parse(element[6]),
-                  int.parse(element[7]),
-                  int.parse(element[8])),
-              inboundDate: Jalali(
-                  int.parse(element[9]),
-                  int.parse(element[10]),
-                  int.parse(element[11]),
-                  int.parse(element[12]),
-                  int.parse(element[13])),
-              company: Company(element[14]),
-              price: int.parse(element[15]),
-              remainingSeats: int.parse(element[16]),
-              description: element[17] == 'null' ? '' : element[17],
-              tags: tags));
+        } catch (e) {
+          print(e);
         }
       }
     });

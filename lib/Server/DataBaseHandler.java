@@ -60,7 +60,6 @@ public class DataBaseHandler {
             Scanner reader = new Scanner(file);
             String thisRow;
             while (reader.hasNextLine()) {
-                System.out.println("Hi " + companyName);
                 thisRow = reader.nextLine();
                 if (!Objects.equals(companyName, "all")) {
                     if (thisRow.split("-")[14].equals(companyName)) {

@@ -956,7 +956,6 @@ convertEnToFa(txt) {
       .replaceAll('9', '۹');
 }
 
-// TODO: add tiket date to method
 Future<String> _getTicketsFromTo(transportBy, city1, city2, month, day) async {
   String response = "false";
   await Socket.connect(ResultPage.ip, ResultPage.port).then((serverSocket) {
@@ -965,6 +964,7 @@ Future<String> _getTicketsFromTo(transportBy, city1, city2, month, day) async {
     print("Sent data!");
     serverSocket.listen((socket) {
       response = utf8.decode(socket);
+      print(response);
       List<String> temp = response.split("\n");
       orgTickets = [];
       for (var line in temp) {

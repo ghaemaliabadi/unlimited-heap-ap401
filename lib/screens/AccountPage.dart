@@ -220,8 +220,8 @@ class _AccountPageState extends State<AccountPage> {
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
     _foundTrips = takenTrips;
-    _getTransactions(widget.user!.username);
-    _getTransfers(widget.user!.username);
+    _getTransactions(widget.user!.username).then((value) => setState((){}));
+    _getTransfers(widget.user!.username).then((value) => setState((){}));
     super.initState();
   }
 
@@ -1009,7 +1009,6 @@ class _AccountPageState extends State<AccountPage> {
         transactions.clear();
         List<String> temp = response.split("*");
         for (String t in temp) {
-          print(t);
           String date = t.split("-")[1];
           transactions.add(
             Transaction(
@@ -1047,7 +1046,6 @@ class _AccountPageState extends State<AccountPage> {
         transfers.clear();
         List<String> temp = response.split("*");
         for (String t in temp) {
-          print(t);
           String date = t.split("-")[1];
           transfers.add(
             Transfer(

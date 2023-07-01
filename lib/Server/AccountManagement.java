@@ -164,4 +164,18 @@ public class AccountManagement {
         }
         return "true";
     }
+
+    String getTakenTrips(String username) {
+        DataBaseHandler handler = new DataBaseHandler("db/TakenTrips.csv");
+        String[] trips = handler.findUserRows(username, true);
+        if (trips.length != 0) {
+            StringBuilder out = new StringBuilder();
+            for (String trip : trips) {
+                out.append(trip).append("*");
+            }
+            return out.substring(0, out.length() - 1);
+        } else {
+            return "false";
+        }
+    }
 }

@@ -59,29 +59,56 @@ class _ShowSalesAnalysisState extends State<ShowSalesAnalysis> {
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height * 0.68,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-
-                    ],
-                  ),
+                  child: Text('Chart'),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     GestureDetector(
-                        onTap: () {}, child: buildButton('ماه گذشته', lastMonth)),
+                        onTap: () {
+                          setState(() {
+                            lastMonth = true;
+                            last3Month = false;
+                            last6Month = false;
+                            lastYear = false;
+                            _getTakenTripsForCompany(context, widget.user.firstName!);
+                          });
+                        }, child: buildButton('ماه گذشته', lastMonth)),
                     GestureDetector(
-                        onTap: () {}, child: buildButton('3 ماه گذشته', last3Month)),
+                        onTap: () {
+                          setState(() {
+                            lastMonth = false;
+                            last3Month = true;
+                            last6Month = false;
+                            lastYear = false;
+                            _getTakenTripsForCompany(context, widget.user.firstName!);
+                          });
+                        }, child: buildButton('3 ماه گذشته', last3Month)),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     GestureDetector(
-                        onTap: () {}, child: buildButton('6 ماه گذشته', last6Month)),
+                        onTap: () {
+                          setState(() {
+                            lastMonth = false;
+                            last3Month = false;
+                            last6Month = true;
+                            lastYear = false;
+                            _getTakenTripsForCompany(context, widget.user.firstName!);
+                          });
+                        }, child: buildButton('6 ماه گذشته', last6Month)),
                     GestureDetector(
-                        onTap: () {}, child: buildButton('سال گذشته', lastYear)),
+                        onTap: () {
+                          setState(() {
+                            lastMonth = false;
+                            last3Month = false;
+                            last6Month = false;
+                            lastYear = true;
+                            _getTakenTripsForCompany(context, widget.user.firstName!);
+                          });
+                        }, child: buildButton('سال گذشته', lastYear)),
                     ],
                 ),
               ],
@@ -145,5 +172,49 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,
     ),
+  );
+}
+
+
+
+Future<String> _getTakenTripsForCompany(context, company) async {
+  String response = "false";
+  bool isLoading = true;
+  await Socket.connect(SellerPage.ip, SellerPage.port).then((serverSocket) {
+    print("Connected!");
+      serverSocket.write("getTakenTripsForCompany-$company*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+      print(response);
+    });
+  });
+  if (isLoading) {
+    showDialogLoading(context);
+  }
+  return Future.delayed(const Duration(milliseconds: 2000), () {
+    isLoading = false;
+    return response;
+  });
+}
+
+showDialogLoading(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return const AlertDialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 10),
+            Text('لطفا صبر کنید'),
+          ],
+        ),
+      );
+    },
   );
 }

@@ -185,6 +185,20 @@ public class AccountManagement {
         }
     }
 
+    String getTakenTripsForCompany(String company) {
+        DataBaseHandler handler = new DataBaseHandler("db/TakenTrips.csv");
+        String[] trips = handler.findUserRows(company, false);
+        if (trips.length != 0) {
+            StringBuilder out = new StringBuilder();
+            for (String trip : trips) {
+                out.append(trip).append("*");
+            }
+            return out.substring(0, out.length() - 1);
+        } else {
+            return "false";
+        }
+    }
+
     String addTakenTrip(String username, String id, String transportType, String Year, String Month, String Day, String Hour, String Minute, String price, String status, String company, String reservationNumber, String from, String to) {
         DataBaseHandler handler = new DataBaseHandler("db/TakenTrips.csv");
         try {

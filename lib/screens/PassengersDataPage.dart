@@ -1,6 +1,7 @@
 import 'package:expansion_widget/expansion_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:unlimited_heap_ap401/models/userinfo.dart';
 import '../models/passenger.dart';
 import '../models/ticket.dart';
 import '../models/trip.dart';
@@ -353,7 +354,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: TextFormField(
-                      style: const TextStyle(color: Colors.black54),
+                      style: const TextStyle(color: Colors.black),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'لطفا نام مسافر را وارد کنید';
@@ -380,7 +381,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: TextFormField(
-                      style: const TextStyle(color: Colors.black54),
+                      style: const TextStyle(color: Colors.black),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'لطفا نام خانوادگی مسافر را وارد کنید';
@@ -411,7 +412,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45,
                     child: TextFormField(
-                      style: const TextStyle(color: Colors.black54),
+                      style: const TextStyle(color: Colors.black),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'لطفا کد ملی مسافر را وارد کنید';
@@ -420,7 +421,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          widget.tripData.passengerList[saveToIndex].id = value;
+                          widget.tripData.passengerList[saveToIndex].id = convertFaToEn(value);
                         });
                       },
                       decoration: InputDecoration(
@@ -444,7 +445,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                       },
                       decoration: InputDecoration(
                         labelText: 'جنسیت',
-                        hintStyle: const TextStyle(color: Colors.black54),
+                        hintStyle: const TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -454,14 +455,14 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                           value: 'مرد',
                           child: Text(
                             'مرد',
-                            style: TextStyle(color: Colors.black54),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                         DropdownMenuItem(
                           value: 'زن',
                           child: Text(
                             'زن',
-                            style: TextStyle(color: Colors.black54),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                       ],

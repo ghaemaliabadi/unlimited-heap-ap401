@@ -287,7 +287,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                         if (_formKey.currentState!.validate()) {
                           String birthdate = (selectedDay == null && selectedMonth == null && selectedYear == null)
                               ? 'null'
-                              : '${selectedYear.toString()}-${convertMonthToNum(selectedMonth!)}-${selectedDay.toString()}';
+                              : '${selectedYear.toString()}/${convertMonthToNum(selectedMonth!)}/${selectedDay.toString()}';
                           String serverResponse = await _updateUserInfo(
                             widget.user!.username,
                             '${firstNameController.text == ''
@@ -296,7 +296,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                 ? 'null'
                                 : lastNameController.text}-${nationalIdController.text == ''
                                 ? 'null'
-                                : nationalIdController.text}-${phoneNumberController.text == ''
+                                : convertFaToEn(nationalIdController.text)}-${phoneNumberController.text == ''
                                 ? 'null'
                                 : phoneNumberController.text}-$birthdate',
                           );
@@ -308,7 +308,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                     firstNameController.text;
                                 widget.user!.lastName = lastNameController.text;
                                 widget.user!.nationalID =
-                                    nationalIdController.text;
+                                    convertFaToEn(nationalIdController.text);
                                 widget.user!.phoneNumber =
                                     phoneNumberController.text;
                                 if (selectedYear != null &&

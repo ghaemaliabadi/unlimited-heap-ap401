@@ -40,7 +40,7 @@ class User {
 
   String getBalance() {
     return convertEnToFa(
-        "${((balance == "null" || balance == null) ? '۰' : balance)} "
+        "${((balance == "null" || balance == null) ? '0' : balance)} "
     );
   }
 

@@ -414,6 +414,9 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                     child: TextFormField(
                       style: const TextStyle(color: Colors.black),
                       validator: (value) {
+                        if (value != null) {
+                          value = convertFaToEn(value);
+                        }
                         if (value == null || value.isEmpty) {
                           return 'لطفا کد ملی مسافر را وارد کنید';
                         }

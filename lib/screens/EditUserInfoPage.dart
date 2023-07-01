@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../models/userinfo.dart';
+import 'AccountPage.dart';
 
 // ignore: must_be_immutable
 class EditUserInfoPage extends StatefulWidget {
@@ -284,27 +285,20 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          String birthdate = (selectedDay == null && selectedMonth == null && selectedYear == null)
+                              ? 'null'
+                              : '${selectedYear.toString()}-${convertMonthToNum(selectedMonth!)}-${selectedDay.toString()}';
                           String serverResponse = await _updateUserInfo(
                             widget.user!.username,
                             '${firstNameController.text == ''
                                 ? 'null'
-                                : firstNameController.text}-'
-                                '${lastNameController.text == ''
+                                : firstNameController.text}-${lastNameController.text == ''
                                 ? 'null'
-                                : lastNameController.text}-'
-                                '${nationalIdController.text == ''
+                                : lastNameController.text}-${nationalIdController.text == ''
                                 ? 'null'
-                                : nationalIdController.text}-'
-                                '${phoneNumberController.text == ''
+                                : nationalIdController.text}-${phoneNumberController.text == ''
                                 ? 'null'
-                                : phoneNumberController.text}-'
-                                '${selectedYear == null ? '' : selectedYear
-                                .toString()}/'
-                                '${selectedMonth == null
-                                ? ''
-                                : convertMonthToNum(selectedMonth!)}/'
-                                '${selectedDay == null ? '' : selectedDay
-                                .toString()}',
+                                : phoneNumberController.text}-$birthdate',
                           );
                           print(serverResponse);
                           if (context.mounted) {
@@ -328,7 +322,12 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                               });
                               _showSnackBar(
                                   context, 'اطلاعات با موفقیت ثبت شد.', false);
-                              Navigator.of(context).pop();
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      AccountPage(user: widget.user),
+                                ),
+                              );
                               // if (_formKey.currentState!.validate()) {
                               //   ScaffoldMessenger.of(context).showSnackBar(
                               //     const SnackBar(content: Text('در حال ارسال اطلاعات...')),

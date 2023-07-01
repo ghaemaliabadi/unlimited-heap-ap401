@@ -649,7 +649,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         if (widget.title.contains('ویرایش')) {
                           isEdit = true;
                         }
-                        String serverResponse = await _addTicket(
+                        String serverResponse = await _addTicket(context,
                           // ignore: prefer_interpolation_to_compose_strings
                             widget.ticket!.ticketID.toString() + '-' +
                                 widget.ticket!.transportBy + '-' +
@@ -773,8 +773,9 @@ Future<dynamic> showDialogError(BuildContext context, String errorText) {
   );
 }
 
-Future<String> _addTicket(str, isEdit) async {
+Future<String> _addTicket(context, str, isEdit) async {
   String response = "false";
+  bool _isLoading = true;
   await Socket.connect(SellerPage.ip, SellerPage.port).then((serverSocket) {
     print("Connected!");
     if (isEdit) {
@@ -788,7 +789,14 @@ Future<String> _addTicket(str, isEdit) async {
       response = utf8.decode(socket);
     });
   });
-  return Future.delayed(const Duration(milliseconds: 1000), () => response);
+  if (_isLoading) {
+    showDialogLoading(context);
+    // print("loading");
+  }
+  return Future.delayed(const Duration(milliseconds: 2000), () {
+    _isLoading = false;
+    return response;
+  });
 }
 
 void _showSnackBar(BuildContext context, String message, bool isError) {
@@ -806,5 +814,25 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
       duration: const Duration(seconds: 1),
       backgroundColor: Theme.of(context).colorScheme.secondary,
     ),
+  );
+}
+
+showDialogLoading(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return const AlertDialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 10),
+            Text('لطفا صبر کنید'),
+          ],
+        ),
+      );
+    },
   );
 }

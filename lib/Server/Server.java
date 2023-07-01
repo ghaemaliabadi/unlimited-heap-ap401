@@ -99,9 +99,21 @@ class RequestHandler extends Thread {
                     response = String.valueOf(accountManagement.edit(dataArr[1], dataArr[2], dataArr[3]));
                 }
                 break;
+            case "getUser":
+                accountManagement = new AccountManagement();
+                response = accountManagement.getUser(dataArr[1]);
+                break;
             case "getTransactions":
                 accountManagement = new AccountManagement();
                 response = accountManagement.getTransactions(dataArr[1]);
+                break;
+            case "addTransaction":
+                accountManagement = new AccountManagement();
+                response = accountManagement.addTransaction(dataArr[1], dataArr[2], dataArr[3], dataArr[4]);
+                break;
+            case "addTransfer":
+                accountManagement = new AccountManagement();
+                response = accountManagement.addTransfer(dataArr[1], dataArr[2], dataArr[3], dataArr[4]);
                 break;
             case "getTransfers":
                 accountManagement = new AccountManagement();

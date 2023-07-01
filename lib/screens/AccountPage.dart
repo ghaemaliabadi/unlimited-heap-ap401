@@ -1,5 +1,6 @@
 import 'dart:convert' show utf8;
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -21,7 +22,7 @@ class AccountPage extends StatefulWidget {
       })
       : super(key: key);
 
-  static const String ip = "10.0.2.2";
+  static const String ip = "192.168.215.134";
   static const int port = 1234;
 
   @override
@@ -520,7 +521,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.37,
+                        height: pageHeight * 0.38,
                         child: Column(
                           children: [
                             Row(
@@ -605,8 +606,11 @@ class _AccountPageState extends State<AccountPage> {
                                     ElevatedButton(
                                       onPressed: () {
                                         if (_balanceFormKey.currentState!.validate()) {
-                                          widget.user!.addBalance(_addBalanceController.text);
-                                          setState(() {});
+                                          setState(() {
+                                            widget.user!.addBalance(_addBalanceController.text);
+                                            _addUserBalance(widget.user!.username,
+                                                _addBalanceController.text);
+                                          });
                                           FocusManager.instance.primaryFocus?.unfocus();
                                           _showSnackBar(context, 'موجودی با موفقیت افزایش یافت.', false);
                                         }
@@ -680,10 +684,12 @@ class _AccountPageState extends State<AccountPage> {
                                     ElevatedButton(
                                       onPressed: () {
                                         if (_transferFormKey.currentState!.validate()) {
-                                          widget.user!.withdrawBalance(
-                                              _withdrawBalanceController
-                                                  .text);
-                                          setState(() {});
+                                          setState(() {
+                                            widget.user!.withdrawBalance(
+                                                _withdrawBalanceController.text);
+                                            _withdrawUserBalance(widget.user!.username,
+                                                _withdrawBalanceController.text);
+                                          });
                                           FocusManager.instance
                                               .primaryFocus?.unfocus();
                                           _showSnackBar(context,
@@ -753,7 +759,7 @@ class _AccountPageState extends State<AccountPage> {
                       elevation: 2.5,
                       child: Container(
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.25,
+                        height: pageHeight * 0.26,
                         child: Column(
                           children: [
                             Row(
@@ -953,6 +959,7 @@ class _AccountPageState extends State<AccountPage> {
       print("Sent data!");
       serverSocket.listen((socket) {
         response = utf8.decode(socket);
+        transactions.clear();
         List<String> temp = response.split("*");
         for (String t in temp) {
           print(t);
@@ -990,6 +997,7 @@ class _AccountPageState extends State<AccountPage> {
       print("Sent data!");
       serverSocket.listen((socket) {
         response = utf8.decode(socket);
+        transfers.clear();
         List<String> temp = response.split("*");
         for (String t in temp) {
           print(t);
@@ -1005,6 +1013,52 @@ class _AccountPageState extends State<AccountPage> {
           )
         );
         }
+      });
+    }
+    );
+    return Future.delayed(const Duration(milliseconds: 100), () => response);
+  }
+
+  Future<String> _addUserBalance(String username, String amount) async {
+    String response = "false";
+    await Socket.connect(EditUserInfoPage.ip, EditUserInfoPage.port).then((serverSocket) {
+      print("Connected!");
+      serverSocket.write("addTransaction-$username-${Jalali.now().year}/"
+          "${Jalali.now().month}/${Jalali.now().day}-$amount-increase*");
+      serverSocket.flush();
+      print("Sent data!");
+      serverSocket.listen((socket) {
+        response = utf8.decode(socket);
+        setState(() {
+          _getTransactions(username);
+        });
+        print(response);
+      });
+    }
+    );
+    return Future.delayed(const Duration(milliseconds: 100), () => response);
+  }
+
+  String _idGenerator() {
+    // return a random 9 digit number
+    return (Random().nextInt(900000000) + 100000000).toString();
+  }
+
+  Future<String> _withdrawUserBalance(String username, String amount) async {
+    String response = "false";
+    await Socket.connect(EditUserInfoPage.ip, EditUserInfoPage.port).then((serverSocket) {
+      print("Connected!");
+      String id = _idGenerator();
+      serverSocket.write("addTransfer-$username-${Jalali.now().year}/"
+          "${Jalali.now().month}/${Jalali.now().day}-$amount-$id*");
+      serverSocket.flush();
+      print("Sent data!");
+      serverSocket.listen((socket) {
+        response = utf8.decode(socket);
+        setState(() {
+          _getTransfers(username);
+        });
+        print(response);
       });
     }
     );

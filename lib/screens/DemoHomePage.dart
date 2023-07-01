@@ -42,17 +42,17 @@ class _DemoHomePageState extends State<DemoHomePage> {
                 context, 'صفحه اصلی پروژه', ProjectMainPage()),
             buildElevatedButtonWithRedirect(
                 context, 'حساب کاربری', AccountPage(
-              user: User(
-                username: 'sample_username',
-                password: 'Aa@010101',
-                email: 'sample@sample.com',
-                balance: '۰',
-                phoneNumber: '۰۹۱۲۳۴۵۶۷۸۹',
-                birthDate: Jalali(1370, 1, 1),
-                firstName: 'محمد',
-                lastName: 'محمدی',
-                nationalID: '0920513',
-              )
+              // user: User(
+              //   username: 'sample_username',
+              //   password: 'Aa@010101',
+              //   email: 'sample@sample.com',
+              //   balance: '۰',
+              //   phoneNumber: '۰۹۱۲۳۴۵۶۷۸۹',
+              //   birthDate: Jalali(1370, 1, 1),
+              //   firstName: 'محمد',
+              //   lastName: 'محمدی',
+              //   nationalID: '0920513',
+              // )
             )),
             buildElevatedButtonWithRedirect(
                 context, 'صفحه فروشندگان', SellerPage(

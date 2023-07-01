@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/screens/SignUpPage.dart';
 
 import '../models/trip.dart';
@@ -18,7 +19,7 @@ class LoginPage extends StatefulWidget {
     this.trip,
   }) : super(key: key);
   final String title = 'ورود';
-  static const String ip = "127.0.0.1";
+  static const String ip = "192.168.215.134";
   static const int port = 1234;
 
   @override
@@ -147,11 +148,26 @@ class _LoginPageState extends State<LoginPage> {
                             isSeller);
                         if (context.mounted) {
                           if (serverResponse != "false") {
+                            String rawInfo = await _buildUser(serverResponse);
+                            List<String> info = rawInfo.split("-");
+                            String firstName = await _getFirstName(serverResponse);
                             User user = User(
                               username: serverResponse,
                               password: _passwordController.text,
                               email: _emailController.text,
-                              firstName: await _getFirstName(serverResponse),
+                              balance: info[0],
+                              phoneNumber: (info[1] == "null"
+                                  ? null
+                                  : info[1]),
+                              birthDate: (info[2] == "null"
+                                  ? null
+                                  : Jalali(
+                                      int.parse(info[2].split("/")[0]),
+                                      int.parse(info[2].split("/")[1]),
+                                      int.parse(info[2].split("/")[2]))),
+                              firstName: (firstName == "null" ? null : firstName),
+                              lastName: (info[3] == "null" ? null : info[3]),
+                              nationalID: (info[4] == "null" ? null : info[4]),
                               accountType: isSeller ? "seller" : "customer",
                             );
                             // ignore: use_build_context_synchronously
@@ -270,4 +286,27 @@ Future<String> _getFirstName(String username) async {
     });
   });
   return Future.delayed(const Duration(milliseconds: 100), () => response);
+}
+
+Future<String> _buildUser(String username) async {
+  String response = "false";
+  String out = "";
+  await Socket.connect(LoginPage.ip, LoginPage.port).then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("getUser-$username*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+      List<String> info = response.split("-");
+      out = "${info[4]}-";
+      out += "${info[5]}-";
+      out += "${info[6]}-";
+      out += "${info[8]}-";
+      out +=info[9];
+      print(response);
+    });
+  }
+  );
+  return Future.delayed(const Duration(milliseconds: 100), () => out);
 }

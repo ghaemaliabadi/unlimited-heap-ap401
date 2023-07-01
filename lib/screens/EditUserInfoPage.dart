@@ -13,8 +13,8 @@ class EditUserInfoPage extends StatefulWidget {
     this.user,
   })
       : super(key: key);
-  // TODO: read user from db
-  static const String ip = "10.0.2.2";
+
+  static const String ip = "192.168.215.134";
   static const int port = 1234;
 
   @override
@@ -38,9 +38,9 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
     lastNameController.text = widget.user?.lastName ?? '';
     nationalIdController.text = widget.user?.nationalID ?? '';
     phoneNumberController.text = widget.user?.phoneNumber ?? '';
-    selectedDay = widget.user?.birthDate?.day ?? 1;
-    selectedMonth = convertNumToMonth(widget.user?.birthDate?.month ?? 1);
-    selectedYear = widget.user?.birthDate?.year ?? 1400;
+    selectedDay = widget.user?.birthDate?.day;
+    selectedMonth = widget.user?.birthDate?.formatter.mN;
+    selectedYear = widget.user?.birthDate?.year;
     super.initState();
   }
 
@@ -298,12 +298,12 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                 '${phoneNumberController.text == ''
                                 ? 'null'
                                 : phoneNumberController.text}-'
-                                '${selectedYear == null ? '1400' : selectedYear
+                                '${selectedYear == null ? '' : selectedYear
                                 .toString()}/'
                                 '${selectedMonth == null
-                                ? '01'
+                                ? ''
                                 : convertMonthToNum(selectedMonth!)}/'
-                                '${selectedDay == null ? '01' : selectedDay
+                                '${selectedDay == null ? '' : selectedDay
                                 .toString()}',
                           );
                           print(serverResponse);

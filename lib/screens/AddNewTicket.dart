@@ -92,7 +92,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: TextFormField(
                           initialValue: widget.ticket?.ticketID.toString(),
-                          style: const TextStyle(color: Colors.black54),
+                          style: const TextStyle(color: Colors.black),
                           validator: (value) {
                             if (value == null ||
                                 value.isEmpty ||
@@ -143,28 +143,28 @@ class _AddNewTicketState extends State<AddNewTicket> {
                               value: 'پرواز داخلی',
                               child: Text(
                                 'پرواز داخلی',
-                                style: TextStyle(color: Colors.black54),
+                                style: TextStyle(color: Colors.black),
                               ),
                             ),
                             DropdownMenuItem(
                               value: 'پرواز خارجی',
                               child: Text(
                                 'پرواز خارجی',
-                                style: TextStyle(color: Colors.black54),
+                                style: TextStyle(color: Colors.black),
                               ),
                             ),
                             DropdownMenuItem(
                               value: 'قطار',
                               child: Text(
                                 'قطار',
-                                style: TextStyle(color: Colors.black54),
+                                style: TextStyle(color: Colors.black),
                               ),
                             ),
                             DropdownMenuItem(
                               value: 'اتوبوس',
                               child: Text(
                                 'اتوبوس',
-                                style: TextStyle(color: Colors.black54),
+                                style: TextStyle(color: Colors.black),
                               ),
                             ),
                           ],
@@ -187,7 +187,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: TextFormField(
                           initialValue: widget.ticket?.from,
-                          style: const TextStyle(color: Colors.black54),
+                          style: const TextStyle(color: Colors.black),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'مبدا نمی تواند خالی باشد';
@@ -212,7 +212,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: TextFormField(
                           initialValue: widget.ticket?.to,
-                          style: const TextStyle(color: Colors.black54),
+                          style: const TextStyle(color: Colors.black),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'مقصد نمی تواند خالی باشد';
@@ -502,7 +502,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: TextFormField(
                           initialValue: widget.ticket?.price.toString(),
-                          style: const TextStyle(color: Colors.black54),
+                          style: const TextStyle(color: Colors.black),
                           validator: (value) {
                             if (value == null ||
                                 value.isEmpty ||
@@ -530,7 +530,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: TextFormField(
                           initialValue: widget.ticket?.remainingSeats.toString(),
-                          style: const TextStyle(color: Colors.black54),
+                          style: const TextStyle(color: Colors.black),
                           validator: (value) {
                             if (value == null ||
                                 value.isEmpty ||
@@ -566,7 +566,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         width: MediaQuery.of(context).size.width * 0.93,
                         child: TextFormField(
                           initialValue: widget.ticket?.description,
-                          style: const TextStyle(color: Colors.black54),
+                          style: const TextStyle(color: Colors.black),
                           validator: (value) {
                             if (value!.length > 40) {
                               return 'توضیحات بلیط نباید بیشتر از 40 کاراکتر باشد';
@@ -599,7 +599,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         width: MediaQuery.of(context).size.width * 0.93,
                         child: TextFormField(
                           initialValue: widget.ticket?.tags.join(', '),
-                          style: const TextStyle(color: Colors.black54),
+                          style: const TextStyle(color: Colors.black),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'تگ‌های بلیط را وارد کنید';

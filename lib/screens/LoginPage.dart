@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
     this.trip,
   }) : super(key: key);
   final String title = 'ورود';
-  static const String ip = "192.168.215.134";
+  static const String ip = "127.0.0.1";
   static const int port = 1234;
 
   @override
@@ -148,48 +148,51 @@ class _LoginPageState extends State<LoginPage> {
                             isSeller);
                         if (context.mounted) {
                           if (serverResponse != "false") {
-                            String rawInfo = await _buildUser(serverResponse);
-                            List<String> info = rawInfo.split("-");
-                            String firstName = await _getFirstName(serverResponse);
-                            User user = User(
-                              username: serverResponse,
-                              password: _passwordController.text,
-                              email: _emailController.text,
-                              balance: info[0],
-                              phoneNumber: (info[1] == "null"
-                                  ? null
-                                  : info[1]),
-                              birthDate: (info[2] == "null"
-                                  ? null
-                                  : Jalali(
+                            await _buildUser(serverResponse).then((value) async {
+                              List<String> info = value.split("-");
+                              await _getFirstName(serverResponse).then((firstName) {
+                                User user = User(
+                                  username: serverResponse,
+                                  password: _passwordController.text,
+                                  email: _emailController.text,
+                                  balance: info[0],
+                                  phoneNumber: (info[1] == "null"
+                                      ? null
+                                      : info[1]),
+                                  birthDate: (info[2] == "null"
+                                      ? null
+                                      : Jalali(
                                       int.parse(info[2].split("/")[0]),
                                       int.parse(info[2].split("/")[1]),
                                       int.parse(info[2].split("/")[2]))),
-                              firstName: (firstName == "null" ? null : firstName),
-                              lastName: (info[3] == "null" ? null : info[3]),
-                              nationalID: (info[4] == "null" ? null : info[4]),
-                              accountType: isSeller ? "seller" : "customer",
-                            );
-                            // ignore: use_build_context_synchronously
-                            _showSnackBar(
-                                context, 'ورود با موفقیت انجام شد.', false);
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            Future.delayed(const Duration(milliseconds: 200),
-                                () {
-                              if (widget.trip != null) {
-                                widget.trip?.user = user;
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) => PaymentSuccess(
-                                            trip: widget.trip!)));
-                              } else {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) => (isSeller
-                                            ? SellerPage(user: user)
-                                            : ProjectMainPage(user: user))));
-                              }
+                                  firstName: (firstName == "null" ? null : firstName),
+                                  lastName: (info[3] == "null" ? null : info[3]),
+                                  nationalID: (info[4] == "null" ? null : info[4]),
+                                  accountType: isSeller ? "seller" : "customer",
+                                );
+                                // ignore: use_build_context_synchronously
+                                _showSnackBar(
+                                    context, 'ورود با موفقیت انجام شد.', false);
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                Future.delayed(const Duration(milliseconds: 200),
+                                        () {
+                                      if (widget.trip != null) {
+                                        widget.trip?.user = user;
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) => PaymentSuccess(
+                                                    trip: widget.trip!)));
+                                      } else {
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder: (context) => (isSeller
+                                                    ? SellerPage(user: user)
+                                                    : ProjectMainPage(user: user))));
+                                      }
+                                    });
+                              });
                             });
+
                           } else {
                             _showSnackBar(
                                 context, 'ایمیل یا رمز عبور اشتباه است.', true);
@@ -304,7 +307,6 @@ Future<String> _buildUser(String username) async {
       out += "${info[6]}-";
       out += "${info[8]}-";
       out +=info[9];
-      print(response);
     });
   }
   );

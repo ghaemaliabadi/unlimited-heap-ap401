@@ -103,6 +103,14 @@ class RequestHandler extends Thread {
                 accountManagement = new AccountManagement();
                 response = accountManagement.getTransactions(dataArr[1]);
                 break;
+            case "addTransaction":
+                accountManagement = new AccountManagement();
+                response = accountManagement.addTransaction(dataArr[1], dataArr[2], dataArr[3], dataArr[4]);
+                break;
+            case "addTransfer":
+                accountManagement = new AccountManagement();
+                response = accountManagement.addTransfer(dataArr[1], dataArr[2], dataArr[3], dataArr[4]);
+                break;
             case "getTransfers":
                 accountManagement = new AccountManagement();
                 response = accountManagement.getTransfers(dataArr[1]);

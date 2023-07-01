@@ -14,7 +14,7 @@ class EditUserInfoPage extends StatefulWidget {
   })
       : super(key: key);
   // TODO: read user from db
-  static const String ip = "10.0.2.2";
+  static const String ip = "192.168.215.134";
   static const int port = 1234;
 
   @override

@@ -107,4 +107,32 @@ public class AccountManagement {
             return "false";
         }
     }
+
+    String addTransaction(String username, String date, String amount, String type) {
+        DataBaseHandler handler = new DataBaseHandler("db/Transactions.csv");
+        try {
+            File file = new File("db/Transactions.csv");
+            FileWriter writer = new FileWriter(file, true);
+            String info = username + "-" + date + "-" + amount + "-" + type + "\n";
+            writer.write(info);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "true";
+    }
+
+    String addTransfer(String username, String date, String amount, String id) {
+        DataBaseHandler handler = new DataBaseHandler("db/Transfers.csv");
+        try {
+            File file = new File("db/Transfers.csv");
+            FileWriter writer = new FileWriter(file, true);
+            String info = username + "-" + date + "-" + amount + "-" + id + "\n";
+            writer.write(info);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "true";
+    }
 }

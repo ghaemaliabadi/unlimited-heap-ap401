@@ -1086,9 +1086,7 @@ class _AccountPageState extends State<AccountPage> {
       print("Sent data!");
       serverSocket.listen((socket) {
         response = utf8.decode(socket);
-        setState(() {
-          _getTransactions(username);
-        });
+        _getTransactions(username).then((value) => setState(() {}));
         print(response);
       });
     }
@@ -1112,9 +1110,7 @@ class _AccountPageState extends State<AccountPage> {
       print("Sent data!");
       serverSocket.listen((socket) {
         response = utf8.decode(socket);
-        setState(() {
-          _getTransfers(username);
-        });
+        _getTransfers(username).then((value) => setState(() {}));
         print(response);
       });
     }

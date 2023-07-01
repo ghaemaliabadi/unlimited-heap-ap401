@@ -19,7 +19,7 @@ class SignUpPage extends StatefulWidget {
   final String emailRegex =
       "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
       "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
-  static const String ip = "192.168.215.134";
+  static const String ip = "127.0.0.1";
   static const int port = 1234;
 
   @override
@@ -34,6 +34,15 @@ class _SignUpPageState extends State<SignUpPage> {
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
   final _companyNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _emailController.dispose();
+    _companyNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

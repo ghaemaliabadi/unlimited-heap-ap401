@@ -38,7 +38,7 @@ public class RandomTicketGenerator {
             int duration = (int) (Math.random() * 2) + 1;
             int year = 1402;
             int month = 4;
-            int day = (Math.random() < 0.5 ? 10 : 11);
+            int day = (Math.random() < 0.5 ? 11 : 12);
             int year2 = 1402;
             int month2 = 4;
             int day2 = day + 1;

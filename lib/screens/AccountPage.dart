@@ -11,6 +11,7 @@ import '../models/transaction.dart';
 import '../models/userinfo.dart';
 import '../models/tripsTaken.dart';
 import '../models/transfer.dart';
+import 'ProjectMainPage.dart';
 
 // ignore: must_be_immutable
 class AccountPage extends StatefulWidget {
@@ -465,39 +466,85 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     )
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        side: BorderSide(
-                          width: 2.0,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        )
-                      ),
-                      child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.key,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          const SizedBox(width: 5.0,),
-                          TextButton(
-                            onPressed: () => showDialogToEditPassword(context, widget.user),
-                            child: Text(
-                              'ویرایش رمز عبور',
-                              style: Theme.of(context).textTheme.headlineMedium,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                side: const BorderSide(
+                                  width: 2.0,
+                                  color: Colors.redAccent,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                )
                             ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.logout,
+                                  color: Colors.redAccent,
+                                ),
+                                const SizedBox(width: 5.0,),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) => ProjectMainPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    'خروج از حساب کاربری',
+                                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 14.0),
+                                  ),
+                                )
+                              ],
+                            )
+                        ),
+                      ),
+                      const SizedBox(width: 10.0,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            side: BorderSide(
+                              width: 2.0,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            )
+                          ),
+                          child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.key,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              const SizedBox(width: 5.0,),
+                              TextButton(
+                                onPressed: () => showDialogToEditPassword(context, widget.user),
+                                child: Text(
+                                  'ویرایش رمز عبور',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                              )
+                            ],
                           )
-                        ],
-                      )
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

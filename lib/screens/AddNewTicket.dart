@@ -94,6 +94,9 @@ class _AddNewTicketState extends State<AddNewTicket> {
                           initialValue: widget.ticket?.ticketID.toString(),
                           style: const TextStyle(color: Colors.black),
                           validator: (value) {
+                            if (value != null) {
+                              value = convertFaToEn(value);
+                            }
                             if (value == null ||
                                 value.isEmpty ||
                                 int.parse(value) <= 0) {
@@ -504,6 +507,9 @@ class _AddNewTicketState extends State<AddNewTicket> {
                           initialValue: widget.ticket?.price.toString(),
                           style: const TextStyle(color: Colors.black),
                           validator: (value) {
+                            if (value != null) {
+                              value = convertFaToEn(value);
+                            }
                             if (value == null ||
                                 value.isEmpty ||
                                 int.tryParse(value) == null ||
@@ -532,6 +538,9 @@ class _AddNewTicketState extends State<AddNewTicket> {
                           initialValue: widget.ticket?.remainingSeats.toString(),
                           style: const TextStyle(color: Colors.black),
                           validator: (value) {
+                            if (value != null) {
+                              value = convertFaToEn(value);
+                            }
                             if (value == null ||
                                 value.isEmpty ||
                                 int.tryParse(value) == null ||
@@ -649,7 +658,8 @@ class _AddNewTicketState extends State<AddNewTicket> {
                         if (widget.title.contains('ویرایش')) {
                           isEdit = true;
                         }
-                        String serverResponse = await _addTicket(context,
+                        // String serverResponse =
+                        await _addTicket(context,
                           // ignore: prefer_interpolation_to_compose_strings
                             widget.ticket!.ticketID.toString() + '-' +
                                 widget.ticket!.transportBy + '-' +
@@ -671,31 +681,32 @@ class _AddNewTicketState extends State<AddNewTicket> {
                                 widget.ticket!.description +
                                 widget.ticket!.tagsString,
                             isEdit
-                        );
-                        if (serverResponse == "true") {
-                          // Navigator.of(context).pop();
-                          // ignore: use_build_context_synchronously
-                          FocusScope.of(context).unfocus();
-                          Future.delayed(const Duration(milliseconds: 200), () {
-                            Navigator.pushReplacement(
-                              context,
-                              PageRouteBuilder(
-                                  pageBuilder: (context, animation1, animation2) =>
-                                      SellerPage(
-                                        user: widget.user,
-                                      )),
-                            );
-                          });
-                          print('validate success');
-                        } else {
-                          if (serverResponse == "code is not unique") {
+                        ).then((value) {
+                          if (value == "true") {
+                            // Navigator.of(context).pop();
                             // ignore: use_build_context_synchronously
-                            showDialogError(context, "کد بلیط تکراری است");
+                            FocusScope.of(context).unfocus();
+                            Future.delayed(const Duration(milliseconds: 200), () {
+                              Navigator.pushReplacement(
+                                context,
+                                PageRouteBuilder(
+                                    pageBuilder: (context, animation1, animation2) =>
+                                        SellerPage(
+                                          user: widget.user,
+                                        )),
+                              );
+                            });
+                            print('validate success');
                           } else {
-                            // ignore: use_build_context_synchronously
-                            showDialogError(context, serverResponse);
+                            if (value == "code is not unique") {
+                              // ignore: use_build_context_synchronously
+                              showDialogError(context, "کد بلیط تکراری است");
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              showDialogError(context, value);
+                            }
                           }
-                        }
+                        });
                       } else {
                         print('validate failed');
                       }

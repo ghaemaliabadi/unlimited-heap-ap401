@@ -605,6 +605,10 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
     tripData.departTicket = null;
     tripData.returnTicket = null;
+    if (tripData.transportBy.contains('خارجی')) {
+      selectedValueFrom = null;
+      selectedValueTo = null;
+    }
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ResultPage(
               tripData: tripData,

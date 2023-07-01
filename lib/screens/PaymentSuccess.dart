@@ -190,7 +190,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                 height: 45.0,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => ProjectMainPage(

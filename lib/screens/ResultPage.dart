@@ -327,7 +327,6 @@ class _ResultPageState extends State<ResultPage> {
                                       widget.sort.byTimeAsc = false;
                                       widget.sort.byTimeDesc = false;
                                       widget.sort.defaultSort = true;
-                                      tickets = sortTickets(tickets);
                                       buildListWithLoading(tickets);
                                     });
                                   },
@@ -350,7 +349,6 @@ class _ResultPageState extends State<ResultPage> {
                                       widget.sort.byTimeAsc = false;
                                       widget.sort.byTimeDesc = false;
                                       widget.sort.defaultSort = false;
-                                      tickets = sortTickets(tickets);
                                       buildListWithLoading(tickets);
                                     });
                                   },
@@ -373,7 +371,6 @@ class _ResultPageState extends State<ResultPage> {
                                       widget.sort.byTimeAsc = false;
                                       widget.sort.byTimeDesc = false;
                                       widget.sort.defaultSort = false;
-                                      tickets = sortTickets(tickets);
                                       buildListWithLoading(tickets);
                                     });
                                   },
@@ -396,7 +393,6 @@ class _ResultPageState extends State<ResultPage> {
                                       widget.sort.byTimeAsc = true;
                                       widget.sort.byTimeDesc = false;
                                       widget.sort.defaultSort = false;
-                                      tickets = sortTickets(tickets);
                                       buildListWithLoading(tickets);
                                     });
                                   },
@@ -419,7 +415,6 @@ class _ResultPageState extends State<ResultPage> {
                                       widget.sort.byTimeAsc = false;
                                       widget.sort.byTimeDesc = true;
                                       widget.sort.defaultSort = false;
-                                      tickets = sortTickets(tickets);
                                       buildListWithLoading(tickets);
                                     });
                                   },
@@ -519,9 +514,15 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   FutureBuilder<List<Ticket>> buildListWithLoading(tickets) {
+    tickets = sortTickets(tickets);
     return FutureBuilder(
       future:
-          Future.delayed(const Duration(seconds: 2)).then((value) => tickets),
+          Future.delayed(const Duration(seconds: 2)).then((value) {
+            try {
+              setState(() {});
+            } catch (ignored) {}
+            return tickets;
+          }),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Expanded(child: buildListViewForCards());
@@ -964,7 +965,7 @@ Future<String> _getTicketsFromTo(transportBy, city1, city2, month, day) async {
     print("Sent data!");
     serverSocket.listen((socket) {
       response = utf8.decode(socket);
-      print(response);
+      // print(response);
       List<String> temp = response.split("\n");
       orgTickets = [];
       for (var line in temp) {

@@ -19,7 +19,7 @@ class SignUpPage extends StatefulWidget {
   final String emailRegex =
       "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
       "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
-  static const String ip = "127.0.0.1";
+  static const String ip = "192.168.215.134";
   static const int port = 1234;
 
   @override
@@ -111,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         !('a'.allMatches(value).length >= 2)) {
                       return 'رمز عبور باید شامل حداقل دو حرف a یا یک عدد در مبنای دو باشد.';
                     }
-                    List<String> sequentialPatterns = ["123", "234", "345", "456", "567", "678", "789"];
+                    List<String> sequentialPatterns = ["012", "123", "234", "345", "456", "567", "678", "789"];
                     for (String pattern in sequentialPatterns) {
                       if (value.contains(pattern)) {
                         return 'رمز عبور نباید شامل اعداد متوالی باشد.';

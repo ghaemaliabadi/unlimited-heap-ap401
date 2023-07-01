@@ -45,21 +45,44 @@ class _SellerPageState extends State<SellerPage> {
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 1.5,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProjectMainPage(
-                  user: widget.user,
-                ),
+          leadingWidth: MediaQuery.of(context).size.width * 1,
+        leading: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProjectMainPage(
+                        user: widget.user,
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+            Text(widget.title,
+                style: Theme.of(context).textTheme.displayMedium),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProjectMainPage(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-        title: Text(widget.title,
-            style: Theme.of(context).textTheme.displayMedium),
       ),
       body: InkWell(
           splashFactory: NoSplash.splashFactory,

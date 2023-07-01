@@ -28,16 +28,7 @@ class ProjectMainPage extends StatefulWidget {
   State<ProjectMainPage> createState() => _ProjectMainPage();
 }
 
-List<String> items = [
-  'تهران',
-  'مشهد',
-  'اصفهان',
-  'شیراز',
-  'گرگان',
-  'کرمان',
-  'تبریز',
-  'بوشهر',
-];
+List<String> items = ["تهران", "مشهد", "اصفهان", "شیراز", "تبریز", "کرج", "اهواز","نیویورک", "لندن", "پاریس", "مادرید", "میلان", "برلین", "تهران", "مونیخ", 'کرمانشاه'];
 List<Trip> lastTrips = [];
 
 String? selectedValue;
@@ -925,38 +916,38 @@ class _ProjectMainPage extends State<ProjectMainPage> {
     );
   }
 
-  void _tapOnDomesticFlight() {
+  void _tapOnDomesticFlight() async {
     int jumpTo = 0;
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'پرواز داخلی';
-    _getAllOrigins(transportBy);
+    _getAllOrigins(transportBy).then((value) => setState(() {}));
     selectedValueFrom = null;
     selectedValueTo = null;
   }
 
-  void _tapOnInternationalFlight() {
+  void _tapOnInternationalFlight() async {
     int jumpTo = 1;
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'پرواز خارجی';
-    _getAllOrigins(transportBy);
+    _getAllOrigins(transportBy).then((value) => setState(() {}));
     selectedValueFrom = null;
     selectedValueTo = null;
   }
 
-  void _tapOnTrain() {
+  void _tapOnTrain() async {
     int jumpTo = 2;
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'قطار';
-    _getAllOrigins(transportBy);
+    _getAllOrigins(transportBy).then((value) => setState(() {}));
     selectedValueFrom = null;
     selectedValueTo = null;
   }
 
-  void _tapOnBus() {
+  void _tapOnBus() async {
     int jumpTo = 3;
     jumpWithAnimationCustom(_pageController, jumpTo);
     transportBy = 'اتوبوس';
-    _getAllOrigins(transportBy);
+    _getAllOrigins(transportBy).then((value) => setState(() {}));
     selectedValueFrom = null;
     selectedValueTo = null;
   }
@@ -1105,6 +1096,8 @@ Future<String> _getAllOrigins(transportBy) async {
       }
     });
   });
-  return Future.delayed(const Duration(milliseconds: 200), () => response);
+  return Future.delayed(const Duration(milliseconds: 200), () {
+    return response;
+  });
   // return response;
 }

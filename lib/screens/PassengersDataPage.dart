@@ -1,6 +1,7 @@
 import 'package:expansion_widget/expansion_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:unlimited_heap_ap401/models/userinfo.dart';
 import '../models/passenger.dart';
 import '../models/ticket.dart';
 import '../models/trip.dart';
@@ -420,7 +421,7 @@ class _PassengersDataPageState extends State<PassengersDataPage> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          widget.tripData.passengerList[saveToIndex].id = value;
+                          widget.tripData.passengerList[saveToIndex].id = convertFaToEn(value);
                         });
                       },
                       decoration: InputDecoration(

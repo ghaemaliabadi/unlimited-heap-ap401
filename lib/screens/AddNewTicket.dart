@@ -103,7 +103,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                           },
                           onChanged: (value) {
                             setState(() {
-                              widget.ticket?.ticketID = int.parse(value);
+                              widget.ticket?.ticketID = int.parse(convertFaToEn(value));
                             });
                           },
                           decoration: InputDecoration(
@@ -514,7 +514,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                           },
                           onChanged: (value) {
                             setState(() {
-                              widget.ticket?.price = int.parse(value);
+                              widget.ticket?.price = int.parse(convertFaToEn(value));
                             });
                           },
                           decoration: InputDecoration(
@@ -542,7 +542,7 @@ class _AddNewTicketState extends State<AddNewTicket> {
                           },
                           onChanged: (value) {
                             setState(() {
-                              widget.ticket?.remainingSeats = int.parse(value);
+                              widget.ticket?.remainingSeats = int.parse(convertFaToEn(value));
                             });
                           },
                           decoration: InputDecoration(

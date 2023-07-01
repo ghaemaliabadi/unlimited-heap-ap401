@@ -15,7 +15,7 @@ class EditUserInfoPage extends StatefulWidget {
   })
       : super(key: key);
 
-  static const String ip = "192.168.215.134";
+  static const String ip = "127.0.0.1";
   static const int port = 1234;
 
   @override
@@ -296,7 +296,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                 ? 'null'
                                 : lastNameController.text}-${nationalIdController.text == ''
                                 ? 'null'
-                                : nationalIdController.text}-${phoneNumberController.text == ''
+                                : convertFaToEn(nationalIdController.text)}-${phoneNumberController.text == ''
                                 ? 'null'
                                 : phoneNumberController.text}-$birthdate',
                           );
@@ -308,7 +308,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                                     firstNameController.text;
                                 widget.user!.lastName = lastNameController.text;
                                 widget.user!.nationalID =
-                                    nationalIdController.text;
+                                    convertFaToEn(nationalIdController.text);
                                 widget.user!.phoneNumber =
                                     phoneNumberController.text;
                                 if (selectedYear != null &&

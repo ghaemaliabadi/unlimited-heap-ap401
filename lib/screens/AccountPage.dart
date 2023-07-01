@@ -660,9 +660,9 @@ class _AccountPageState extends State<AccountPage> {
                                       onPressed: () {
                                         if (_balanceFormKey.currentState!.validate()) {
                                           setState(() {
-                                            widget.user!.addBalance(_addBalanceController.text);
-                                            _addUserBalance(widget.user!.username,
-                                                _addBalanceController.text);
+                                            String amount = convertFaToEn(_addBalanceController.text);
+                                            widget.user!.addBalance(amount);
+                                            _addUserBalance(widget.user!.username, amount);
                                           });
                                           FocusManager.instance.primaryFocus?.unfocus();
                                           _showSnackBar(context, 'موجودی با موفقیت افزایش یافت.', false);
@@ -738,10 +738,9 @@ class _AccountPageState extends State<AccountPage> {
                                       onPressed: () {
                                         if (_transferFormKey.currentState!.validate()) {
                                           setState(() {
-                                            widget.user!.withdrawBalance(
-                                                _withdrawBalanceController.text);
-                                            _withdrawUserBalance(widget.user!.username,
-                                                _withdrawBalanceController.text);
+                                            String amount = convertFaToEn(_withdrawBalanceController.text);
+                                            widget.user!.withdrawBalance(amount);
+                                            _withdrawUserBalance(widget.user!.username, amount);
                                           });
                                           FocusManager.instance
                                               .primaryFocus?.unfocus();
@@ -844,7 +843,7 @@ class _AccountPageState extends State<AccountPage> {
                               height: pageHeight * 0.05,
                               child: TextFormField(
                                 onChanged: (value) {
-                                  idSearch = value;
+                                  idSearch = convertFaToEn(value);
                                   _runIdSearch(value);
                                   // FocusManager.instance.primaryFocus?.unfocus();
                                 },

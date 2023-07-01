@@ -15,7 +15,7 @@ class EditUserInfoPage extends StatefulWidget {
   })
       : super(key: key);
 
-  static const String ip = "127.0.0.1";
+  static const String ip = "192.168.215.134";
   static const int port = 1234;
 
   @override
@@ -287,7 +287,7 @@ class _EditUserInfoPageState extends State<EditUserInfoPage> {
                         if (_formKey.currentState!.validate()) {
                           String birthdate = (selectedDay == null && selectedMonth == null && selectedYear == null)
                               ? 'null'
-                              : '${selectedYear.toString()}-${convertMonthToNum(selectedMonth!)}-${selectedDay.toString()}';
+                              : '${selectedYear.toString()}/${convertMonthToNum(selectedMonth!)}/${selectedDay.toString()}';
                           String serverResponse = await _updateUserInfo(
                             widget.user!.username,
                             '${firstNameController.text == ''

@@ -27,7 +27,7 @@ class User {
   String? accountType;
 
   String getFullName() {
-    return '${firstName ?? '-'} ${lastName ?? ''}';
+    return '${firstName ?? ''} ${lastName ?? '-'}';
   }
 
   String getBirthDateString() {

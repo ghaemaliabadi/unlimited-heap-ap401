@@ -239,7 +239,7 @@ class _AccountPageState extends State<AccountPage> {
 
   void _runDateSearch(Jalali startingDate, Jalali endingDate) {
     setState(() {
-      if (_foundTrips.length < takenTrips.length) {
+      if (_foundTrips.length <= takenTrips.length) {
         _foundTrips = takenTrips.where((trip) =>
         trip.id.startsWith(idSearch)
             && trip.date.compareTo(startingDateSearch) >= 0
@@ -1009,6 +1009,9 @@ class _AccountPageState extends State<AccountPage> {
         transactions.clear();
         List<String> temp = response.split("*");
         for (String t in temp) {
+          if (t == "" || t == "false") {
+            continue;
+          }
           String date = t.split("-")[1];
           transactions.add(
             Transaction(
@@ -1046,6 +1049,9 @@ class _AccountPageState extends State<AccountPage> {
         transfers.clear();
         List<String> temp = response.split("*");
         for (String t in temp) {
+          if (t == "" || t == "false") {
+            continue;
+          }
           String date = t.split("-")[1];
           transfers.add(
             Transfer(

@@ -9,6 +9,8 @@ public class AccountManagement {
         try {
             File file = new File("db/Users.csv");
             FileWriter writer = new FileWriter(file, true);
+            email = email.toLowerCase();
+            username = username.toLowerCase();
             String[] userInfo = handler.findUserRows(username, true);
             boolean usedEmail = handler.findEmail(email);
             if (userInfo.length == 0 && !usedEmail) {
@@ -28,6 +30,7 @@ public class AccountManagement {
     }
     String login(String isSeller, String email, String password) {
         DataBaseHandler handler = new DataBaseHandler("db/Users.csv");
+        email = email.toLowerCase();
         String[] userInfo = handler.findUserRows(email, false);
         if (userInfo.length != 0 && userInfo[0].split("-")[1].equals(isSeller) && userInfo[0].split("-")[2].equals(password)) {
             return userInfo[0].split("-")[0];   // return username

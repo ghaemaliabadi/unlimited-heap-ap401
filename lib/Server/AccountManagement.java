@@ -131,6 +131,9 @@ public class AccountManagement {
             String[] userInfo = UserHandler.findUserRows(username, true);
             String[] infoArr = userInfo[0].split("-");
             System.out.println(userInfo[0]);
+            if (infoArr[4] == null || infoArr[4].equals("null")) {
+                infoArr[4] = "0";
+            }
             infoArr[4] = String.valueOf(Integer.parseInt(infoArr[4]) + Integer.parseInt(amount));
             String newData = infoArr[0] + "-" + infoArr[1] + "-" + infoArr[2] + "-" + infoArr[3] + "-" + infoArr[4] + "-" + infoArr[5] +
                     "-" + infoArr[6] + "-" + infoArr[7] + "-" + infoArr[8] + "-" + infoArr[9] + "\n";
@@ -180,5 +183,19 @@ public class AccountManagement {
         } else {
             return "false";
         }
+    }
+
+    String addTakenTrip(String username, String id, String transportType, String Year, String Month, String Day, String Hour, String Minute, String price, String status, String company, String reservationNumber, String from, String to) {
+        DataBaseHandler handler = new DataBaseHandler("db/TakenTrips.csv");
+        try {
+            File file = new File("db/TakenTrips.csv");
+            FileWriter writer = new FileWriter(file, true);
+            String info = username + "-" + id + "-" + transportType + "-" + Year + "-" + Month + "-" + Day + "-" + Hour + "-" + Minute + "-" + price + "-" + status + "-" + company + "-" + reservationNumber + "-" + from + "-" + to + "\n";
+            writer.write(info);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "true";
     }
 }

@@ -280,7 +280,7 @@ Future<String> _checkLogin(String email, String password, bool isSeller) async {
       print(response);
     });
   });
-  return Future.delayed(const Duration(milliseconds: 100), () => response);
+  return Future.delayed(const Duration(milliseconds: 300), () => response);
 }
 
 Future<String> _getFirstName(String username) async {

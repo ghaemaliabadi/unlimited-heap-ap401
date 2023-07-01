@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/screens/ProjectMainPage.dart';
 import '../models/trip.dart';
 import 'dart:convert' show utf8;
@@ -7,6 +8,7 @@ import 'dart:convert' show utf8;
 // ignore: must_be_immutable
 class PaymentSuccess extends StatefulWidget {
   Trip trip;
+
   PaymentSuccess({super.key, required this.trip});
 
   final String title = 'پرداخت';
@@ -18,6 +20,52 @@ class PaymentSuccess extends StatefulWidget {
 }
 
 class _PaymentSuccessState extends State<PaymentSuccess> {
+  @override
+  void initState() {
+    var trip = widget.trip;
+    // generate random id
+    var id = DateTime.now().millisecondsSinceEpoch % 100000;
+    int sumReturn = 0;
+    _addTakenTrip(
+        trip.user!.username,
+        id,
+        trip.transportBy,
+        trip.departTicket?.inboundDate?.year,
+        trip.departTicket?.inboundDate?.month,
+        trip.departTicket?.inboundDate?.day,
+        trip.departTicket?.inboundDate?.hour,
+        trip.departTicket?.inboundDate?.minute,
+        trip.departTicket?.price,
+        "done",
+        trip.departTicket?.company.name,
+        trip.departTicket?.ticketID,
+        trip.departTicket?.from,
+        trip.departTicket?.to);
+    if (trip.returnTicket != null) {
+      _addTakenTrip(
+          trip.user!.username,
+          id,
+          trip.transportBy,
+          trip.returnTicket?.inboundDate?.year,
+          trip.returnTicket?.inboundDate?.month,
+          trip.returnTicket?.inboundDate?.day,
+          trip.returnTicket?.inboundDate?.hour,
+          trip.returnTicket?.inboundDate?.minute,
+          trip.returnTicket?.price,
+          "done",
+          trip.returnTicket?.company.name,
+          trip.returnTicket?.ticketID,
+          trip.returnTicket?.from,
+          trip.returnTicket?.to);
+      sumReturn = trip.returnTicket!.price * trip.sumPassengers;
+    }
+    _addTransaction(
+        trip.user!.username,
+        "${Jalali.now().year}/${Jalali.now().month}/${Jalali.now().day}",
+        (trip.departTicket!.price * trip.sumPassengers + sumReturn).toString(),
+        "decrease");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +95,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                            () {
+                        () {
                           if (widget.trip.transportBy.contains('پرواز')) {
                             return Icons.airplanemode_active_rounded;
                           } else if (widget.trip.transportBy == 'اتوبوس') {
@@ -85,12 +133,11 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(width: 4),
-                      Icon(
-                          Icons.newspaper_sharp,
-                          color: Theme.of(context).colorScheme.primary
-                      ),
+                      Icon(Icons.newspaper_sharp,
+                          color: Theme.of(context).colorScheme.primary),
                       const SizedBox(width: 4),
-                      Text('تایید اطلاعات',
+                      Text(
+                        'تایید اطلاعات',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.primary),
@@ -102,15 +149,14 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(width: 4),
-                      Icon(
-                        Icons.payment_rounded,
-                          color: Theme.of(context).colorScheme.primary
-                      ),
+                      Icon(Icons.payment_rounded,
+                          color: Theme.of(context).colorScheme.primary),
                       const SizedBox(width: 4),
-                      Text('پرداخت',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary),
+                      Text(
+                        'پرداخت',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary),
                       ),
                     ],
                   ),
@@ -144,12 +190,12 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                 height: 45.0,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ProjectMainPage(
-                        user: widget.trip.user,
-                      )
-                    )
-                    );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProjectMainPage(
+                                  user: widget.trip.user,
+                                )));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
@@ -171,18 +217,48 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   }
 }
 
-void _showSnackBar(BuildContext context, String message, bool isError) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        message,
-        style: (isError
-            ? Theme.of(context).textTheme.displaySmall?.copyWith(color: Colors.red)
-            : Theme.of(context).textTheme.displaySmall
-        ),
-      ),
-      duration: const Duration(seconds: 1),
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-    ),
-  );
+Future<String> _addTakenTrip(
+    String username,
+    id,
+    transportType,
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    price,
+    status,
+    company,
+    reservationNumber,
+    from,
+    to) async {
+  String response = "false";
+  await Socket.connect(PaymentSuccess.ip, PaymentSuccess.port)
+      .then((serverSocket) {
+    print("Connected!");
+    serverSocket.write(
+        "addTakenTrip-$username-$id-$transportType-$year-$month-$day-$hour-$minute-$price-$status-$company-$reservationNumber-$from-$to*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+    });
+  });
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
+}
+
+Future<String> _addTransaction(
+    String username, String date, String amount, String type) async {
+  String response = "false";
+  await Socket.connect(PaymentSuccess.ip, PaymentSuccess.port)
+      .then((serverSocket) {
+    print("Connected!");
+    serverSocket.write("addTransaction-$username-$date-$amount-$type*");
+    serverSocket.flush();
+    print("Sent data!");
+    serverSocket.listen((socket) {
+      response = utf8.decode(socket);
+    });
+  });
+  return Future.delayed(const Duration(milliseconds: 100), () => response);
 }

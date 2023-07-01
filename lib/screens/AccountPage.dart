@@ -1129,6 +1129,9 @@ class _AccountPageState extends State<AccountPage> {
         takenTrips.clear();
         List<String> temp = response.split("*");
         for (String t in temp) {
+          if (t == "" || t == "false") {
+            continue;
+          }
           takenTrips.add(
             TakenTrip(
               id: t.split("-")[1],

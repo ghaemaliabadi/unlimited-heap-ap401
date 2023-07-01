@@ -10,6 +10,7 @@ import '../models/ticket.dart';
 import '../models/userinfo.dart';
 import 'AddNewTicket.dart';
 import 'ProjectMainPage.dart';
+import 'ShowSalesAnalysis.dart';
 
 // ignore: must_be_immutable
 class SellerPage extends StatefulWidget {
@@ -138,7 +139,14 @@ class _SellerPageState extends State<SellerPage> {
                   const SizedBox(width: 20),
                   GestureDetector(
                     onTap: () {
-                      _showSnackBar(context, 'مشاهده تحلیل فروش');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ShowSalesAnalysis(
+                            user: widget.user!,
+                          ),
+                        ),
+                      );
                     },
                     child: buildButton('مشاهده تحلیل فروش'),
                   ),

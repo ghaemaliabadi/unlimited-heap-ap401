@@ -79,3 +79,15 @@ enum Status {
   canceled,
   ongoing,
 }
+
+Status convertStringToStatus(String str) {
+  switch (str) {
+    case 'done':
+      return Status.done;
+    case 'canceled':
+      return Status.canceled;
+    case 'ongoing':
+      return Status.ongoing;
+  }
+  return Status.ongoing;
+}

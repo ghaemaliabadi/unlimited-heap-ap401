@@ -9,7 +9,7 @@ import 'EditUserInfoPage.dart';
 import '../models/company.dart';
 import '../models/transaction.dart';
 import '../models/userinfo.dart';
-import '../models/tripsTaken.dart';
+import '../models/takenTrip.dart';
 import '../models/transfer.dart';
 import 'ProjectMainPage.dart';
 
@@ -42,107 +42,107 @@ class AccountPage extends StatefulWidget {
 //   nationalID: '0920513',
 // );
 
-List<TakenTrip> takenTrips = [
-  TakenTrip(
-    id: '12564',
-    transportType: 'اتوبوس',
-    date: Jalali(1399, 1, 1, 12, 30),
-    price: '200000',
-    status: Status.done,
-    company: Company('زاگرس'),
-    reservationNumber: '2803',
-    from: 'تهران',
-    to: 'اصفهان',
-  ),
-  TakenTrip(
-    id: '25646',
-    transportType: 'قطار',
-    date: Jalali(1399, 1, 2, 8, 30),
-    price: '500000',
-    status: Status.canceled,
-    company: Company('رجا'),
-    reservationNumber: '1458',
-    from: 'مشهد',
-    to: 'تهران',
-  ),
-  TakenTrip(
-    id: '13548',
-    transportType: 'پرواز داخلی',
-    date: Jalali(1399, 1, 3, 15, 30),
-    price: '1590000',
-    status: Status.done,
-    company: Company('ماهان'),
-    reservationNumber: '1234',
-    from: 'تهران',
-    to: 'مشهد',
-  ),
-  TakenTrip(
-    id: '84686',
-    transportType: 'پرواز خارجی',
-    date: Jalali(1399, 1, 4, 10, 30),
-    price: '30000000',
-    status: Status.done,
-    company: Company('ایران ایر'),
-    reservationNumber: '7894',
-    from: 'تهران',
-    to: 'لندن',
-  ),
-  TakenTrip(
-    id: '12546',
-    transportType: 'قطار',
-    date: Jalali(1399, 1, 5, 12, 30),
-    price: '400000',
-    status: Status.done,
-    company: Company('رجا'),
-    reservationNumber: '1458',
-    from: 'تهران',
-    to: 'مشهد',
-  ),
-  TakenTrip(
-    id: '75896',
-    transportType: 'پرواز داخلی',
-    date: Jalali(1399, 1, 6, 8, 30),
-    price: '1200000',
-    status: Status.ongoing,
-    company: Company('ماهان'),
-    reservationNumber: '1234',
-    from: 'تهران',
-    to: 'مشهد',
-  ),
-  TakenTrip(
-    id: '13546',
-    transportType: 'اتوبوس',
-    date: Jalali(1399, 1, 7, 15, 30),
-    price: '350000',
-    status: Status.done,
-    company: Company('زاگرس'),
-    reservationNumber: '2803',
-    from: 'تهران',
-    to: 'اصفهان',
-  ),
-  TakenTrip(
-    id: '91536',
-    transportType: 'قطار',
-    date: Jalali(1399, 1, 8, 10, 30),
-    price: '600000',
-    status: Status.canceled,
-    company: Company('رجا'),
-    reservationNumber: '1458',
-    from: 'مشهد',
-    to: 'تهران',
-  ),
-  TakenTrip(
-    id: '14864',
-    transportType: 'قطار',
-    date: Jalali(1399, 1, 9, 12, 30),
-    price: '700000',
-    status: Status.done,
-    company: Company('رجا'),
-    reservationNumber: '1458',
-    from: 'تهران',
-    to: 'مشهد',
-  ),
-];
+// List<TakenTrip> takenTrips = [
+//   TakenTrip(
+//     id: '12564',
+//     transportType: 'اتوبوس',
+//     date: Jalali(1399, 1, 1, 12, 30),
+//     price: '200000',
+//     status: Status.done,
+//     company: Company('زاگرس'),
+//     reservationNumber: '2803',
+//     from: 'تهران',
+//     to: 'اصفهان',
+//   ),
+//   TakenTrip(
+//     id: '25646',
+//     transportType: 'قطار',
+//     date: Jalali(1399, 1, 2, 8, 30),
+//     price: '500000',
+//     status: Status.canceled,
+//     company: Company('رجا'),
+//     reservationNumber: '1458',
+//     from: 'مشهد',
+//     to: 'تهران',
+//   ),
+//   TakenTrip(
+//     id: '13548',
+//     transportType: 'پرواز داخلی',
+//     date: Jalali(1399, 1, 3, 15, 30),
+//     price: '1590000',
+//     status: Status.done,
+//     company: Company('ماهان'),
+//     reservationNumber: '1234',
+//     from: 'تهران',
+//     to: 'مشهد',
+//   ),
+//   TakenTrip(
+//     id: '84686',
+//     transportType: 'پرواز خارجی',
+//     date: Jalali(1399, 1, 4, 10, 30),
+//     price: '30000000',
+//     status: Status.done,
+//     company: Company('ایران ایر'),
+//     reservationNumber: '7894',
+//     from: 'تهران',
+//     to: 'لندن',
+//   ),
+//   TakenTrip(
+//     id: '12546',
+//     transportType: 'قطار',
+//     date: Jalali(1399, 1, 5, 12, 30),
+//     price: '400000',
+//     status: Status.done,
+//     company: Company('رجا'),
+//     reservationNumber: '1458',
+//     from: 'تهران',
+//     to: 'مشهد',
+//   ),
+//   TakenTrip(
+//     id: '75896',
+//     transportType: 'پرواز داخلی',
+//     date: Jalali(1399, 1, 6, 8, 30),
+//     price: '1200000',
+//     status: Status.ongoing,
+//     company: Company('ماهان'),
+//     reservationNumber: '1234',
+//     from: 'تهران',
+//     to: 'مشهد',
+//   ),
+//   TakenTrip(
+//     id: '13546',
+//     transportType: 'اتوبوس',
+//     date: Jalali(1399, 1, 7, 15, 30),
+//     price: '350000',
+//     status: Status.done,
+//     company: Company('زاگرس'),
+//     reservationNumber: '2803',
+//     from: 'تهران',
+//     to: 'اصفهان',
+//   ),
+//   TakenTrip(
+//     id: '91536',
+//     transportType: 'قطار',
+//     date: Jalali(1399, 1, 8, 10, 30),
+//     price: '600000',
+//     status: Status.canceled,
+//     company: Company('رجا'),
+//     reservationNumber: '1458',
+//     from: 'مشهد',
+//     to: 'تهران',
+//   ),
+//   TakenTrip(
+//     id: '14864',
+//     transportType: 'قطار',
+//     date: Jalali(1399, 1, 9, 12, 30),
+//     price: '700000',
+//     status: Status.done,
+//     company: Company('رجا'),
+//     reservationNumber: '1458',
+//     from: 'تهران',
+//     to: 'مشهد',
+//   ),
+// ];
 
 // List<Transaction> transactions = [
 //   Transaction(
@@ -189,6 +189,7 @@ List<TakenTrip> takenTrips = [
 //   ),
 // ];
 
+List <TakenTrip> takenTrips = [];
 List<Transaction> transactions = [];
 List<Transfer> transfers = [];
 String startingDateLabel = 'از تاریخ';
@@ -217,17 +218,18 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   void initState() {
+    _getTransactions(widget.user!.username).then((value) => setState((){}));
+    _getTransfers(widget.user!.username).then((value) => setState((){}));
+    _getTakenTrips(widget.user!.username).then((value) => setState((){}));
     _tabController = TabContainerController(length: 2);
     _tabController.jumpTo(1);
     _foundTrips = takenTrips;
-    _getTransactions(widget.user!.username).then((value) => setState((){}));
-    _getTransfers(widget.user!.username).then((value) => setState((){}));
     super.initState();
   }
 
   void _runIdSearch(String enteredID) {
     setState(() {
-      if (_foundTrips.length < takenTrips.length) {
+      if (_foundTrips.length <= takenTrips.length) {
         _foundTrips = takenTrips.where((trip) => trip.id.startsWith(enteredID)
             && trip.date.compareTo(startingDateSearch) >= 0
             && trip.date.compareTo(endingDateSearch) <= 0).toList();
@@ -265,7 +267,11 @@ class _AccountPageState extends State<AccountPage> {
           child: AppBar(
             leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => ProjectMainPage(user: widget.user),
+                  ),
+                );
               },
               icon: const Icon(Icons.arrow_back),
             ),
@@ -1110,6 +1116,43 @@ class _AccountPageState extends State<AccountPage> {
           _getTransfers(username);
         });
         print(response);
+      });
+    }
+    );
+    return Future.delayed(const Duration(milliseconds: 100), () => response);
+  }
+
+  Future<String> _getTakenTrips(String username) async {
+    String response = "false";
+    await Socket.connect(AccountPage.ip, AccountPage.port).then((serverSocket) {
+      print("Connected!");
+      serverSocket.write("getTakenTrips-$username*");
+      serverSocket.flush();
+      print("Sent data!");
+      serverSocket.listen((socket) {
+        response = utf8.decode(socket);
+        takenTrips.clear();
+        List<String> temp = response.split("*");
+        for (String t in temp) {
+          takenTrips.add(
+            TakenTrip(
+              id: t.split("-")[1],
+              transportType: t.split("-")[2],
+              date: Jalali(int.parse(t.split("-")[3]),
+                  int.parse(t.split("-")[4]),
+                  int.parse(t.split("-")[5]),
+                  int.parse(t.split("-")[6]),
+                  int.parse(t.split("-")[7]),
+              ),
+              price: t.split("-")[8],
+              status: convertStringToStatus(t.split("-")[9]),
+              company: Company(t.split("-")[10]),
+              reservationNumber: t.split("-")[11],
+              from: t.split("-")[12],
+              to: t.split("-")[13],
+            )
+          );
+        }
       });
     }
     );

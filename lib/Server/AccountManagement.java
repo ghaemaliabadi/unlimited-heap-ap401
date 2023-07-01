@@ -13,7 +13,7 @@ public class AccountManagement {
             boolean usedEmail = handler.findEmail(email);
             if (userInfo.length == 0 && !usedEmail) {
                 String info = username + "-" + isSeller + "-" + password + "-" + email +
-                        "-" + "null" + "-" + "null" + "-" + "null" + "-" + firstName + "-" + "null" + "-" + "null" + "\n";
+                        "-" + "0" + "-" + "null" + "-" + "null" + "-" + firstName + "-" + "null" + "-" + "null" + "\n";
                 writer.write(info);
                 writer.close();
             } else if (usedEmail){
@@ -68,6 +68,12 @@ public class AccountManagement {
         } else {
             return "false";
         }
+    }
+
+    String getUser(String username) {
+        DataBaseHandler handler = new DataBaseHandler("db/Users.csv");
+        String[] userRow = handler.findUserRows(username, true);
+        return userRow[0];
     }
 
     String getTransactions(String username) {

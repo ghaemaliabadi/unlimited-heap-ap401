@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:unlimited_heap_ap401/screens/PaymentSuccess.dart';
 import 'package:unlimited_heap_ap401/screens/SellerPage.dart';
 import '../models/trip.dart';
@@ -19,7 +20,7 @@ class SignUpPage extends StatefulWidget {
   final String emailRegex =
       "^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}"
       "[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$";
-  static const String ip = "127.0.0.1";
+  static const String ip = "192.168.215.134";
   static const int port = 1234;
 
   @override
@@ -217,7 +218,14 @@ class _SignUpPageState extends State<SignUpPage> {
                               username: _usernameController.text,
                               password: _passwordController.text,
                               email: _emailController.text,
-                              firstName: _companyNameController.text,
+                              balance: '0',
+                              phoneNumber: null,
+                              birthDate: null,
+                              firstName: _companyNameController.text == ""
+                                  ? null
+                                  : _companyNameController.text,
+                              lastName: null,
+                              nationalID: null,
                               accountType: isSeller ? "seller" : "customer",
                             );
                             _showSnackBar(

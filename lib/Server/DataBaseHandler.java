@@ -53,6 +53,29 @@ public class DataBaseHandler {
         return rows.toArray(out);
     }
 
+    String[] getCompanyTransactions(String companyName) {
+        ArrayList<String> rows = new ArrayList<>();
+        try {
+            File file = new File(fileName);
+            Scanner reader = new Scanner(file);
+            String thisRow;
+            while (reader.hasNextLine()) {
+                thisRow = reader.nextLine();
+                if (!Objects.equals(companyName, "all")) {
+                    if (thisRow.split("-")[10].equals(companyName)) {
+                        rows.add(thisRow);
+                    }
+                } else {
+                    rows.add(thisRow);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("File not found!");
+        }
+        String[] out = new String[rows.size()];
+        return rows.toArray(out);
+    }
+
     String[] getCompanyTickets(String companyName) {
         ArrayList<String> rows = new ArrayList<>();
         try {

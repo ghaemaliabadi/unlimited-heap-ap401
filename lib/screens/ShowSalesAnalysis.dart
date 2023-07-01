@@ -13,10 +13,18 @@ import 'dart:convert' show utf8;
 // ignore: must_be_immutable
 class ShowSalesAnalysis extends StatefulWidget {
   User user;
+  bool? lastMonth;
+  bool? last3Month;
+  bool? last6Month;
+  bool? lastYear;
 
   ShowSalesAnalysis({
     Key? key,
     required this.user,
+    this.lastMonth,
+    this.last3Month,
+    this.last6Month,
+    this.lastYear,
   }) : super(key: key);
   final String title = 'آنالیز فروش';
   static const String ip = "127.0.0.1";
@@ -27,10 +35,16 @@ class ShowSalesAnalysis extends StatefulWidget {
 }
 
 class _ShowSalesAnalysisState extends State<ShowSalesAnalysis> {
-  bool lastMonth = true;
-  bool last3Month = false;
-  bool last6Month = false;
-  bool lastYear = false;
+
+
+  @override
+  void initState() {
+    widget.lastMonth ??= true;
+    widget.last3Month ??= false;
+    widget.last6Month ??= false;
+    widget.lastYear ??= false;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -65,50 +79,50 @@ class _ShowSalesAnalysisState extends State<ShowSalesAnalysis> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
-                            lastMonth = true;
-                            last3Month = false;
-                            last6Month = false;
-                            lastYear = false;
+                            widget.lastMonth = true;
+                            widget.last3Month = false;
+                            widget.last6Month = false;
+                            widget.lastYear = false;
                             _getTakenTripsForCompany(context, widget.user.firstName!);
                           });
-                        }, child: buildButton('ماه گذشته', lastMonth)),
+                        }, child: buildButton('ماه گذشته', widget.lastMonth)),
                     GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
-                            lastMonth = false;
-                            last3Month = true;
-                            last6Month = false;
-                            lastYear = false;
+                            widget.lastMonth = false;
+                            widget.last3Month = true;
+                            widget.last6Month = false;
+                            widget.lastYear = false;
                             _getTakenTripsForCompany(context, widget.user.firstName!);
                           });
-                        }, child: buildButton('3 ماه گذشته', last3Month)),
+                        }, child: buildButton('3 ماه گذشته', widget.last3Month)),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
-                            lastMonth = false;
-                            last3Month = false;
-                            last6Month = true;
-                            lastYear = false;
+                            widget.lastMonth = false;
+                            widget.last3Month = false;
+                            widget.last6Month = true;
+                            widget.lastYear = false;
                             _getTakenTripsForCompany(context, widget.user.firstName!);
                           });
-                        }, child: buildButton('6 ماه گذشته', last6Month)),
+                        }, child: buildButton('6 ماه گذشته', widget.last6Month)),
                     GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
-                            lastMonth = false;
-                            last3Month = false;
-                            last6Month = false;
-                            lastYear = true;
+                            widget.lastMonth = false;
+                            widget.last3Month = false;
+                            widget.last6Month = false;
+                            widget.lastYear = true;
                             _getTakenTripsForCompany(context, widget.user.firstName!);
                           });
-                        }, child: buildButton('سال گذشته', lastYear)),
+                        }, child: buildButton('سال گذشته', widget.lastYear)),
                     ],
                 ),
               ],
@@ -179,7 +193,6 @@ void _showSnackBar(BuildContext context, String message, bool isError) {
 
 Future<String> _getTakenTripsForCompany(context, company) async {
   String response = "false";
-  bool isLoading = true;
   await Socket.connect(SellerPage.ip, SellerPage.port).then((serverSocket) {
     print("Connected!");
       serverSocket.write("getTakenTripsForCompany-$company*");
@@ -187,14 +200,10 @@ Future<String> _getTakenTripsForCompany(context, company) async {
     print("Sent data!");
     serverSocket.listen((socket) {
       response = utf8.decode(socket);
-      print(response);
+      List<String> transactions = response.split('*');
     });
   });
-  if (isLoading) {
-    showDialogLoading(context);
-  }
-  return Future.delayed(const Duration(milliseconds: 2000), () {
-    isLoading = false;
+  return Future.delayed(const Duration(milliseconds: 1000), () {
     return response;
   });
 }

@@ -187,11 +187,11 @@ public class AccountManagement {
 
     String getTakenTripsForCompany(String company) {
         DataBaseHandler handler = new DataBaseHandler("db/TakenTrips.csv");
-        String[] trips = handler.findUserRows(company, false);
-        if (trips.length != 0) {
+        String[] allTransactions = handler.getCompanyTransactions(company);
+        if (allTransactions.length != 0) {
             StringBuilder out = new StringBuilder();
-            for (String trip : trips) {
-                out.append(trip).append("*");
+            for (String transaction : allTransactions) {
+                out.append(transaction).append("*");
             }
             return out.substring(0, out.length() - 1);
         } else {

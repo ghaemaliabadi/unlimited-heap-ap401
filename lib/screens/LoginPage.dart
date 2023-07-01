@@ -150,6 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                           if (serverResponse != "false") {
                             String rawInfo = await _buildUser(serverResponse);
                             List<String> info = rawInfo.split("-");
+                            String firstName = await _getFirstName(serverResponse);
                             User user = User(
                               username: serverResponse,
                               password: _passwordController.text,
@@ -164,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                                       int.parse(info[2].split("/")[0]),
                                       int.parse(info[2].split("/")[1]),
                                       int.parse(info[2].split("/")[2]))),
-                              firstName: await _getFirstName(serverResponse),
+                              firstName: (firstName == "null" ? null : firstName),
                               lastName: (info[3] == "null" ? null : info[3]),
                               nationalID: (info[4] == "null" ? null : info[4]),
                               accountType: isSeller ? "seller" : "customer",

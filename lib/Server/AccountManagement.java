@@ -115,12 +115,24 @@ public class AccountManagement {
     }
 
     String addTransaction(String username, String date, String amount, String type) {
-        DataBaseHandler handler = new DataBaseHandler("db/Transactions.csv");
+        DataBaseHandler TransactionHandler = new DataBaseHandler("db/Transactions.csv");
+        DataBaseHandler UserHandler = new DataBaseHandler("db/Users.csv");
         try {
             File file = new File("db/Transactions.csv");
             FileWriter writer = new FileWriter(file, true);
             String info = username + "-" + date + "-" + amount + "-" + type + "\n";
             writer.write(info);
+            writer.close();
+            file = new File("db/Users.csv");
+            writer = new FileWriter(file, true);
+            String[] userInfo = UserHandler.findUserRows(username, true);
+            String[] infoArr = userInfo[0].split("-");
+            System.out.println(userInfo[0]);
+            infoArr[4] = String.valueOf(Integer.parseInt(infoArr[4]) + Integer.parseInt(amount));
+            String newData = infoArr[0] + "-" + infoArr[1] + "-" + infoArr[2] + "-" + infoArr[3] + "-" + infoArr[4] + "-" + infoArr[5] +
+                    "-" + infoArr[6] + "-" + infoArr[7] + "-" + infoArr[8] + "-" + infoArr[9] + "\n";
+            UserHandler.deleteRow(username);
+            writer.write(newData);
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -130,11 +142,22 @@ public class AccountManagement {
 
     String addTransfer(String username, String date, String amount, String id) {
         DataBaseHandler handler = new DataBaseHandler("db/Transfers.csv");
+        DataBaseHandler UserHandler = new DataBaseHandler("db/Users.csv");
         try {
             File file = new File("db/Transfers.csv");
             FileWriter writer = new FileWriter(file, true);
             String info = username + "-" + date + "-" + amount + "-" + id + "\n";
             writer.write(info);
+            writer.close();
+            file = new File("db/Users.csv");
+            writer = new FileWriter(file, true);
+            String[] userInfo = UserHandler.findUserRows(username, true);
+            String[] infoArr = userInfo[0].split("-");
+            infoArr[4] = String.valueOf(Integer.parseInt(infoArr[4]) - Integer.parseInt(amount));
+            String newData = infoArr[0] + "-" + infoArr[1] + "-" + infoArr[2] + "-" + infoArr[3] + "-" + infoArr[4] + "-" + infoArr[5] +
+                    "-" + infoArr[6] + "-" + infoArr[7] + "-" + infoArr[8] + "-" + infoArr[9] + "\n";
+            UserHandler.deleteRow(username);
+            writer.write(newData);
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

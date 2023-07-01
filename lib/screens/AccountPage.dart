@@ -611,9 +611,6 @@ class _AccountPageState extends State<AccountPage> {
                                             _addUserBalance(widget.user!.username,
                                                 _addBalanceController.text);
                                           });
-                                          // widget.user!.addBalance(_addBalanceController.text);
-                                          // _addUserBalance(widget.user!.username,
-                                          //     _addBalanceController.text);
                                           FocusManager.instance.primaryFocus?.unfocus();
                                           _showSnackBar(context, 'موجودی با موفقیت افزایش یافت.', false);
                                         }
@@ -762,7 +759,7 @@ class _AccountPageState extends State<AccountPage> {
                       elevation: 2.5,
                       child: Container(
                         padding: const EdgeInsets.all(10.0),
-                        height: pageHeight * 0.25,
+                        height: pageHeight * 0.26,
                         child: Column(
                           children: [
                             Row(

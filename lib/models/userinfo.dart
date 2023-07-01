@@ -1,6 +1,5 @@
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import '../screens/AddNewTicket.dart';
-import 'tripsTaken.dart';
 
 class User {
   User({

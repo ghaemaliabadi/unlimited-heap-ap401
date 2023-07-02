@@ -8,14 +8,4 @@ Companies can also have an account (separate from those of users) and add, edit 
 
 In the following, you will see photos of the purchase process and the process of adding tickets by the seller:
 
-<img width="556" alt="1" src="https://github.com/ghaemaliabadi/unlimited_heap_ap401/assets/69913252/30bf3c80-5bae-4f5d-bce3-466e637c721d">
-![Uploading 2.png…]()
-![Uploading 3.png…]()
-![Uploading 4.png…]()
-![Uploading 5.png…]()
-![Uploading 6.png…]()
-<img width="556" alt="7" src="https://github.com/ghaemaliabadi/unlimited_heap_ap401/assets/69913252/88b754ed-01b8-4ea3-a66b-d908d25cb348">
-![Uploading 8.png…]()
-![Uploading 9.png…]()
-<img width="556" alt="10" src="https://github.com/ghaemaliabadi/unlimited_heap_ap401/assets/69913252/9304cfda-077d-4eb5-a664-25354022b07e">
-![Uploading 11.png…]()
+![Collage Maker-02-Jul-2023-03-52-PM-2943](https://github.com/ghaemaliabadi/unlimited_heap_ap401/assets/69913252/393be696-a867-4996-8e2d-9b06538c10ad)

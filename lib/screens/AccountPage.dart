@@ -195,7 +195,7 @@ List<Transfer> transfers = [];
 String startingDateLabel = 'از تاریخ';
 String endingDateLabel = 'تا تاریخ';
 Jalali startingDateSearch = Jalali(1380, 1, 1);
-Jalali endingDateSearch = Jalali.now();
+Jalali endingDateSearch = Jalali(1402, 4, 30);
 String idSearch = '';
 
 class _AccountPageState extends State<AccountPage> {
@@ -212,7 +212,10 @@ class _AccountPageState extends State<AccountPage> {
   void dispose() {
     _addBalanceController.dispose();
     _withdrawBalanceController.dispose();
-    _tabController.dispose();
+    // startingDateLabel = 'از تاریخ';
+    // endingDateLabel = 'تا تاریخ';
+    // startingDateSearch = Jalali(1380, 1, 1);
+    // endingDateSearch = Jalali(1402, 4, 30);
     super.dispose();
   }
 
@@ -229,27 +232,13 @@ class _AccountPageState extends State<AccountPage> {
 
   void _runIdSearch(String enteredID) {
     setState(() {
-      if (_foundTrips.length <= takenTrips.length) {
-        _foundTrips = takenTrips.where((trip) => trip.id.startsWith(enteredID)
-            && trip.date.compareTo(startingDateSearch) >= 0
-            && trip.date.compareTo(endingDateSearch) <= 0).toList();
-      } else {
-        _foundTrips = takenTrips.where((trip) => trip.id.startsWith(enteredID)).toList();
-      }
+      _foundTrips = _foundTrips.where((trip) => trip.id.startsWith(enteredID)).toList();
     });
   }
 
   void _runDateSearch(Jalali startingDate, Jalali endingDate) {
     setState(() {
-      if (_foundTrips.length <= takenTrips.length) {
-        _foundTrips = takenTrips.where((trip) =>
-        trip.id.startsWith(idSearch)
-            && trip.date.compareTo(startingDateSearch) >= 0
-            && trip.date.compareTo(endingDateSearch) <= 0).toList();
-      } else {
-        _foundTrips =
-            takenTrips.where((trip) => trip.id.startsWith(idSearch)).toList();
-      }
+      _foundTrips = _foundTrips.where((trip) => trip.date.compareTo(startingDate) >= 0).toList();
     });
   }
 
